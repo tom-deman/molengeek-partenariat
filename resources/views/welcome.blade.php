@@ -120,6 +120,10 @@
                                 Sponsor
                             </a>
                         </div>
+                        <p>@lang('bonjour')</p>
+                        <a href="{{ route( 'setlang', 'en' ) }}">English</a>
+                        <a href="{{ route( 'setlang', 'fr' ) }}">Français</a>
+                        <a href="{{ route( 'setlang', 'nl' ) }}">Néerlandais</a>
                     </div>
 
                     <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
