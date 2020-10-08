@@ -19,6 +19,8 @@
                 font-family: 'Nunito';
             }
         </style>
+
+        {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
     </head>
     <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
@@ -124,6 +126,9 @@
                         <a href="{{ route( 'setlang', 'en' ) }}">English</a>
                         <a href="{{ route( 'setlang', 'fr' ) }}">Français</a>
                         <a href="{{ route( 'setlang', 'nl' ) }}">Néerlandais</a>
+                        {{-- <div id="app">
+                            <example-component />
+                        </div> --}}
                     </div>
 
                     <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
