@@ -6,11 +6,11 @@
 
         <div x-data="{ recovery: false }">
             <div class="mb-4 text-sm text-gray-600" x-show="! recovery">
-                {{ __('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}
+                {{ __('Veuillez confirmez l\'acces à votre compte en entrant le code d\'authentification que vous avez reçu dans votre application d\'authentification.') }}
             </div>
 
             <div class="mb-4 text-sm text-gray-600" x-show="recovery">
-                {{ __('Please confirm access to your account by entering one of your emergency recovery codes.') }}
+                {{ __('Veuillez confirmez l\'acces a votre compte en entrant un de vos code de récupération.') }}
             </div>
 
             <x-jet-validation-errors class="mb-4" />
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="mt-4" x-show="recovery">
-                    <x-jet-label value="{{ __('Recovery Code') }}" />
+                    <x-jet-label value="{{ __('Code de récupération') }}" />
                     <x-jet-input class="block mt-1 w-full" type="text" name="recovery_code" x-ref="recovery_code" autocomplete="one-time-code" />
                 </div>
 
@@ -35,7 +35,7 @@
                                         recovery = true;
                                         $nextTick(() => { $refs.recovery_code.focus() })
                                     ">
-                        {{ __('Use a recovery code') }}
+                        {{ __('Utiliser un code de récuperation.') }}
                     </button>
 
                     <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
@@ -44,11 +44,11 @@
                                         recovery = false;
                                         $nextTick(() => { $refs.code.focus() })
                                     ">
-                        {{ __('Use an authentication code') }}
+                        {{ __('Utiliser un code d\'authentification') }}
                     </button>
 
                     <x-jet-button class="ml-4">
-                        {{ __('Login') }}
+                        {{ __('Se connecter') }}
                     </x-jet-button>
                 </div>
             </form>
