@@ -19,7 +19,11 @@ Route::get( '/', function() {
 });
 
 Route::middleware( [ 'auth:sanctum', 'verified' ] ) -> get( '/dashboard', function () {
-    return view( 'dashboard' );
+    return view( 'dashboard.main-content' );
 } ) -> name( 'dashboard' );
+
+Route::get( '/dashboard/form', function() {
+    return view( 'dashboard.form' );
+} );
 
 Route::get( 'locale/{lang}', [ LocalizationController::class, 'setLang' ]) -> name ( 'setlang' );
