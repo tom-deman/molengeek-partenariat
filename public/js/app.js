@@ -2299,6 +2299,277 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2314,9 +2585,22 @@ __webpack_require__.r(__webpack_exports__);
       inputFirstName: '',
       inputBirthday: '',
       inputProfession: '',
-      inputCompany: '',
+      inputCompanyName: '',
       inputMolengeek: '',
-      valid: false
+      inputTva: '',
+      inputLogo: '',
+      valid: false,
+      errors: {
+        firstName: '',
+        lastName: '',
+        birthday: '',
+        profession: '',
+        companyName: '',
+        molengeek: '',
+        company: '',
+        logo: '',
+        tva: ''
+      }
     };
   },
   methods: {
@@ -2336,7 +2620,9 @@ __webpack_require__.r(__webpack_exports__);
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
         this.valid = false;
       } else if (this.step === 1 && this.company === 'no') {
-        this.inputCompany = '';
+        this.inputCompanyName = '';
+        this.inputTva = '';
+        this.inputLogo = '';
         this.step = 3;
         this.stepOneClass = 'text-teal-600';
         this.stepTwoClass = 'text-teal-600';
@@ -2351,10 +2637,12 @@ __webpack_require__.r(__webpack_exports__);
         this.valid = false;
         this.step = 3;
       } else if (this.step === 3) {
-        console.log(this.inputBirthday, this.inputProfession, this.inputCompany, this.inputMolengeek, this.inputLastName, this.inputFirstName, this.company);
+        console.log(this.inputBirthday, this.inputProfession, this.inputCompanyName, this.inputMolengeek, this.inputLastName, this.inputFirstName, this.company, this.inputTva, this.inputLogo);
       }
     },
-    decrementStep: function decrementStep() {
+    decrementStep: function decrementStep(e) {
+      e.preventDefault();
+
       if (this.step === 1) {
         this.stepOneClass = 'text-gray-600';
         this.stepTwoClass = 'text-gray-600';
@@ -2376,40 +2664,137 @@ __webpack_require__.r(__webpack_exports__);
         this.stepThreeClass = 'text-gray-600';
         this.step = 1;
       }
+    },
+    onFileChange: function onFileChange(e) {
+      var file = e.target.files || e.dataTransfer.files;
+      if (!file.length) return;
+      this.inputLogo = file;
+      this.checkInput();
+      this.checkErrors('logo');
+    },
+    checkInput: function checkInput() {
+      if (this.step === 0 && this.inputLastName && this.inputFirstName && this.inputBirthday && this.inputProfession) {
+        this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
+        this.valid = true;
+      } else if (this.step === 0 && !this.inputLastName || !this.inputFirstName || !this.inputBirthday || !this.inputProfession) {
+        this.valid = false;
+        this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
+      }
+
+      if (this.step === 1 && this.company) {
+        this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
+        this.valid = true;
+      } else if (this.step === 1 && !this.company) {
+        this.valid = false;
+        this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
+      }
+
+      if (this.step === 2 && this.inputCompanyName && this.inputTva && this.inputLogo) {
+        this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
+        this.valid = true;
+      } else if (this.step === 2 && (!this.inputCompanyName || !this.inputTva)) {
+        this.valid = false;
+        this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
+      }
+
+      if (this.step === 3 && this.inputMolengeek) {
+        this.valid = true;
+        this.nextStepClass = this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
+      } else if (this.step === 3 && !this.inputMolengeek) {
+        this.valid = false;
+        this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
+      }
+    },
+    checkErrors: function checkErrors(a) {
+      switch (a) {
+        case 'lastName':
+          if (!this.inputLastName) {
+            this.errors.lastName = 'Nom de famille nécessaire';
+          } else {
+            this.errors.lastName = '';
+          }
+
+          break;
+
+        case 'firstName':
+          if (!this.inputFirstName) {
+            this.errors.firstName = 'Prénom nécessaire';
+          } else {
+            this.errors.firstName = '';
+          }
+
+          break;
+
+        case 'birthday':
+          if (!this.inputBirthday) {
+            this.errors.birthday = 'Date de naissance nécessaire';
+          } else {
+            this.errors.birthday = '';
+          }
+
+          break;
+
+        case 'profession':
+          if (!this.inputProfession) {
+            this.errors.profession = 'Profession nécessaire';
+          } else {
+            this.errors.profession = '';
+          }
+
+          break;
+
+        case 'companyName':
+          if (!this.inputCompanyName) {
+            this.errors.companyName = 'Nom de l\'entreprise nécessaire';
+          } else {
+            this.errors.companyName = '';
+          }
+
+          break;
+
+        case 'molengeek':
+          if (!this.inputMolengeek) {
+            this.errors.molengeek = 'Réponse nécessaire';
+          } else {
+            this.errors.molengeek = '';
+          }
+
+          break;
+
+        case 'company':
+          if (!this.company) {
+            this.errors.company = 'Réponse nécessaire';
+          } else {
+            this.errors.company = '';
+          }
+
+          break;
+
+        case 'logo':
+          if (!this.inputLogo) {
+            this.errors.logo = 'Logo nécessaire';
+          } else {
+            this.errors.logo = '';
+          }
+
+          break;
+
+        case 'tva':
+          if (!this.inputTva) {
+            this.errors.tva = 'Numéro de TVA nécessaire';
+          } else {
+            this.errors.tva = '';
+          }
+
+          break;
+      }
+    },
+    sendForm: function sendForm() {
+      alert('send form now');
     }
   },
   updated: function updated() {
-    if (this.step === 0 && this.inputLastName && this.inputFirstName && this.inputBirthday && this.inputProfession) {
-      this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
-      this.valid = true;
-    } else if (this.step === 0 && !this.inputLastName || !this.inputFirstName || !this.inputBirthday || !this.inputProfession) {
-      this.valid = false;
-      this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
-    }
-
-    if (this.step === 1 && this.company) {
-      this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
-      this.valid = true;
-    } else if (this.step === 1 && !this.company) {
-      this.valid = false;
-      this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
-    }
-
-    if (this.step === 2 && this.inputCompany) {
-      this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
-      this.valid = true;
-    } else if (this.step === 2 && !this.inputCompany) {
-      this.valid = false;
-      this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
-    }
-
-    if (this.step === 3 && this.inputMolengeek) {
-      this.valid = true;
-      this.nextStepClass = this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
-    } else if (this.step === 3 && !this.inputMolengeek) {
-      this.valid = false;
-      this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
-    }
+    this.checkInput();
   }
 });
 
@@ -20063,949 +20448,1489 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container mx-auto mt-40" }, [
-    _c("div", { staticClass: "p-10 bg-gray-100 rounded relative" }, [
-      _c("div", { staticClass: "mx-4 p-4" }, [
-        _c("div", { staticClass: "flex items-center" }, [
-          _c(
-            "div",
-            {
-              staticClass: "flex items-center relative",
-              class: _vm.step === 0 ? "text-gray-100" : "text-teal-600"
-            },
-            [
+  return _c(
+    "form",
+    { attrs: { method: "post" }, on: { submit: _vm.sendForm } },
+    [
+      _c("div", { staticClass: "container mx-auto mt-32" }, [
+        _c("div", { staticClass: "p-10 bg-gray-100 rounded relative" }, [
+          _c("div", { staticClass: "mx-4 p-4" }, [
+            _c("div", { staticClass: "flex items-center" }, [
               _c(
                 "div",
                 {
-                  staticClass:
-                    "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-teal-600",
-                  class: _vm.step === 0 ? "bg-teal-600" : ""
+                  staticClass: "flex items-center relative",
+                  class: _vm.step === 0 ? "text-gray-100" : "text-teal-600"
                 },
                 [
                   _c(
-                    "svg",
+                    "div",
                     {
-                      staticClass: "feather feather-bookmark",
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        width: "100%",
-                        height: "100%",
-                        fill: "none",
-                        viewBox: "0 0 24 24",
-                        stroke: "currentColor",
-                        "stroke-width": "2",
-                        "stroke-linecap": "round",
-                        "stroke-linejoin": "round"
-                      }
+                      staticClass:
+                        "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-teal-600",
+                      class: _vm.step === 0 ? "bg-teal-600" : ""
                     },
                     [
-                      _c("path", {
-                        attrs: {
-                          d: "M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
-                        }
-                      })
+                      _c(
+                        "svg",
+                        {
+                          staticStyle: {
+                            "-ms-transform": "rotate(360deg)",
+                            "-webkit-transform": "rotate(360deg)",
+                            transform: "rotate(360deg)"
+                          },
+                          attrs: {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                            "aria-hidden": "true",
+                            focusable: "false",
+                            width: "100%",
+                            height: "100%",
+                            preserveAspectRatio: "xMidYMid meet",
+                            viewBox: "0 0 24 24"
+                          }
+                        },
+                        [
+                          _c(
+                            "g",
+                            {
+                              attrs: {
+                                fill: "none",
+                                stroke: "currentColor",
+                                "stroke-width": "2",
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("circle", {
+                                attrs: { cx: "8.5", cy: "7", r: "4" }
+                              }),
+                              _vm._v(" "),
+                              _c("path", { attrs: { d: "M20 8v6" } }),
+                              _c("path", { attrs: { d: "M23 11h-6" } })
+                            ]
+                          )
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium",
+                      class: _vm.step === 0 ? "text-teal-600" : "text-gray-600"
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Informations personelles\n                        "
+                      )
                     ]
                   )
                 ]
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase",
-                  class: _vm.step === 0 ? "text-teal-600" : "text-gray-600"
-                },
-                [
-                  _vm._v(
-                    "\n                        Step 1\n                    "
-                  )
-                ]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", {
-            staticClass:
-              "flex-auto border-t-2 transition duration-500 ease-in-out",
-            class: _vm.step > 0 ? " border-teal-600" : "border-gray-300"
-          }),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "flex items-center relative",
-              class: _vm.stepOneClass
-            },
-            [
-              _vm.step === 0
-                ? _c(
-                    "div",
-                    {
-                      staticClass:
-                        "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-gray-300"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "feather feather-user-plus",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "stroke-width": "2",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              d: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("circle", {
-                            attrs: { cx: "8.5", cy: "7", r: "4" }
-                          }),
-                          _vm._v(" "),
-                          _c("line", {
-                            attrs: { x1: "20", y1: "8", x2: "20", y2: "14" }
-                          }),
-                          _vm._v(" "),
-                          _c("line", {
-                            attrs: { x1: "23", y1: "11", x2: "17", y2: "11" }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                : _vm.step === 1
-                ? _c(
-                    "div",
-                    {
-                      staticClass:
-                        "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 bg-teal-600 border-teal-600"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "feather feather-user-plus",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "stroke-width": "2",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              d: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("circle", {
-                            attrs: { cx: "8.5", cy: "7", r: "4" }
-                          }),
-                          _vm._v(" "),
-                          _c("line", {
-                            attrs: { x1: "20", y1: "8", x2: "20", y2: "14" }
-                          }),
-                          _vm._v(" "),
-                          _c("line", {
-                            attrs: { x1: "23", y1: "11", x2: "17", y2: "11" }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                : _vm.step > 1
-                ? _c(
-                    "div",
-                    {
-                      staticClass:
-                        "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-teal-600"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "feather feather-user-plus",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "stroke-width": "2",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              d: "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("circle", {
-                            attrs: { cx: "8.5", cy: "7", r: "4" }
-                          }),
-                          _vm._v(" "),
-                          _c("line", {
-                            attrs: { x1: "20", y1: "8", x2: "20", y2: "14" }
-                          }),
-                          _vm._v(" "),
-                          _c("line", {
-                            attrs: { x1: "23", y1: "11", x2: "17", y2: "11" }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                : _vm._e(),
+              _c("div", {
+                staticClass:
+                  "flex-auto border-t-2 transition duration-500 ease-in-out",
+                class: _vm.step > 0 ? " border-teal-600" : "border-gray-300"
+              }),
               _vm._v(" "),
               _c(
                 "div",
                 {
-                  staticClass:
-                    "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-gray-600",
-                  class: _vm.step === 1 ? "text-teal-600" : "text-gray-600"
+                  staticClass: "flex items-center relative",
+                  class: _vm.stepOneClass
                 },
                 [
-                  _vm._v(
-                    "\n                        Step 2\n                    "
-                  )
-                ]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", {
-            staticClass:
-              "flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300",
-            class: _vm.step > 1 ? " border-teal-600" : "border-gray-300"
-          }),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "flex items-center relative",
-              class: _vm.stepTwoClass
-            },
-            [
-              _vm.step < 2
-                ? _c(
-                    "div",
-                    {
-                      staticClass:
-                        "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-gray-300"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "feather feather-mail",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "stroke-width": "2",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("polyline", {
-                            attrs: { points: "22,6 12,13 2,6" }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.step === 2
-                ? _c(
-                    "div",
-                    {
-                      staticClass:
-                        "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 bg-teal-600 border-teal-600"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "feather feather-mail",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "stroke-width": "2",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("polyline", {
-                            attrs: { points: "22,6 12,13 2,6" }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.step > 2
-                ? _c(
-                    "div",
-                    {
-                      staticClass:
-                        "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-teal-600"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "feather feather-mail",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "stroke-width": "2",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("polyline", {
-                            attrs: { points: "22,6 12,13 2,6" }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-gray-500",
-                  class: _vm.step === 2 ? "text-teal-600" : "text-gray-600"
-                },
-                [
-                  _vm._v(
-                    "\n                        Step 3\n                    "
-                  )
-                ]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", {
-            staticClass:
-              "flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300",
-            class: _vm.step > 2 ? " border-teal-600" : "border-gray-300"
-          }),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "flex items-center relative",
-              class: _vm.stepThreeClass
-            },
-            [
-              _vm.step < 3
-                ? _c(
-                    "div",
-                    {
-                      staticClass:
-                        "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-gray-300"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "feather feather-database",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "stroke-width": "2",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round"
-                          }
-                        },
-                        [
-                          _c("ellipse", {
-                            attrs: { cx: "12", cy: "5", rx: "9", ry: "3" }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: { d: "M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: { d: "M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.step === 3
-                ? _c(
-                    "div",
-                    {
-                      staticClass:
-                        "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 bg-teal-600 border-teal-600"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "feather feather-database",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "stroke-width": "2",
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round"
-                          }
-                        },
-                        [
-                          _c("ellipse", {
-                            attrs: { cx: "12", cy: "5", rx: "9", ry: "3" }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: { d: "M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: { d: "M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-gray-500",
-                  class: _vm.step === 3 ? "text-teal-600" : "text-gray-600"
-                },
-                [
-                  _vm._v(
-                    "\n                        Step 4\n                    "
-                  )
-                ]
-              )
-            ]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "mt-8 p-4" }, [
-        _vm.step === 0
-          ? _c(
-              "div",
-              { staticClass: "h-auto sm:h-auto md:h-48 lg:h-48 xl:h-48" },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 mt-3"
-                  },
-                  [
-                    _vm._v(
-                      "\n                    Nom complet\n                "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "flex flex-col md:flex-row" }, [
-                  _c(
-                    "div",
-                    { staticClass: "w-full flex-1 mx-2 svelte-1l8159u" },
-                    [
-                      _c(
+                  _vm.step === 0
+                    ? _c(
                         "div",
                         {
                           staticClass:
-                            "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                            "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-gray-300"
                         },
                         [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.inputLastName,
-                                expression: "inputLastName"
+                          _c(
+                            "svg",
+                            {
+                              staticStyle: {
+                                "-ms-transform": "rotate(360deg)",
+                                "-webkit-transform": "rotate(360deg)",
+                                transform: "rotate(360deg)"
+                              },
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                "aria-hidden": "true",
+                                focusable: "false",
+                                width: "100%",
+                                height: "100%",
+                                preserveAspectRatio: "xMidYMid meet",
+                                viewBox: "0 0 512 512"
                               }
-                            ],
-                            staticClass:
-                              "p-1 px-2 appearance-none outline-none w-full text-gray-800",
-                            attrs: { placeholder: "Nom", required: "" },
-                            domProps: { value: _vm.inputLastName },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.inputLastName = $event.target.value
-                              }
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "w-full flex-1 mx-2 svelte-1l8159u" },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.inputFirstName,
-                                expression: "inputFirstName"
-                              }
-                            ],
-                            staticClass:
-                              "p-1 px-2 appearance-none outline-none w-full text-gray-800",
-                            attrs: { placeholder: "Prénom", required: "" },
-                            domProps: { value: _vm.inputFirstName },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.inputFirstName = $event.target.value
-                              }
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "flex flex-col md:flex-row" }, [
-                  _c(
-                    "div",
-                    { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        },
-                        [_vm._v("Date de naissance")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.inputBirthday,
-                                expression: "inputBirthday"
-                              }
-                            ],
-                            staticClass:
-                              "p-1 px-2 appearance-none outline-none w-full text-gray-800",
-                            attrs: {
-                              placeholder: "Date de naissance",
-                              required: ""
                             },
-                            domProps: { value: _vm.inputBirthday },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                            [
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d:
+                                    "M459.26 96L328 225.7V96h-34.525L168 223.267V16H16v480h480V96zM464 464H48V48h88v216h36.778L296 139.018V264h38.764L464 136.3z"
                                 }
-                                _vm.inputBirthday = $event.target.value
-                              }
-                            }
-                          })
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M136 328v8h32v-32h-32v24z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M136 376h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M216 328v8h32v-32h-32v24z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M216 376h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M296 328v8h32v-32h-32v24z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M296 376h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M376 304h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M376 376h32v32h-32z"
+                                }
+                              })
+                            ]
+                          )
                         ]
                       )
-                    ]
-                  ),
+                    : _vm.step === 1
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 bg-teal-600 border-teal-600"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticStyle: {
+                                "-ms-transform": "rotate(360deg)",
+                                "-webkit-transform": "rotate(360deg)",
+                                transform: "rotate(360deg)"
+                              },
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                "aria-hidden": "true",
+                                focusable: "false",
+                                width: "100%",
+                                height: "100%",
+                                preserveAspectRatio: "xMidYMid meet",
+                                viewBox: "0 0 512 512"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d:
+                                    "M459.26 96L328 225.7V96h-34.525L168 223.267V16H16v480h480V96zM464 464H48V48h88v216h36.778L296 139.018V264h38.764L464 136.3z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M136 328v8h32v-32h-32v24z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M136 376h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M216 328v8h32v-32h-32v24z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M216 376h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M296 328v8h32v-32h-32v24z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M296 376h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M376 304h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M376 376h32v32h-32z"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm.step > 1
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-teal-600"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticStyle: {
+                                "-ms-transform": "rotate(360deg)",
+                                "-webkit-transform": "rotate(360deg)",
+                                transform: "rotate(360deg)"
+                              },
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                "aria-hidden": "true",
+                                focusable: "false",
+                                width: "100%",
+                                height: "100%",
+                                preserveAspectRatio: "xMidYMid meet",
+                                viewBox: "0 0 512 512"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d:
+                                    "M459.26 96L328 225.7V96h-34.525L168 223.267V16H16v480h480V96zM464 464H48V48h88v216h36.778L296 139.018V264h38.764L464 136.3z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M136 328v8h32v-32h-32v24z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M136 376h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M216 328v8h32v-32h-32v24z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M216 376h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M296 328v8h32v-32h-32v24z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M296 376h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M376 304h32v32h-32z"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  fill: "currentColor",
+                                  d: "M376 376h32v32h-32z"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                    {
+                      staticClass:
+                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-600",
+                      class: _vm.step === 1 ? "text-teal-600" : "text-gray-600"
+                    },
                     [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        },
-                        [_vm._v("Profession")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.inputProfession,
-                                expression: "inputProfession"
-                              }
-                            ],
-                            staticClass:
-                              "p-1 px-2 appearance-none outline-none w-full text-gray-800",
-                            attrs: { placeholder: "profession", required: "" },
-                            domProps: { value: _vm.inputProfession },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.inputProfession = $event.target.value
-                              }
-                            }
-                          })
-                        ]
+                      _vm._v(
+                        "\n                            Entreprise\n                        "
                       )
                     ]
                   )
-                ])
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.step === 1
-          ? _c(
-              "div",
-              { staticClass: "h-auto sm:h-auto md:h-48 lg:h-48 xl:h-48" },
-              [
-                _c(
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", {
+                staticClass:
+                  "flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300",
+                class: _vm.step > 1 ? " border-teal-600" : "border-gray-300"
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "flex items-center relative",
+                  class: _vm.stepTwoClass
+                },
+                [
+                  _vm.step < 2
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-gray-300"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticStyle: {
+                                "-ms-transform": "rotate(360deg)",
+                                "-webkit-transform": "rotate(360deg)",
+                                transform: "rotate(360deg)"
+                              },
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                "aria-hidden": "true",
+                                focusable: "false",
+                                width: "100%",
+                                height: "100%",
+                                preserveAspectRatio: "xMidYMid meet",
+                                viewBox: "0 0 32 32"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M17 22v-9h-4v2h2v7h-3v2h8v-2h-3z",
+                                  fill: "currentColor"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M16 7a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 7z",
+                                  fill: "currentColor"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M16 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z",
+                                  fill: "currentColor"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.step === 2
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 bg-teal-600 border-teal-600"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticStyle: {
+                                "-ms-transform": "rotate(360deg)",
+                                "-webkit-transform": "rotate(360deg)",
+                                transform: "rotate(360deg)"
+                              },
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                "aria-hidden": "true",
+                                focusable: "false",
+                                width: "100%",
+                                height: "100%",
+                                preserveAspectRatio: "xMidYMid meet",
+                                viewBox: "0 0 32 32"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M17 22v-9h-4v2h2v7h-3v2h8v-2h-3z",
+                                  fill: "currentColor"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M16 7a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 7z",
+                                  fill: "currentColor"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M16 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z",
+                                  fill: "currentColor"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.step > 2
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-teal-600"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticStyle: {
+                                "-ms-transform": "rotate(360deg)",
+                                "-webkit-transform": "rotate(360deg)",
+                                transform: "rotate(360deg)"
+                              },
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                "aria-hidden": "true",
+                                focusable: "false",
+                                width: "100%",
+                                height: "100%",
+                                preserveAspectRatio: "xMidYMid meet",
+                                viewBox: "0 0 32 32"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M17 22v-9h-4v2h2v7h-3v2h8v-2h-3z",
+                                  fill: "currentColor"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M16 7a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 7z",
+                                  fill: "currentColor"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M16 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z",
+                                  fill: "currentColor"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
+                      class: _vm.step === 2 ? "text-teal-600" : "text-gray-600"
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Informations de l'entreprise\n                        "
+                      )
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", {
+                staticClass:
+                  "flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300",
+                class: _vm.step > 2 ? " border-teal-600" : "border-gray-300"
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "flex items-center relative",
+                  class: _vm.stepThreeClass
+                },
+                [
+                  _vm.step < 3
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-gray-300"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "feather feather-database",
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                width: "100%",
+                                height: "100%",
+                                fill: "none",
+                                viewBox: "0 0 24 24",
+                                stroke: "currentColor",
+                                "stroke-width": "2",
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round"
+                              }
+                            },
+                            [
+                              _c("ellipse", {
+                                attrs: { cx: "12", cy: "5", rx: "9", ry: "3" }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d: "M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d: "M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.step === 3
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 bg-teal-600 border-teal-600"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "feather feather-database",
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                width: "100%",
+                                height: "100%",
+                                fill: "none",
+                                viewBox: "0 0 24 24",
+                                stroke: "currentColor",
+                                "stroke-width": "2",
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round"
+                              }
+                            },
+                            [
+                              _c("ellipse", {
+                                attrs: { cx: "12", cy: "5", rx: "9", ry: "3" }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d: "M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d: "M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
+                      class: _vm.step === 3 ? "text-teal-600" : "text-gray-600"
+                    },
+                    [
+                      _vm._v(
+                        "\n                            MolenGeek et vous\n                        "
+                      )
+                    ]
+                  )
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mt-8 p-4" }, [
+            _vm.step === 0
+              ? _c(
                   "div",
-                  { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                  { staticClass: "h-auto sm:h-auto md:h-56 lg:h-56 xl:h-56" },
                   [
                     _c(
                       "div",
                       {
                         staticClass:
-                          "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          "font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 mt-3"
                       },
                       [
                         _vm._v(
-                          "\n                        Avez vous une entreprise ?\n                    "
+                          "\n                        Nom complet\n                    "
                         )
                       ]
                     ),
                     _vm._v(" "),
+                    _c("div", { staticClass: "flex flex-col md:flex-row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "w-full flex-1 mx-2 svelte-1l8159u" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.inputLastName,
+                                    expression: "inputLastName"
+                                  }
+                                ],
+                                staticClass:
+                                  "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                                attrs: { placeholder: "Nom", required: "" },
+                                domProps: { value: _vm.inputLastName },
+                                on: {
+                                  blur: function($event) {
+                                    return _vm.checkErrors("lastName")
+                                  },
+                                  keydown: _vm.checkInput,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.inputLastName = $event.target.value
+                                  }
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "h-4" }, [
+                            _vm.errors.lastName
+                              ? _c(
+                                  "p",
+                                  { staticClass: "text-red-400 text-sm" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.errors.lastName) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "w-full flex-1 mx-2 svelte-1l8159u" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.inputFirstName,
+                                    expression: "inputFirstName"
+                                  }
+                                ],
+                                staticClass:
+                                  "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                                attrs: { placeholder: "Prénom", required: "" },
+                                domProps: { value: _vm.inputFirstName },
+                                on: {
+                                  blur: function($event) {
+                                    return _vm.checkErrors("firstName")
+                                  },
+                                  keydown: _vm.checkInput,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.inputFirstName = $event.target.value
+                                  }
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "h-4" }, [
+                            _vm.errors.firstName
+                              ? _c(
+                                  "p",
+                                  { staticClass: "text-red-400 text-sm" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.errors.firstName) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "flex flex-col md:flex-row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                            },
+                            [_vm._v("Date de naissance")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.inputBirthday,
+                                    expression: "inputBirthday"
+                                  }
+                                ],
+                                staticClass:
+                                  "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                                attrs: {
+                                  placeholder: "Date de naissance",
+                                  required: ""
+                                },
+                                domProps: { value: _vm.inputBirthday },
+                                on: {
+                                  blur: function($event) {
+                                    return _vm.checkErrors("birthday")
+                                  },
+                                  keydown: _vm.checkInput,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.inputBirthday = $event.target.value
+                                  }
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "h-4" }, [
+                            _vm.errors.birthday
+                              ? _c(
+                                  "p",
+                                  { staticClass: "text-red-400 text-sm" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.errors.birthday) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                            },
+                            [_vm._v("Profession")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.inputProfession,
+                                    expression: "inputProfession"
+                                  }
+                                ],
+                                staticClass:
+                                  "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                                attrs: {
+                                  placeholder: "profession",
+                                  required: ""
+                                },
+                                domProps: { value: _vm.inputProfession },
+                                on: {
+                                  blur: function($event) {
+                                    return _vm.checkErrors("profession")
+                                  },
+                                  keydown: _vm.checkInput,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.inputProfession = $event.target.value
+                                  }
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "h-4" }, [
+                            _vm.errors.profession
+                              ? _c(
+                                  "p",
+                                  { staticClass: "text-red-400 text-sm" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.errors.profession) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ]
+                      )
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.step === 1
+              ? _c(
+                  "div",
+                  { staticClass: "h-auto sm:h-auto md:h-56 lg:h-56 xl:h-56" },
+                  [
                     _c(
                       "div",
-                      {
-                        staticClass:
-                          "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
-                      },
+                      { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
                         _c(
-                          "select",
+                          "div",
                           {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.company,
-                                expression: "company"
-                              }
-                            ],
                             staticClass:
-                              "p-1 px-2 appearance-none outline-none w-full text-gray-800",
-                            attrs: { name: "", id: "", required: "" },
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                            Avez vous une entreprise ?\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                          },
+                          [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.company,
+                                    expression: "company"
+                                  }
+                                ],
+                                staticClass:
+                                  "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                                attrs: { name: "", id: "", required: "" },
+                                on: {
+                                  blur: function($event) {
+                                    return _vm.checkErrors("company")
+                                  },
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.company = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    _vm.checkInput
+                                  ]
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  { attrs: { value: "", disabled: "" } },
+                                  [
+                                    _vm._v(
+                                      "\n                                    Veuillez faire un choix\n                                "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "yes" } }, [
+                                  _vm._v("Oui")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "no" } }, [
+                                  _vm._v("Non")
+                                ])
+                              ]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "h-4" }, [
+                          _vm.errors.company
+                            ? _c("p", { staticClass: "text-red-400 text-sm" }, [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.errors.company) +
+                                    "\n                                "
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.step === 2
+              ? _c(
+                  "div",
+                  { staticClass: "h-auto sm:h-auto md:h-56 lg:h-56 xl:h-56" },
+                  [
+                    _c("div", { staticClass: "flex flex-col md:flex-row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                            },
+                            [_vm._v("Nom de l'entreprise")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.inputCompanyName,
+                                    expression: "inputCompanyName"
+                                  }
+                                ],
+                                staticClass:
+                                  "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                                attrs: {
+                                  placeholder: "Nom de l'entreprise",
+                                  required: ""
+                                },
+                                domProps: { value: _vm.inputCompanyName },
+                                on: {
+                                  blur: function($event) {
+                                    return _vm.checkErrors("companyName")
+                                  },
+                                  keydown: _vm.checkInput,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.inputCompanyName = $event.target.value
+                                  }
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "h-4" }, [
+                            _vm.errors.companyName
+                              ? _c(
+                                  "p",
+                                  { staticClass: "text-red-400 text-sm" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.errors.companyName) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                            },
+                            [_vm._v("Numéro de TVA")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.inputTva,
+                                    expression: "inputTva"
+                                  }
+                                ],
+                                staticClass:
+                                  "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                                attrs: {
+                                  placeholder: "Numéro de TVA",
+                                  required: ""
+                                },
+                                domProps: { value: _vm.inputTva },
+                                on: {
+                                  blur: function($event) {
+                                    return _vm.checkErrors("tva")
+                                  },
+                                  keydown: _vm.checkInput,
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.inputTva = $event.target.value
+                                  }
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "h-4" }, [
+                            _vm.errors.tva
+                              ? _c(
+                                  "p",
+                                  { staticClass: "text-red-400 text-sm" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.errors.tva) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                            Logo de l'entreprise\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          ref: "inputLogo",
+                          staticClass: "inputfile",
+                          staticStyle: {
+                            width: "0.1px",
+                            height: "0.1px",
+                            opacity: "0",
+                            overflow: "hidden",
+                            position: "absolute",
+                            "z-index": "-1"
+                          },
+                          attrs: { type: "file", name: "file", id: "" },
+                          on: { change: _vm.onFileChange }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "p",
+                          {
+                            staticClass:
+                              "hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center",
+                            staticStyle: { outline: "none" },
+                            attrs: { for: "file" },
                             on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.company = $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.$refs.inputLogo.click()
                               }
                             }
                           },
                           [
-                            _c(
-                              "option",
-                              { attrs: { value: "", disabled: "" } },
-                              [
-                                _vm._v(
-                                  "\n                                Veuillez faire un choix\n                            "
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "yes" } }, [
-                              _vm._v("Oui")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "no" } }, [
-                              _vm._v("Non")
-                            ])
+                            _vm._v(
+                              "\n                            Choisissez un fichier\n                        "
+                            )
                           ]
+                        ),
+                        _vm._v(" "),
+                        this.inputLogo.length > 0
+                          ? _c("p", { staticClass: "text-sm text-gray-800" }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.inputLogo[0].name) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "h-4" }, [
+                      _vm.errors.logo
+                        ? _c("p", { staticClass: "text-red-400 text-sm" }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(_vm.errors.logo) +
+                                "\n                        "
+                            )
+                          ])
+                        : _vm._e()
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.step === 3
+              ? _c(
+                  "div",
+                  { staticClass: "h-auto sm:h-auto md:h-56 lg:h-56 xl:h-56" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [_vm._v("Comment avez-vous connu MolenGeek ?")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.inputMolengeek,
+                                  expression: "inputMolengeek"
+                                }
+                              ],
+                              staticClass:
+                                "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                              attrs: {
+                                placeholder: "Réponse",
+                                type: "text",
+                                required: ""
+                              },
+                              domProps: { value: _vm.inputMolengeek },
+                              on: {
+                                blur: function($event) {
+                                  return _vm.checkErrors("molengeek")
+                                },
+                                keydown: _vm.checkInput,
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.inputMolengeek = $event.target.value
+                                }
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "h-4" }, [
+                          _vm.errors.molengeek
+                            ? _c("p", { staticClass: "text-red-400 text-sm" }, [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.errors.molengeek) +
+                                    "\n                                "
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex p-2 mt-4" }, [
+              _c(
+                "p",
+                {
+                  staticClass:
+                    "text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition",
+                  class: _vm.step < 1 ? _vm.disabledClass : _vm.activeClass,
+                  attrs: { disabled: _vm.step < 1 },
+                  on: { click: _vm.decrementStep }
+                },
+                [
+                  _vm._v(
+                    "\n                        Précédent\n                    "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-auto flex flex-row-reverse" }, [
+                _vm.step !== 3
+                  ? _c(
+                      "p",
+                      {
+                        class:
+                          "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
+                          _vm.nextStepClass,
+                        attrs: { disabled: !_vm.valid },
+                        on: {
+                          click: function($event) {
+                            return _vm.incrementStep()
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            Suivant\n                        "
                         )
                       ]
                     )
-                  ]
-                )
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.step === 2
-          ? _c(
-              "div",
-              { staticClass: "h-auto sm:h-auto md:h-48 lg:h-48 xl:h-48" },
-              [
-                _c(
-                  "div",
-                  { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
-                  [
-                    _c(
-                      "div",
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.step === 3
+                  ? _c(
+                      "button",
                       {
-                        staticClass:
-                          "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                      },
-                      [_vm._v("Nom de l'entreprise")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                        class:
+                          "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
+                          _vm.nextStepClass,
+                        attrs: { disabled: !_vm.valid, type: "submit" }
                       },
                       [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.inputCompany,
-                              expression: "inputCompany"
-                            }
-                          ],
-                          staticClass:
-                            "p-1 px-2 appearance-none outline-none w-full text-gray-800",
-                          attrs: {
-                            placeholder: "Nom entreprise",
-                            required: ""
-                          },
-                          domProps: { value: _vm.inputCompany },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.inputCompany = $event.target.value
-                            }
-                          }
-                        })
+                        _vm._v(
+                          "\n                            Valider\n                        "
+                        )
                       ]
                     )
-                  ]
-                )
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.step === 3
-          ? _c(
-              "div",
-              { staticClass: "h-auto sm:h-auto md:h-48 lg:h-48 xl:h-48" },
-              [
-                _c(
-                  "div",
-                  { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                      },
-                      [_vm._v("Comment avez-vous connu MolenGeek ?")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
-                      },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.inputMolengeek,
-                              expression: "inputMolengeek"
-                            }
-                          ],
-                          staticClass:
-                            "p-1 px-2 appearance-none outline-none w-full text-gray-800",
-                          attrs: { placeholder: "Réponse", required: "" },
-                          domProps: { value: _vm.inputMolengeek },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.inputMolengeek = $event.target.value
-                            }
-                          }
-                        })
-                      ]
-                    )
-                  ]
-                )
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex p-2 mt-4" }, [
-          _c(
-            "button",
-            {
-              staticClass:
-                "text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition",
-              class: _vm.step < 1 ? _vm.disabledClass : _vm.activeClass,
-              attrs: { disabled: _vm.step < 1 },
-              on: {
-                click: function($event) {
-                  return _vm.decrementStep()
-                }
-              }
-            },
-            [_vm._v("\n                    Précédent\n                ")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "flex-auto flex flex-row-reverse" }, [
-            _c(
-              "button",
-              {
-                class:
-                  "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
-                  _vm.nextStepClass,
-                attrs: { disabled: !_vm.valid },
-                on: {
-                  click: function($event) {
-                    return _vm.incrementStep()
-                  }
-                }
-              },
-              [
-                _vm._v(
-                  "\n                        " +
-                    _vm._s(_vm.step === 3 ? "Valider" : "Suivant") +
-                    "\n                    "
-                )
-              ]
-            )
+                  : _vm._e()
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
           ])
-        ]),
-        _vm._v(" "),
-        _vm._m(0)
+        ])
       ])
-    ])
-  ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -21019,7 +21944,11 @@ var staticRenderFns = [
           staticClass: "underline text-sm text-gray-600 hover:text-gray-900",
           attrs: { href: "/login" }
         },
-        [_vm._v("\n                    Déjà inscrit ?\n                ")]
+        [
+          _vm._v(
+            "\n                        Déjà inscrit ?\n                    "
+          )
+        ]
       )
     ])
   }
