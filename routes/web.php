@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocalizationController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,5 +26,7 @@ Route::middleware( [ 'auth:sanctum', 'verified' ] ) -> get( '/dashboard', functi
 Route::get( '/dashboard/form', function() {
     return view( 'dashboard.form' );
 } );
+
+Route::post( '/register', [ UserController::class, 'create' ] )->name( 'register' );
 
 Route::get( 'locale/{lang}', [ LocalizationController::class, 'setLang' ]) -> name ( 'setlang' );
