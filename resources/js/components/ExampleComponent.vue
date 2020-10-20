@@ -969,6 +969,7 @@
             this.checkInput()
         },
     }
+    // Test
 </script>
 
 <!-- Old jetstream component -->
@@ -990,3 +991,5 @@
         <x-jet-label value="{{ __('Confirmer le mot de passe') }}" />
         <x-jet-input class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
     </div> -->
+
+    
