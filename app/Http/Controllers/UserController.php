@@ -36,9 +36,20 @@ class UserController extends Controller
                 'birthday' => $input['birthday'],
                 'profession' => $input['profession'],
                 'password' => Hash::make($input['password']),
-            ]));
+            ]), function (User $user) {
+                $this->createTeam($user);
+            });
         });
 
         return response("OK",204);
+    }
+
+    protected function createTeam(User $user)
+    {
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
     }
 }

@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+require('laravel-vue-lang/mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -15,4 +16,5 @@ mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
-    ]);
+    ])
+    .lang();

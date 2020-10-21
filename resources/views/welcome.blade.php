@@ -36,7 +36,7 @@
                 @endif
             </div>
         @endif
-        <p>@lang('bonjour')</p>
+        <p>{{ __( 'bonjour' ) }}</p>
         <a href="{{ route( 'setlang', 'en' ) }}">@lang('Anglais')</a>
         <a href="{{ route( 'setlang', 'fr' ) }}">@lang('Français')</a>
         <a href="{{ route( 'setlang', 'nl' ) }}">@lang('Néerlandais')</a>
