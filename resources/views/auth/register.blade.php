@@ -28,7 +28,7 @@
 </head>
 <body>
     <div id="app">
-        <example-component />
+        <stepper-register />
     </div>
 </body>
 </html>
