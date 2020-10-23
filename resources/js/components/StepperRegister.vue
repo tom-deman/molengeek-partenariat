@@ -1,5 +1,5 @@
 <template>
-    <form method="POST" @submit.prevent="sendForm">
+    <form method="POST" enctype="multipart/form-data" @submit.prevent="sendForm">
         <div class="container mx-auto">
             <div class="p-10 bg-gray-100 rounded relative my-16">
                 <div class="mx-4 p-4">
@@ -378,6 +378,7 @@
                 </div>
                 <div class="mt-8 p-4">
                     <div v-if="step === 0" class="h-auto">
+                        <div class="h-8 pl-4"></div>
                         <div class="font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 mt-3">
                             {{ __( 'Nom complet' ) }}
                         </div>
@@ -432,7 +433,7 @@
                                     <input
                                         @blur="checkErrors( 'birthday' )"
                                         @keydown="checkInput"
-                                        :placeholder="__( '01 Janvier 2000' )"
+                                        :placeholder="__( '01/01/2000' )"
                                         class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
                                         v-model="inputBirthday"
                                         required
@@ -549,6 +550,7 @@
                         </div>
                     </div>
                     <div v-if="step === 1" class="h-auto">
+                        <div class="h-8 pl-4"></div>
                         <div class="w-full mx-2 flex-1 svelte-1l8159u">
                             <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
                                 {{ __( 'Avez vous une entreprise ?' ) }}
@@ -569,8 +571,8 @@
                                     >
                                         {{ __( 'Veuillez faire un choix' ) }}
                                     </option>
-                                    <option value="yes">{{ __( 'Oui' ) }}</option>
-                                    <option value="no">{{ __( 'Non' ) }}</option>
+                                    <option value="true">{{ __( 'Oui' ) }}</option>
+                                    <option value="false">{{ __( 'Non' ) }}</option>
                                 </select>
                             </div>
                             <div class="h-4">
@@ -584,6 +586,7 @@
                         </div>
                     </div>
                     <div v-if="step === 2" class="h-auto">
+                        <div class="h-8 pl-4"></div>
                         <div class="flex flex-col md:flex-row">
                             <div class="w-full mx-2 flex-1 svelte-1l8159u">
                                 <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
@@ -616,7 +619,7 @@
                                     <input
                                         @blur="checkErrors( 'tva' )"
                                         @keydown="checkInput"
-                                        placeholder="TVA BE 0123.456.789."
+                                        placeholder="BE0123456789"
                                         class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
                                         v-model="inputTva"
                                         required
@@ -665,7 +668,7 @@
                                 v-if="this.inputLogo.length > 0"
                                 class="text-sm text-gray-800"
                             >
-                                {{ inputLogo[ 0 ].name }}
+                                {{ inputLogo[0].name }}
                             </p>
                         </div>
                         <div class="h-4">
@@ -678,6 +681,19 @@
                         </div>
                     </div>
                     <div v-if="step === 3" class="h-auto">
+                        <div class="h-8 pl-4">
+                            <div v-if="serverErrors">
+                                <ul>
+                                    <li
+                                        class="text-sm text-red-400"
+                                        v-for="( serverError, index ) in serverErrorsTab"
+                                        :key="index"
+                                    >
+                                        {{ serverError.join( '' ) }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="w-full mx-2 flex-1 svelte-1l8159u">
                             <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
                                 {{ __( 'Comment avez-vous connu MolenGeek ?' ) }}
@@ -768,6 +784,8 @@
             inputLogo: '',
             inputEmail: '',
             valid: false,
+            serverErrors: false,
+            serverErrorsTab: '',
             errors: {
                 firstName: '',
                 lastName: '',
@@ -789,10 +807,10 @@
                 if( this.step === 0
                     && this.inputLastName
                     && this.inputFirstName
-                    && this.inputBirthday
+                    && ( /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) )
                     && this.inputProfession
-                    && this.inputEmail
-                    && this.inputPassword
+                    && ( /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail ) )
+                    && /^.{8,}$/.test( this.inputPassword )
                     && this.inputConfirmPassword
                     && ( this.inputPassword === this.inputConfirmPassword )
                 ){
@@ -803,7 +821,7 @@
                     this.valid = false
                     this.step = 1
                 }
-                else if( this.step === 1 && this.company === 'yes' ) {
+                else if( this.step === 1 && this.company === 'true' ) {
                     this.step = 2
                     this.stepOneClass = 'text-teal-600'
                     this.stepTwoClass = 'text-white'
@@ -811,7 +829,7 @@
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
                     this.valid = false
                 }
-                else if( this.step === 1 && this.company === 'no' ) {
+                else if( this.step === 1 && this.company === 'false' ) {
                     this.inputCompanyName = ''
                     this.inputTva = ''
                     this.inputLogo = ''
@@ -847,13 +865,13 @@
                     this.stepThreeClass = 'text-gray-600'
                     this.step = 1
                 }
-                else if( this.step === 3 && this.company === 'yes' ){
+                else if( this.step === 3 && this.company === 'true' ){
                     this.stepOneClass = 'text-teal-600'
                     this.stepTwoClass = 'text-white'
                     this.stepThreeClass = 'text-gray-600'
                     this.step = 2
                 }
-                else if( this.step === 3 && this.company === 'no' ){
+                else if( this.step === 3 && this.company === 'false' ){
                     this.stepOneClass = 'text-white'
                     this.stepTwoClass = 'text-gray-600'
                     this.stepThreeClass = 'text-gray-600'
@@ -884,11 +902,11 @@
                 if( this.step === 0
                     && this.inputLastName
                     && this.inputFirstName
-                    && this.inputBirthday
+                    && ( /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) )
                     && this.inputProfession
-                    && this.inputPassword
+                    && /^.{8,}$/.test( this.inputPassword )
                     && this.inputConfirmPassword
-                    && this.inputEmail
+                    && (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail ))
                     && ( this.inputPassword === this.inputConfirmPassword )
                 ){
                     this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
@@ -896,9 +914,9 @@
                 }
                 else if( this.step === 0 && !this.inputLastName
                     || !this.inputFirstName
-                    || !this.inputBirthday
+                    || ( !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) )
                     || !this.inputProfession
-                    || !this.inputPassword
+                    || !/^.{8,}$/.test( this.inputPassword )
                     || !this.inputConfirmPassword
                     || !this.inputEmail
                     || ( this.inputPassword !== this.inputConfirmPassword )
@@ -907,24 +925,26 @@
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
                 }
 
-                if( this.step === 1 && this.company ){
-                    this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
-                    this.valid = true
-                }
-                else if( this.step === 1 && !this.company ){
-                    this.valid = false
-                    this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
+                if( this.step === 1 ) {
+                    if( this.company && ( this.company === 'true' || this.company === 'false' ) ){
+                        this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
+                        this.valid = true
+                    }
+                    else{
+                        this.valid = false
+                        this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
+                    }
                 }
 
                 if( this.step === 2
                     && this.inputCompanyName
-                    && this.inputTva
+                    && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva )
                     && this.inputLogo
                 ){
                     this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
                     this.valid = true
                 }
-                else if( this.step === 2 && ( !this.inputCompanyName || !this.inputTva ) ){
+                else if( this.step === 2 && ( !this.inputCompanyName || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva ) ) ){
                     this.valid = false
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
                 }
@@ -961,6 +981,9 @@
                         if( !this.inputBirthday ) {
                             this.errors.birthday = 'Date de naissance nécessaire'
                         }
+                        else if( ( !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) ) ) {
+                            this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa'
+                        }
                         else {
                             this.errors.birthday = ''
                         }
@@ -993,6 +1016,9 @@
                         if( !this.company ) {
                             this.errors.company = 'Réponse nécessaire'
                         }
+                        else if( this.company !== 'true' && this.company !== 'false' ){
+                            this.errors.company = 'Erreur, Veuillez recharger la page et réessayer'
+                        }
                         else {
                             this.errors.company = ''
                         }
@@ -1009,6 +1035,9 @@
                         if( !this.inputTva ) {
                             this.errors.tva = 'Numéro de TVA nécessaire'
                         }
+                        else if( !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva ) ){
+                            this.errors.tva = 'Veuillez entrer un numéro de TVA valide, exemple: BE0123456789'
+                        }
                         else {
                             this.errors.tva = ''
                         }
@@ -1016,6 +1045,9 @@
                     case 'email':
                         if( !this.inputEmail ) {
                             this.errors.email = 'Email nécessaire'
+                        }
+                        else if(!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail )){
+                            this.errors.email = 'Veuillez entrer une adresse email valide'
                         }
                         else {
                             this.errors.email = ''
@@ -1025,21 +1057,25 @@
                         if( !this.inputPassword ) {
                             this.errors.password = 'Mot de passe nécessaire'
                         }
-                        else if( this.inputConfirmPassword && ( this.inputPassword !== this.inputConfirmPassword ) ) {
+                        else if( !/^.{8,}$/.test( this.inputPassword ) ){
+                            this.errors.password = 'Votre mot de passe doit au moins contenir 8 caractères.'
+                        }
+                        else {
+                            this.errors.password = ''
+                        }
+
+                        if( this.inputConfirmPassword && ( this.inputPassword !== this.inputConfirmPassword ) ) {
                             this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques'
                         }
                         else if( this.inputConfirmPassword && ( this.inputPassword === this.inputConfirmPassword ) ){
                             this.errors.confirm_password = ''
-                        }
-                        else {
-                            this.errors.password = ''
                         }
                     break
                     case 'confirm_password':
                         if( !this.inputConfirmPassword ){
                             this.errors.confirm_password = 'Confirmation du mot de passe nécessaire'
                         }
-                        else if( this.inputConfirmPassword && this.inputConfirmPassword !== this.inputPassword ){
+                        else if( this.inputConfirmPassword && this.inputPassword && this.inputConfirmPassword !== this.inputPassword ){
                             this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques'
                         }
                         else {
@@ -1049,6 +1085,13 @@
             },
 
             sendForm() {
+                let app = this
+                if( app.company === 'true' ){
+                    app.company = 1
+                }
+                else {
+                    app.company = 0
+                }
                 axios.post( '/register', {
                     first_name: this.inputFirstName,
                     last_name: this.inputLastName,
@@ -1056,14 +1099,19 @@
                     profession: this.inputProfession,
                     email: this.inputEmail,
                     password: this.inputPassword,
-                    password_confirmation: this.inputConfirmPassword
+                    password_confirmation: this.inputConfirmPassword,
+                    company: this.company,
+                    input_molengeek: this.inputMolengeek,
+                    name: this.inputCompanyName,
+                    tva: this.inputTva,
+                    logo: this.inputLogo
                 } )
                 .then( function( response ){
-                    console.log( response )
                     window.location.href = '/login'
                 })
-                .catch(function (error) {
-                    console.log(error);
+                .catch(function( error ) {
+                    app.serverErrors = true
+                    app.serverErrorsTab = error.response.data.errors
                 })
             }
         },
@@ -1094,5 +1142,3 @@
         <x-jet-label value="{{ __('Confirmer le mot de passe') }}" />
         <x-jet-input class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
     </div> -->
-
-    

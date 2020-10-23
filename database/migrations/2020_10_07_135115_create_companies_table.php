@@ -17,7 +17,7 @@ class CreateCompaniesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string( 'name', 255 );
-            $table->string( 'logo', 255 );
+            $table->string( 'logo' );
             $table->string( 'tva', 255 );
             $table->timestamps();
         });

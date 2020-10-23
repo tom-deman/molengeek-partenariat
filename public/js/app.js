@@ -2655,6 +2655,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2678,6 +2694,8 @@ __webpack_require__.r(__webpack_exports__);
       inputLogo: '',
       inputEmail: '',
       valid: false,
+      serverErrors: false,
+      serverErrorsTab: '',
       errors: {
         firstName: '',
         lastName: '',
@@ -2696,21 +2714,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     incrementStep: function incrementStep() {
-      if (this.step === 0 && this.inputLastName && this.inputFirstName && this.inputBirthday && this.inputProfession && this.inputEmail && this.inputPassword && this.inputConfirmPassword && this.inputPassword === this.inputConfirmPassword) {
+      if (this.step === 0 && this.inputLastName && this.inputFirstName && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && /^.{8,}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputPassword === this.inputConfirmPassword) {
         this.stepOneClass = 'text-white';
         this.stepTwoClass = 'text-gray-600';
         this.stepThreeClass = 'text-gray-600';
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
         this.valid = false;
         this.step = 1;
-      } else if (this.step === 1 && this.company === 'yes') {
+      } else if (this.step === 1 && this.company === 'true') {
         this.step = 2;
         this.stepOneClass = 'text-teal-600';
         this.stepTwoClass = 'text-white';
         this.stepThreeClass = 'text-gray-600';
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
         this.valid = false;
-      } else if (this.step === 1 && this.company === 'no') {
+      } else if (this.step === 1 && this.company === 'false') {
         this.inputCompanyName = '';
         this.inputTva = '';
         this.inputLogo = '';
@@ -2743,12 +2761,12 @@ __webpack_require__.r(__webpack_exports__);
         this.stepTwoClass = 'text-gray-600';
         this.stepThreeClass = 'text-gray-600';
         this.step = 1;
-      } else if (this.step === 3 && this.company === 'yes') {
+      } else if (this.step === 3 && this.company === 'true') {
         this.stepOneClass = 'text-teal-600';
         this.stepTwoClass = 'text-white';
         this.stepThreeClass = 'text-gray-600';
         this.step = 2;
-      } else if (this.step === 3 && this.company === 'no') {
+      } else if (this.step === 3 && this.company === 'false') {
         this.stepOneClass = 'text-white';
         this.stepTwoClass = 'text-gray-600';
         this.stepThreeClass = 'text-gray-600';
@@ -2772,26 +2790,28 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkInput: function checkInput() {
-      if (this.step === 0 && this.inputLastName && this.inputFirstName && this.inputBirthday && this.inputProfession && this.inputPassword && this.inputConfirmPassword && this.inputEmail && this.inputPassword === this.inputConfirmPassword) {
+      if (this.step === 0 && this.inputLastName && this.inputFirstName && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && /^.{8,}$/.test(this.inputPassword) && this.inputConfirmPassword && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputPassword === this.inputConfirmPassword) {
         this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
         this.valid = true;
-      } else if (this.step === 0 && !this.inputLastName || !this.inputFirstName || !this.inputBirthday || !this.inputProfession || !this.inputPassword || !this.inputConfirmPassword || !this.inputEmail || this.inputPassword !== this.inputConfirmPassword) {
+      } else if (this.step === 0 && !this.inputLastName || !this.inputFirstName || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) || !this.inputProfession || !/^.{8,}$/.test(this.inputPassword) || !this.inputConfirmPassword || !this.inputEmail || this.inputPassword !== this.inputConfirmPassword) {
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       }
 
-      if (this.step === 1 && this.company) {
-        this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
-        this.valid = true;
-      } else if (this.step === 1 && !this.company) {
-        this.valid = false;
-        this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
+      if (this.step === 1) {
+        if (this.company && (this.company === 'true' || this.company === 'false')) {
+          this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
+          this.valid = true;
+        } else {
+          this.valid = false;
+          this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
+        }
       }
 
-      if (this.step === 2 && this.inputCompanyName && this.inputTva && this.inputLogo) {
+      if (this.step === 2 && this.inputCompanyName && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo) {
         this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
         this.valid = true;
-      } else if (this.step === 2 && (!this.inputCompanyName || !this.inputTva)) {
+      } else if (this.step === 2 && (!this.inputCompanyName || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva))) {
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       }
@@ -2827,6 +2847,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'birthday':
           if (!this.inputBirthday) {
             this.errors.birthday = 'Date de naissance nécessaire';
+          } else if (!/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday)) {
+            this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa';
           } else {
             this.errors.birthday = '';
           }
@@ -2863,6 +2885,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'company':
           if (!this.company) {
             this.errors.company = 'Réponse nécessaire';
+          } else if (this.company !== 'true' && this.company !== 'false') {
+            this.errors.company = 'Erreur, Veuillez recharger la page et réessayer';
           } else {
             this.errors.company = '';
           }
@@ -2881,6 +2905,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'tva':
           if (!this.inputTva) {
             this.errors.tva = 'Numéro de TVA nécessaire';
+          } else if (!/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva)) {
+            this.errors.tva = 'Veuillez entrer un numéro de TVA valide, exemple: BE0123456789';
           } else {
             this.errors.tva = '';
           }
@@ -2890,6 +2916,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'email':
           if (!this.inputEmail) {
             this.errors.email = 'Email nécessaire';
+          } else if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail)) {
+            this.errors.email = 'Veuillez entrer une adresse email valide';
           } else {
             this.errors.email = '';
           }
@@ -2899,12 +2927,16 @@ __webpack_require__.r(__webpack_exports__);
         case 'password':
           if (!this.inputPassword) {
             this.errors.password = 'Mot de passe nécessaire';
-          } else if (this.inputConfirmPassword && this.inputPassword !== this.inputConfirmPassword) {
+          } else if (!/^.{8,}$/.test(this.inputPassword)) {
+            this.errors.password = 'Votre mot de passe doit au moins contenir 8 caractères.';
+          } else {
+            this.errors.password = '';
+          }
+
+          if (this.inputConfirmPassword && this.inputPassword !== this.inputConfirmPassword) {
             this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
           } else if (this.inputConfirmPassword && this.inputPassword === this.inputConfirmPassword) {
             this.errors.confirm_password = '';
-          } else {
-            this.errors.password = '';
           }
 
           break;
@@ -2912,7 +2944,7 @@ __webpack_require__.r(__webpack_exports__);
         case 'confirm_password':
           if (!this.inputConfirmPassword) {
             this.errors.confirm_password = 'Confirmation du mot de passe nécessaire';
-          } else if (this.inputConfirmPassword && this.inputConfirmPassword !== this.inputPassword) {
+          } else if (this.inputConfirmPassword && this.inputPassword && this.inputConfirmPassword !== this.inputPassword) {
             this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
           } else {
             this.errors.confirm_password = '';
@@ -2921,6 +2953,14 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     sendForm: function sendForm() {
+      var app = this;
+
+      if (app.company === 'true') {
+        app.company = 1;
+      } else {
+        app.company = 0;
+      }
+
       axios.post('/register', {
         first_name: this.inputFirstName,
         last_name: this.inputLastName,
@@ -2928,19 +2968,24 @@ __webpack_require__.r(__webpack_exports__);
         profession: this.inputProfession,
         email: this.inputEmail,
         password: this.inputPassword,
-        password_confirmation: this.inputConfirmPassword
+        password_confirmation: this.inputConfirmPassword,
+        company: this.company,
+        input_molengeek: this.inputMolengeek,
+        name: this.inputCompanyName,
+        tva: this.inputTva,
+        logo: this.inputLogo
       }).then(function (response) {
-        console.log(response);
         window.location.href = '/login';
       })["catch"](function (error) {
-        console.log(error);
+        app.serverErrors = true;
+        app.serverErrorsTab = error.response.data.errors;
       });
     }
   },
   updated: function updated() {
     this.checkInput();
   }
-});
+}); // Test
 
 /***/ }),
 
@@ -21383,7 +21428,7 @@ var render = function() {
   return _c(
     "form",
     {
-      attrs: { method: "POST" },
+      attrs: { method: "POST", enctype: "multipart/form-data" },
       on: {
         submit: function($event) {
           $event.preventDefault()
@@ -22115,6 +22160,8 @@ var render = function() {
           _c("div", { staticClass: "mt-8 p-4" }, [
             _vm.step === 0
               ? _c("div", { staticClass: "h-auto" }, [
+                  _c("div", { staticClass: "h-8 pl-4" }),
+                  _vm._v(" "),
                   _c(
                     "div",
                     {
@@ -22279,7 +22326,7 @@ var render = function() {
                               staticClass:
                                 "p-1 px-2 appearance-none outline-none w-full text-gray-800",
                               attrs: {
-                                placeholder: _vm.__("01 Janvier 2000"),
+                                placeholder: _vm.__("01/01/2000"),
                                 required: ""
                               },
                               domProps: { value: _vm.inputBirthday },
@@ -22613,6 +22660,8 @@ var render = function() {
             _vm._v(" "),
             _vm.step === 1
               ? _c("div", { staticClass: "h-auto" }, [
+                  _c("div", { staticClass: "h-8 pl-4" }),
+                  _vm._v(" "),
                   _c(
                     "div",
                     { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
@@ -22691,11 +22740,11 @@ var render = function() {
                                 ]
                               ),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "yes" } }, [
+                              _c("option", { attrs: { value: "true" } }, [
                                 _vm._v(_vm._s(_vm.__("Oui")))
                               ]),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "no" } }, [
+                              _c("option", { attrs: { value: "false" } }, [
                                 _vm._v(_vm._s(_vm.__("Non")))
                               ])
                             ]
@@ -22721,6 +22770,8 @@ var render = function() {
             _vm._v(" "),
             _vm.step === 2
               ? _c("div", { staticClass: "h-auto" }, [
+                  _c("div", { staticClass: "h-8 pl-4" }),
+                  _vm._v(" "),
                   _c("div", { staticClass: "flex flex-col md:flex-row" }, [
                     _c(
                       "div",
@@ -22829,7 +22880,7 @@ var render = function() {
                               staticClass:
                                 "p-1 px-2 appearance-none outline-none w-full text-gray-800",
                               attrs: {
-                                placeholder: "TVA BE 0123.456.789.",
+                                placeholder: "BE0123456789",
                                 required: ""
                               },
                               domProps: { value: _vm.inputTva },
@@ -22954,6 +23005,36 @@ var render = function() {
             _vm._v(" "),
             _vm.step === 3
               ? _c("div", { staticClass: "h-auto" }, [
+                  _c("div", { staticClass: "h-8 pl-4" }, [
+                    _vm.serverErrors
+                      ? _c("div", [
+                          _c(
+                            "ul",
+                            _vm._l(_vm.serverErrorsTab, function(
+                              serverError,
+                              index
+                            ) {
+                              return _c(
+                                "li",
+                                {
+                                  key: index,
+                                  staticClass: "text-sm text-red-400"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(serverError.join("")) +
+                                      "\n                                "
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "div",
                     { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
@@ -35663,8 +35744,8 @@ module.exports = {"accepted":":Attribute moet geaccepteerd zijn.","active_url":"
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/MAMP/htdocs/molengeek/molengeek-partenariat/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/molengeek/molengeek-partenariat/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /Applications/MAMP/htdocs/molengeek-partenariat/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/molengeek-partenariat/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })
