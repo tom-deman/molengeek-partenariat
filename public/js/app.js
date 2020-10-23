@@ -2671,6 +2671,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2714,21 +2716,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     incrementStep: function incrementStep() {
-      if (this.step === 0 && this.inputLastName && this.inputFirstName && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && /^.{8,}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputPassword === this.inputConfirmPassword) {
+      if (this.step === 0 && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && this.inputPassword === this.inputConfirmPassword) {
         this.stepOneClass = 'text-white';
         this.stepTwoClass = 'text-gray-600';
         this.stepThreeClass = 'text-gray-600';
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
         this.valid = false;
         this.step = 1;
-      } else if (this.step === 1 && this.company === 'true') {
+      } else if (this.step === 1 && this.company === "1") {
         this.step = 2;
         this.stepOneClass = 'text-teal-600';
         this.stepTwoClass = 'text-white';
         this.stepThreeClass = 'text-gray-600';
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
         this.valid = false;
-      } else if (this.step === 1 && this.company === 'false') {
+      } else if (this.step === 1 && this.company === "0") {
         this.inputCompanyName = '';
         this.inputTva = '';
         this.inputLogo = '';
@@ -2761,12 +2763,12 @@ __webpack_require__.r(__webpack_exports__);
         this.stepTwoClass = 'text-gray-600';
         this.stepThreeClass = 'text-gray-600';
         this.step = 1;
-      } else if (this.step === 3 && this.company === 'true') {
+      } else if (this.step === 3 && this.company === "1") {
         this.stepOneClass = 'text-teal-600';
         this.stepTwoClass = 'text-white';
         this.stepThreeClass = 'text-gray-600';
         this.step = 2;
-      } else if (this.step === 3 && this.company === 'false') {
+      } else if (this.step === 3 && this.company === "0") {
         this.stepOneClass = 'text-white';
         this.stepTwoClass = 'text-gray-600';
         this.stepThreeClass = 'text-gray-600';
@@ -2790,16 +2792,16 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkInput: function checkInput() {
-      if (this.step === 0 && this.inputLastName && this.inputFirstName && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && /^.{8,}$/.test(this.inputPassword) && this.inputConfirmPassword && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputPassword === this.inputConfirmPassword) {
+      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && this.inputPassword === this.inputConfirmPassword) {
         this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
         this.valid = true;
-      } else if (this.step === 0 && !this.inputLastName || !this.inputFirstName || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) || !this.inputProfession || !/^.{8,}$/.test(this.inputPassword) || !this.inputConfirmPassword || !this.inputEmail || this.inputPassword !== this.inputConfirmPassword) {
+      } else if (this.step === 0 && !this.inputLastName || this.inputLastName.length > 255 || !this.inputFirstName || this.inputFirstName.length > 255 || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) || !this.inputProfession || this.inputProfession.length > 255 || !/^.{8,255}$/.test(this.inputPassword) || !this.inputConfirmPassword || this.inputConfirmPassword.length > 255 || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) || this.inputEmail.length > 255 || this.inputPassword !== this.inputConfirmPassword) {
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       }
 
       if (this.step === 1) {
-        if (this.company && (this.company === 'true' || this.company === 'false')) {
+        if (this.company && (this.company === "1" || this.company === "0")) {
           this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
           this.valid = true;
         } else {
@@ -2808,18 +2810,18 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      if (this.step === 2 && this.inputCompanyName && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo) {
+      if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo) {
         this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
         this.valid = true;
-      } else if (this.step === 2 && (!this.inputCompanyName || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva))) {
+      } else if (this.step === 2 && (!this.inputCompanyName || this.inputCompanyName.length > 255 || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva))) {
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       }
 
-      if (this.step === 3 && this.inputMolengeek) {
+      if (this.step === 3 && this.inputMolengeek && this.inputMolengeek.length < 255) {
         this.valid = true;
         this.nextStepClass = this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
-      } else if (this.step === 3 && !this.inputMolengeek) {
+      } else if (this.step === 3 && !this.inputMolengeek || this.inputMolengeek.length > 255) {
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       }
@@ -2829,6 +2831,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'lastName':
           if (!this.inputLastName) {
             this.errors.lastName = 'Nom de famille nécessaire';
+          } else if (this.inputLastName.length > 255) {
+            this.errors.lastName = 'Champ trop grand';
           } else {
             this.errors.lastName = '';
           }
@@ -2838,6 +2842,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'firstName':
           if (!this.inputFirstName) {
             this.errors.firstName = 'Prénom nécessaire';
+          } else if (this.inputFirstName.length > 255) {
+            this.errors.firstName = 'Champ trop grand';
           } else {
             this.errors.firstName = '';
           }
@@ -2858,6 +2864,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'profession':
           if (!this.inputProfession) {
             this.errors.profession = 'Profession nécessaire';
+          } else if (this.inputProfession.length > 255) {
+            this.errors.profession = 'Champ trop grand';
           } else {
             this.errors.profession = '';
           }
@@ -2867,6 +2875,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'companyName':
           if (!this.inputCompanyName) {
             this.errors.companyName = 'Nom de l\'entreprise nécessaire';
+          } else if (this.inputCompanyName.length > 255) {
+            this.errors.companyName = 'Champ trop grand';
           } else {
             this.errors.companyName = '';
           }
@@ -2876,6 +2886,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'molengeek':
           if (!this.inputMolengeek) {
             this.errors.molengeek = 'Réponse nécessaire';
+          } else if (this.inputMolengeek.length > 255) {
+            this.errors.molengeek = 'Champ trop grand';
           } else {
             this.errors.molengeek = '';
           }
@@ -2885,7 +2897,7 @@ __webpack_require__.r(__webpack_exports__);
         case 'company':
           if (!this.company) {
             this.errors.company = 'Réponse nécessaire';
-          } else if (this.company !== 'true' && this.company !== 'false') {
+          } else if (this.company !== "1" && this.company !== "0") {
             this.errors.company = 'Erreur, Veuillez recharger la page et réessayer';
           } else {
             this.errors.company = '';
@@ -2918,6 +2930,8 @@ __webpack_require__.r(__webpack_exports__);
             this.errors.email = 'Email nécessaire';
           } else if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail)) {
             this.errors.email = 'Veuillez entrer une adresse email valide';
+          } else if (this.inputEmail.length > 255) {
+            this.errors.email = 'Votre adresse e-mail ne peut dépasser 255 caractères.';
           } else {
             this.errors.email = '';
           }
@@ -2927,8 +2941,8 @@ __webpack_require__.r(__webpack_exports__);
         case 'password':
           if (!this.inputPassword) {
             this.errors.password = 'Mot de passe nécessaire';
-          } else if (!/^.{8,}$/.test(this.inputPassword)) {
-            this.errors.password = 'Votre mot de passe doit au moins contenir 8 caractères.';
+          } else if (!/^.{8,255}$/.test(this.inputPassword)) {
+            this.errors.password = 'Votre mot de passe doit être comprit entre 8 et 255 caractères.';
           } else {
             this.errors.password = '';
           }
@@ -2953,28 +2967,21 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     sendForm: function sendForm() {
+      var data = new FormData();
+      data.append('first_name', this.inputFirstName);
+      data.append('last_name', this.inputLastName);
+      data.append('birthday', this.inputBirthday);
+      data.append('profession', this.inputProfession);
+      data.append('email', this.inputEmail);
+      data.append('password', this.inputPassword);
+      data.append('password_confirmation', this.inputConfirmPassword);
+      data.append('company', this.company);
+      data.append('value', this.inputMolengeek);
+      data.append('name', this.inputCompanyName);
+      data.append('tva', this.inputTva);
+      data.append('logo', this.inputLogo);
       var app = this;
-
-      if (app.company === 'true') {
-        app.company = 1;
-      } else {
-        app.company = 0;
-      }
-
-      axios.post('/register', {
-        first_name: this.inputFirstName,
-        last_name: this.inputLastName,
-        birthday: this.inputBirthday,
-        profession: this.inputProfession,
-        email: this.inputEmail,
-        password: this.inputPassword,
-        password_confirmation: this.inputConfirmPassword,
-        company: this.company,
-        input_molengeek: this.inputMolengeek,
-        name: this.inputCompanyName,
-        tva: this.inputTva,
-        logo: this.inputLogo
-      }).then(function (response) {
+      axios.post('/register', data).then(function (response) {
         window.location.href = '/login';
       })["catch"](function (error) {
         app.serverErrors = true;
@@ -2985,7 +2992,7 @@ __webpack_require__.r(__webpack_exports__);
   updated: function updated() {
     this.checkInput();
   }
-}); // Test
+});
 
 /***/ }),
 
@@ -22740,11 +22747,11 @@ var render = function() {
                                 ]
                               ),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "true" } }, [
+                              _c("option", { attrs: { value: "1" } }, [
                                 _vm._v(_vm._s(_vm.__("Oui")))
                               ]),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "false" } }, [
+                              _c("option", { attrs: { value: "0" } }, [
                                 _vm._v(_vm._s(_vm.__("Non")))
                               ])
                             ]
@@ -22977,15 +22984,21 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      this.inputLogo.length > 0
-                        ? _c("p", { staticClass: "text-sm text-gray-800" }, [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.inputLogo[0].name) +
-                                "\n                        "
+                      _c("div", { staticClass: "h-6 mt-2" }, [
+                        this.inputLogo.length > 0
+                          ? _c(
+                              "p",
+                              { staticClass: "text-sm text-gray-800 h-6" },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(_vm.inputLogo[0].name) +
+                                    "\n                            "
+                                )
+                              ]
                             )
-                          ])
-                        : _vm._e()
+                          : _vm._e()
+                      ])
                     ]
                   ),
                   _vm._v(" "),
@@ -23005,7 +23018,7 @@ var render = function() {
             _vm._v(" "),
             _vm.step === 3
               ? _c("div", { staticClass: "h-auto" }, [
-                  _c("div", { staticClass: "h-8 pl-4" }, [
+                  _c("div", { staticClass: "pl-4" }, [
                     _vm.serverErrors
                       ? _c("div", [
                           _c(
@@ -35396,7 +35409,11 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.use(laravel_vue_lang__WEBPACK_IMPORTED_MODULE_0__["Lang"], {
-  locale: 'fr'
+  locale: 'fr',
+  fallback: 'en',
+  ignore: {
+    fr: ['validation']
+  }
 });
 Vue.component('stepper-register', __webpack_require__(/*! ./components/StepperRegister.vue */ "./resources/js/components/StepperRegister.vue")["default"]);
 var app = new Vue({
@@ -35565,10 +35582,10 @@ webpackContext.id = "./resources/lang sync recursive \\.(php|json)$";
 /*!********************************!*\
   !*** ./resources/lang/en.json ***!
   \********************************/
-/*! exports provided: bonjour, default */
+/*! exports provided: bonjour, Entreprise, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"bonjour\":\"hello\"}");
+module.exports = JSON.parse("{\"bonjour\":\"hello\",\"Entreprise\":\"English\"}");
 
 /***/ }),
 
@@ -35675,10 +35692,10 @@ module.exports = {"accepted":"Le champ :attribute doit être accepté.","active_
 /*!********************************!*\
   !*** ./resources/lang/nl.json ***!
   \********************************/
-/*! exports provided: bonjour, Informations de l'entreprise, default */
+/*! exports provided: bonjour, Entreprise, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"bonjour\":\"hallo\",\"Informations de l'entreprise\":\"HIHI\"}");
+module.exports = JSON.parse("{\"bonjour\":\"hallo\",\"Entreprise\":\"Nederlands\"}");
 
 /***/ }),
 

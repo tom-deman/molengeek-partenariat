@@ -13,7 +13,7 @@ class CreateQuestionUser extends Migration
      */
     public function up()
     {
-        Schema::create('question_user', function (Blueprint $table) {
+        Schema::create('question_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('question_id')->constrained();

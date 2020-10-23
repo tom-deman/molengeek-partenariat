@@ -571,8 +571,8 @@
                                     >
                                         {{ __( 'Veuillez faire un choix' ) }}
                                     </option>
-                                    <option value="true">{{ __( 'Oui' ) }}</option>
-                                    <option value="false">{{ __( 'Non' ) }}</option>
+                                    <option value="1">{{ __( 'Oui' ) }}</option>
+                                    <option value="0">{{ __( 'Non' ) }}</option>
                                 </select>
                             </div>
                             <div class="h-4">
@@ -664,12 +664,14 @@
                             >
                                 {{ __( 'Choisissez un fichier' ) }}
                             </p>
-                            <p
-                                v-if="this.inputLogo.length > 0"
-                                class="text-sm text-gray-800"
-                            >
-                                {{ inputLogo[0].name }}
-                            </p>
+                            <div class="h-6 mt-2">
+                                <p
+                                    v-if="this.inputLogo.length > 0"
+                                    class="text-sm text-gray-800 h-6"
+                                >
+                                    {{ inputLogo[0].name }}
+                                </p>
+                            </div>
                         </div>
                         <div class="h-4">
                             <p
@@ -681,7 +683,7 @@
                         </div>
                     </div>
                     <div v-if="step === 3" class="h-auto">
-                        <div class="h-8 pl-4">
+                        <div class="pl-4">
                             <div v-if="serverErrors">
                                 <ul>
                                     <li
@@ -805,13 +807,14 @@
         methods: {
             incrementStep() {
                 if( this.step === 0
-                    && this.inputLastName
-                    && this.inputFirstName
+                    && this.inputLastName.length < 255
+                    && this.inputFirstName && this.inputFirstName.length < 255
                     && ( /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) )
-                    && this.inputProfession
+                    && this.inputProfession && this.inputProfession.length < 255
                     && ( /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail ) )
-                    && /^.{8,}$/.test( this.inputPassword )
-                    && this.inputConfirmPassword
+                    && this.inputEmail.length < 255
+                    && /^.{8,255}$/.test( this.inputPassword )
+                    && this.inputConfirmPassword && this.inputConfirmPassword.length < 255
                     && ( this.inputPassword === this.inputConfirmPassword )
                 ){
                     this.stepOneClass = 'text-white'
@@ -821,7 +824,7 @@
                     this.valid = false
                     this.step = 1
                 }
-                else if( this.step === 1 && this.company === 'true' ) {
+                else if( this.step === 1 && this.company === "1" ) {
                     this.step = 2
                     this.stepOneClass = 'text-teal-600'
                     this.stepTwoClass = 'text-white'
@@ -829,7 +832,7 @@
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
                     this.valid = false
                 }
-                else if( this.step === 1 && this.company === 'false' ) {
+                else if( this.step === 1 && this.company === "0" ) {
                     this.inputCompanyName = ''
                     this.inputTva = ''
                     this.inputLogo = ''
@@ -865,13 +868,13 @@
                     this.stepThreeClass = 'text-gray-600'
                     this.step = 1
                 }
-                else if( this.step === 3 && this.company === 'true' ){
+                else if( this.step === 3 && this.company === "1" ){
                     this.stepOneClass = 'text-teal-600'
                     this.stepTwoClass = 'text-white'
                     this.stepThreeClass = 'text-gray-600'
                     this.step = 2
                 }
-                else if( this.step === 3 && this.company === 'false' ){
+                else if( this.step === 3 && this.company === "0" ){
                     this.stepOneClass = 'text-white'
                     this.stepTwoClass = 'text-gray-600'
                     this.stepThreeClass = 'text-gray-600'
@@ -900,25 +903,28 @@
 
             checkInput() {
                 if( this.step === 0
-                    && this.inputLastName
-                    && this.inputFirstName
+                    && this.inputLastName && this.inputLastName.length < 255
+                    && this.inputFirstName && this.inputFirstName.length < 255
                     && ( /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) )
-                    && this.inputProfession
-                    && /^.{8,}$/.test( this.inputPassword )
-                    && this.inputConfirmPassword
+                    && this.inputProfession && this.inputProfession.length < 255
+                    && /^.{8,255}$/.test( this.inputPassword )
+                    && this.inputConfirmPassword && this.inputConfirmPassword.length < 255
                     && (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail ))
+                    && this.inputEmail.length < 255
                     && ( this.inputPassword === this.inputConfirmPassword )
                 ){
                     this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
                     this.valid = true
                 }
-                else if( this.step === 0 && !this.inputLastName
-                    || !this.inputFirstName
+                else if( this.step === 0
+                    && !this.inputLastName || this.inputLastName.length > 255
+                    || !this.inputFirstName || this.inputFirstName.length > 255
                     || ( !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) )
-                    || !this.inputProfession
-                    || !/^.{8,}$/.test( this.inputPassword )
-                    || !this.inputConfirmPassword
-                    || !this.inputEmail
+                    || !this.inputProfession || this.inputProfession.length > 255
+                    || !/^.{8,255}$/.test( this.inputPassword )
+                    || !this.inputConfirmPassword || this.inputConfirmPassword.length > 255
+                    || (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail ))
+                    || this.inputEmail.length > 255
                     || ( this.inputPassword !== this.inputConfirmPassword )
                 ){
                     this.valid = false
@@ -926,7 +932,7 @@
                 }
 
                 if( this.step === 1 ) {
-                    if( this.company && ( this.company === 'true' || this.company === 'false' ) ){
+                    if( this.company && ( this.company === "1" || this.company === "0" ) ){
                         this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
                         this.valid = true
                     }
@@ -937,23 +943,27 @@
                 }
 
                 if( this.step === 2
-                    && this.inputCompanyName
+                    && this.inputCompanyName && this.inputCompanyName.length < 255
                     && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva )
                     && this.inputLogo
                 ){
                     this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
                     this.valid = true
                 }
-                else if( this.step === 2 && ( !this.inputCompanyName || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva ) ) ){
+                else if( this.step === 2
+                    && ( !this.inputCompanyName
+                    || this.inputCompanyName.length > 255
+                    || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva ) 
+                    ) ){
                     this.valid = false
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
                 }
 
-                if( this.step === 3 && this.inputMolengeek ){
+                if( this.step === 3 && this.inputMolengeek && this.inputMolengeek.length < 255 ){
                     this.valid = true
                     this.nextStepClass = this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
                 }
-                else if( this.step === 3 && !this.inputMolengeek ){
+                else if( this.step === 3 && !this.inputMolengeek || this.inputMolengeek.length > 255 ){
                     this.valid = false
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
                 }
@@ -965,6 +975,9 @@
                         if( !this.inputLastName ) {
                             this.errors.lastName = 'Nom de famille nécessaire'
                         }
+                        else if( this.inputLastName.length > 255 ){
+                            this.errors.lastName = 'Champ trop grand'
+                        }
                         else {
                             this.errors.lastName = ''
                         }
@@ -972,6 +985,9 @@
                     case 'firstName':
                         if( !this.inputFirstName ) {
                             this.errors.firstName = 'Prénom nécessaire'
+                        }
+                        else if( this.inputFirstName.length > 255 ){
+                            this.errors.firstName = 'Champ trop grand'
                         }
                         else {
                             this.errors.firstName = ''
@@ -992,6 +1008,9 @@
                         if( !this.inputProfession ) {
                             this.errors.profession = 'Profession nécessaire'
                         }
+                        else if( this.inputProfession.length > 255 ){
+                            this.errors.profession = 'Champ trop grand'
+                        }
                         else {
                             this.errors.profession = ''
                         }
@@ -999,6 +1018,9 @@
                     case 'companyName':
                         if( !this.inputCompanyName ) {
                             this.errors.companyName = 'Nom de l\'entreprise nécessaire'
+                        }
+                        else if( this.inputCompanyName.length > 255 ){
+                            this.errors.companyName = 'Champ trop grand'
                         }
                         else {
                             this.errors.companyName = ''
@@ -1008,6 +1030,9 @@
                         if( !this.inputMolengeek ) {
                             this.errors.molengeek = 'Réponse nécessaire'
                         }
+                        else if( this.inputMolengeek.length > 255 ){
+                            this.errors.molengeek = 'Champ trop grand'
+                        }
                         else {
                             this.errors.molengeek = ''
                         }
@@ -1016,7 +1041,7 @@
                         if( !this.company ) {
                             this.errors.company = 'Réponse nécessaire'
                         }
-                        else if( this.company !== 'true' && this.company !== 'false' ){
+                        else if( this.company !== "1" && this.company !== "0" ){
                             this.errors.company = 'Erreur, Veuillez recharger la page et réessayer'
                         }
                         else {
@@ -1049,6 +1074,9 @@
                         else if(!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail )){
                             this.errors.email = 'Veuillez entrer une adresse email valide'
                         }
+                        else if( this.inputEmail.length > 255 ){
+                            this.errors.email = 'Votre adresse e-mail ne peut dépasser 255 caractères.'
+                        }
                         else {
                             this.errors.email = ''
                         }
@@ -1057,8 +1085,8 @@
                         if( !this.inputPassword ) {
                             this.errors.password = 'Mot de passe nécessaire'
                         }
-                        else if( !/^.{8,}$/.test( this.inputPassword ) ){
-                            this.errors.password = 'Votre mot de passe doit au moins contenir 8 caractères.'
+                        else if( !/^.{8,255}$/.test( this.inputPassword ) ){
+                            this.errors.password = 'Votre mot de passe doit être comprit entre 8 et 255 caractères.'
                         }
                         else {
                             this.errors.password = ''
@@ -1085,27 +1113,23 @@
             },
 
             sendForm() {
+                const data = new FormData()
+                data.append( 'first_name', this.inputFirstName )
+                data.append( 'last_name', this.inputLastName )
+                data.append( 'birthday', this.inputBirthday )
+                data.append( 'profession', this.inputProfession )
+                data.append( 'email', this.inputEmail )
+                data.append( 'password', this.inputPassword )
+                data.append( 'password_confirmation', this.inputConfirmPassword )
+                data.append( 'company', this.company  )
+                data.append( 'value', this.inputMolengeek )
+                data.append( 'name', this.inputCompanyName )
+                data.append( 'tva', this.inputTva )
+                data.append( 'logo', this.inputLogo )
+
                 let app = this
-                if( app.company === 'true' ){
-                    app.company = 1
-                }
-                else {
-                    app.company = 0
-                }
-                axios.post( '/register', {
-                    first_name: this.inputFirstName,
-                    last_name: this.inputLastName,
-                    birthday: this.inputBirthday,
-                    profession: this.inputProfession,
-                    email: this.inputEmail,
-                    password: this.inputPassword,
-                    password_confirmation: this.inputConfirmPassword,
-                    company: this.company,
-                    input_molengeek: this.inputMolengeek,
-                    name: this.inputCompanyName,
-                    tva: this.inputTva,
-                    logo: this.inputLogo
-                } )
+
+                axios.post( '/register', data )
                 .then( function( response ){
                     window.location.href = '/login'
                 })
@@ -1120,7 +1144,6 @@
             this.checkInput()
         },
     }
-    // Test
 </script>
 
 <!-- Old jetstream component -->

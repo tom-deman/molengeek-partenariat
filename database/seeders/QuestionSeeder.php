@@ -3,18 +3,17 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Question;
 
-class DatabaseSeeder extends Seeder
+class QuestionSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        $this->call([
-            QuestionSeeder::class
-        ]);
+        Question::factory(1)->create();
     }
 }

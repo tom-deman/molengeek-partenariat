@@ -5,13 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Models\Company;
+use App\Models\QuestionUser;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Laravel\Fortify\Contracts\CreatesNewUsers;
-
 
 class UserController extends Controller
 {
@@ -27,9 +25,10 @@ class UserController extends Controller
             'profession' => 'required|string|max:255',
             'password' => $this->passwordRules(),
             'company' => 'required|boolean',
+            'value' => 'required|string|max:255'
         ]);
 
-        if( $input['company'] === 1 ){
+        if( $input['company'] === "1" ){
             $input->validate([
                 'name' => 'required|string:max:255',
                 'tva' => 'required|string:max:255',
@@ -50,7 +49,7 @@ class UserController extends Controller
                 $this->createTeam($user);
             });
 
-            if( $input['company'] === 1 ){
+            if( $input['company'] === "1" ){
                 $company = new Company();
 
                 $company -> user_id = $user->id;
@@ -60,6 +59,14 @@ class UserController extends Controller
 
                 $company -> save();
             }
+
+            $question = new QuestionUser();
+
+            $question -> user_id = $user->id;
+            $question -> question_id = 1;
+            $question -> value = $input->input( 'value' );
+
+            $question -> save();
         });
 
         return response("OK",204);
