@@ -27,10 +27,6 @@
     <title>Register</title>
 </head>
 <body>
-    <p>{{ __( 'bonjour' ) }}</p>
-    <a href="{{ route( 'setlang', 'en' ) }}">@lang('Anglais')</a>
-    <a href="{{ route( 'setlang', 'fr' ) }}">@lang('Français')</a>
-    <a href="{{ route( 'setlang', 'nl' ) }}">@lang('Néerlandais')</a>
     <div id="app">
         <stepper-register
             test="@lang('informations personelles')"

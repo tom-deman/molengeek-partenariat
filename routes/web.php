@@ -29,4 +29,6 @@ Route::get( '/dashboard/form', function() {
 
 Route::post( '/register', [ UserController::class, 'create' ] )->name( 'register' );
 
-Route::get( 'locale/{lang}', [ LocalizationController::class, 'setLang' ]) -> name ( 'setlang' );
+Route::get( '/lang', [ LocalizationController::class, 'getLang' ] ) -> name( 'getLang' );
+
+Route::get( 'locale/{lang}', [ LocalizationController::class, 'setLang' ]) -> name( 'setlang' );

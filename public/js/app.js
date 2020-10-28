@@ -2678,9 +2678,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    test: String
-  },
   data: function data() {
     return {
       step: 0,
@@ -2705,6 +2702,7 @@ __webpack_require__.r(__webpack_exports__);
       valid: false,
       serverErrors: false,
       serverErrorsTab: '',
+      language: '',
       errors: {
         firstName: '',
         lastName: '',
@@ -2718,12 +2716,38 @@ __webpack_require__.r(__webpack_exports__);
         password: '',
         confirm_password: '',
         email: ''
+      },
+      lang: {
+        personnalInfo: 'Informations personnelles',
+        company: 'Entreprise',
+        companyInfo: 'Informations de l\'entreprise',
+        molengeek: 'MolenGeek et vous',
+        fullName: 'Nom complet',
+        birthday: 'Date de naissance',
+        profession: 'Profession',
+        password: 'Mot de passe',
+        confirmPassword: 'Confirmer mot de passe',
+        email: 'Adresse email',
+        companyBoolean: 'Avez vous une entreprise ?',
+        choice: 'Veuillez faire un choix',
+        yes: 'Oui',
+        no: 'Non',
+        companyName: 'Nom de l\'entreprise',
+        tva: 'Numéro de TVA',
+        logo: 'Logo de l\'entreprise',
+        choose: 'Choisissez un fichier',
+        molengeekKnown: 'Comment avez-vous connu MolenGeek ?',
+        previous: 'Précédent',
+        next: 'Suivant',
+        validate: 'Valider',
+        alreadyRegister: 'Déjà inscrit ?',
+        answer: 'Réponse ...'
       }
     };
   },
   methods: {
     incrementStep: function incrementStep() {
-      if (this.step === 0 && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && this.inputPassword === this.inputConfirmPassword) {
+      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && this.inputPassword === this.inputConfirmPassword) {
         this.stepOneClass = 'text-white';
         this.stepTwoClass = 'text-gray-600';
         this.stepThreeClass = 'text-gray-600';
@@ -2747,7 +2771,7 @@ __webpack_require__.r(__webpack_exports__);
         this.stepThreeClass = 'text-white';
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
         this.valid = false;
-      } else if (this.step === 2) {
+      } else if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo) {
         this.stepOneClass = 'text-teal-600';
         this.stepTwoClass = 'text-teal-600';
         this.stepThreeClass = 'text-white';
@@ -2788,7 +2812,21 @@ __webpack_require__.r(__webpack_exports__);
 
       if (file[0].size > 5000000) {
         this.inputLogo = '';
-        this.errors.logo = 'Votre fichier est trop grand';
+
+        switch (this.language) {
+          case 'fr':
+            this.errors.logo = 'Votre fichier est trop grand';
+            break;
+
+          case 'en':
+            this.errors.logo = 'Your file is too big';
+            break;
+
+          case 'nl':
+            this.errors.logo = 'Votre fichier est trop grand';
+            break;
+        }
+
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       } else {
@@ -2836,10 +2874,36 @@ __webpack_require__.r(__webpack_exports__);
     checkErrors: function checkErrors(a) {
       switch (a) {
         case 'lastName':
+          this.serverErrorsTab = '';
+
           if (!this.inputLastName) {
-            this.errors.lastName = 'Nom de famille nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.lastName = 'Nom de famille nécessaire';
+                break;
+
+              case 'en':
+                this.errors.lastName = 'Nom de famille nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.lastName = 'Nom de famille nécessaire';
+                break;
+            }
           } else if (this.inputLastName.length > 255) {
-            this.errors.lastName = 'Champ trop grand';
+            switch (this.language) {
+              case 'fr':
+                this.errors.lastName = 'Champ trop grand';
+                break;
+
+              case 'en':
+                this.errors.lastName = 'Champ trop grand';
+                break;
+
+              case 'nl':
+                this.errors.lastName = 'Champ trop grand';
+                break;
+            }
           } else {
             this.errors.lastName = '';
           }
@@ -2847,10 +2911,36 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'firstName':
+          this.serverErrorsTab = '';
+
           if (!this.inputFirstName) {
-            this.errors.firstName = 'Prénom nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.firstName = 'Prénom nécessaire';
+                break;
+
+              case 'en':
+                this.errors.firstName = 'Prénom nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.firstName = 'Prénom nécessaire';
+                break;
+            }
           } else if (this.inputFirstName.length > 255) {
-            this.errors.firstName = 'Champ trop grand';
+            switch (this.language) {
+              case 'fr':
+                this.errors.firstName = 'Champ trop grand';
+                break;
+
+              case 'en':
+                this.errors.firstName = 'Champ trop grand';
+                break;
+
+              case 'nl':
+                this.errors.firstName = 'Champ trop grand';
+                break;
+            }
           } else {
             this.errors.firstName = '';
           }
@@ -2858,10 +2948,36 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'birthday':
+          this.serverErrorsTab = '';
+
           if (!this.inputBirthday) {
-            this.errors.birthday = 'Date de naissance nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.birthday = 'Date de naissance nécessaire';
+                break;
+
+              case 'en':
+                this.errors.birthday = 'Date de naissance nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.birthday = 'Date de naissance nécessaire';
+                break;
+            }
           } else if (!/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday)) {
-            this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa';
+            switch (this.language) {
+              case 'fr':
+                this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa';
+                break;
+
+              case 'en':
+                this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa';
+                break;
+
+              case 'nl':
+                this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa';
+                break;
+            }
           } else {
             this.errors.birthday = '';
           }
@@ -2869,10 +2985,36 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'profession':
+          this.serverErrorsTab = '';
+
           if (!this.inputProfession) {
-            this.errors.profession = 'Profession nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.profession = 'Profession nécessaire';
+                break;
+
+              case 'en':
+                this.errors.profession = 'Profession nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.profession = 'Profession nécessaire';
+                break;
+            }
           } else if (this.inputProfession.length > 255) {
-            this.errors.profession = 'Champ trop grand';
+            switch (this.language) {
+              case 'fr':
+                this.errors.profession = 'Champ trop grand';
+                break;
+
+              case 'en':
+                this.errors.profession = 'Champ trop grand';
+                break;
+
+              case 'nl':
+                this.errors.profession = 'Champ trop grand';
+                break;
+            }
           } else {
             this.errors.profession = '';
           }
@@ -2880,10 +3022,36 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'companyName':
+          this.serverErrorsTab = '';
+
           if (!this.inputCompanyName) {
-            this.errors.companyName = 'Nom de l\'entreprise nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.companyName = 'Nom de l\'entreprise nécessaire';
+                break;
+
+              case 'en':
+                this.errors.companyName = 'Nom de l\'entreprise nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.companyName = 'Nom de l\'entreprise nécessaire';
+                break;
+            }
           } else if (this.inputCompanyName.length > 255) {
-            this.errors.companyName = 'Champ trop grand';
+            switch (this.language) {
+              case 'fr':
+                this.errors.companyName = 'Champ trop grand';
+                break;
+
+              case 'en':
+                this.errors.companyName = 'Champ trop grand';
+                break;
+
+              case 'nl':
+                this.errors.companyName = 'Champ trop grand';
+                break;
+            }
           } else {
             this.errors.companyName = '';
           }
@@ -2891,10 +3059,36 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'molengeek':
+          this.serverErrorsTab = '';
+
           if (!this.inputMolengeek) {
-            this.errors.molengeek = 'Réponse nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.molengeek = 'Réponse nécessaire';
+                break;
+
+              case 'en':
+                this.errors.molengeek = 'Réponse nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.molengeek = 'Réponse nécessaire';
+                break;
+            }
           } else if (this.inputMolengeek.length > 255) {
-            this.errors.molengeek = 'Champ trop grand';
+            switch (this.language) {
+              case 'fr':
+                this.errors.molengeek = 'Champ trop grand';
+                break;
+
+              case 'en':
+                this.errors.molengeek = 'Champ trop grand';
+                break;
+
+              case 'nl':
+                this.errors.molengeek = 'Champ trop grand';
+                break;
+            }
           } else {
             this.errors.molengeek = '';
           }
@@ -2902,10 +3096,36 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'company':
+          this.serverErrorsTab = '';
+
           if (!this.company) {
-            this.errors.company = 'Réponse nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.company = 'Réponse nécessaire';
+                break;
+
+              case 'en':
+                this.errors.company = 'Réponse nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.company = 'Réponse nécessaire';
+                break;
+            }
           } else if (this.company !== "1" && this.company !== "0") {
-            this.errors.company = 'Erreur, Veuillez recharger la page et réessayer';
+            switch (this.language) {
+              case 'fr':
+                this.errors.company = 'Erreur, Veuillez recharger la page et réessayer';
+                break;
+
+              case 'en':
+                this.errors.company = 'Erreur, Veuillez recharger la page et réessayer';
+                break;
+
+              case 'nl':
+                this.errors.company = 'Erreur, Veuillez recharger la page et réessayer';
+                break;
+            }
           } else {
             this.errors.company = '';
           }
@@ -2913,8 +3133,22 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'logo':
+          this.serverErrorsTab = '';
+
           if (!this.inputLogo) {
-            this.errors.logo = 'Logo nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.logo = 'Logo nécessaire';
+                break;
+
+              case 'en':
+                this.errors.logo = 'Logo nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.logo = 'Logo nécessaire';
+                break;
+            }
           } else {
             this.errors.logo = '';
           }
@@ -2922,10 +3156,36 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'tva':
+          this.serverErrorsTab = '';
+
           if (!this.inputTva) {
-            this.errors.tva = 'Numéro de TVA nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.tva = 'Numéro de TVA nécessaire';
+                break;
+
+              case 'en':
+                this.errors.tva = 'Numéro de TVA nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.tva = 'Numéro de TVA nécessaire';
+                break;
+            }
           } else if (!/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva)) {
-            this.errors.tva = 'Veuillez entrer un numéro de TVA valide, exemple: BE0123456789';
+            switch (this.language) {
+              case 'fr':
+                this.errors.tva = 'Veuillez entrer un numéro de TVA valide, exemple: BE0123456789';
+                break;
+
+              case 'en':
+                this.errors.tva = 'Veuillez entrer un numéro de TVA valide, exemple: BE0123456789';
+                break;
+
+              case 'nl':
+                this.errors.tva = 'Veuillez entrer un numéro de TVA valide, exemple: BE0123456789';
+                break;
+            }
           } else {
             this.errors.tva = '';
           }
@@ -2933,12 +3193,50 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'email':
+          this.serverErrorsTab = '';
+
           if (!this.inputEmail) {
-            this.errors.email = 'Email nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.email = 'Email nécessaire';
+                break;
+
+              case 'en':
+                this.errors.email = 'Email nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.email = 'Email nécessaire';
+                break;
+            }
           } else if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail)) {
-            this.errors.email = 'Veuillez entrer une adresse email valide';
+            switch (this.language) {
+              case 'fr':
+                this.errors.email = 'Veuillez entrer une adresse email valide';
+                break;
+
+              case 'en':
+                this.errors.email = 'Veuillez entrer une adresse email valide';
+                break;
+
+              case 'nl':
+                this.errors.email = 'Veuillez entrer une adresse email valide';
+                break;
+            }
           } else if (this.inputEmail.length > 255) {
-            this.errors.email = 'Votre adresse e-mail ne peut dépasser 255 caractères.';
+            switch (this.language) {
+              case 'fr':
+                this.errors.email = 'Votre adresse e-mail ne peut dépasser 255 caractères.';
+                break;
+
+              case 'en':
+                this.errors.email = 'Votre adresse e-mail ne peut dépasser 255 caractères.';
+                break;
+
+              case 'nl':
+                this.errors.email = 'Votre adresse e-mail ne peut dépasser 255 caractères.';
+                break;
+            }
           } else {
             this.errors.email = '';
           }
@@ -2946,16 +3244,54 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'password':
+          this.serverErrorsTab = '';
+
           if (!this.inputPassword) {
-            this.errors.password = 'Mot de passe nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.password = 'Mot de passe nécessaire';
+                break;
+
+              case 'en':
+                this.errors.password = 'Mot de passe nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.password = 'Mot de passe nécessaire';
+                break;
+            }
           } else if (!/^.{8,255}$/.test(this.inputPassword)) {
-            this.errors.password = 'Votre mot de passe doit être comprit entre 8 et 255 caractères.';
+            switch (this.language) {
+              case 'fr':
+                this.errors.password = 'Votre mot de passe doit être comprit entre 8 et 255 caractères.';
+                break;
+
+              case 'en':
+                this.errors.password = 'Votre mot de passe doit être comprit entre 8 et 255 caractères.';
+                break;
+
+              case 'nl':
+                this.errors.password = 'Votre mot de passe doit être comprit entre 8 et 255 caractères.';
+                break;
+            }
           } else {
             this.errors.password = '';
           }
 
           if (this.inputConfirmPassword && this.inputPassword !== this.inputConfirmPassword) {
-            this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
+            switch (this.language) {
+              case 'fr':
+                this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
+                break;
+
+              case 'en':
+                this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
+                break;
+
+              case 'nl':
+                this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
+                break;
+            }
           } else if (this.inputConfirmPassword && this.inputPassword === this.inputConfirmPassword) {
             this.errors.confirm_password = '';
           }
@@ -2963,10 +3299,36 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'confirm_password':
+          this.serverErrorsTab = '';
+
           if (!this.inputConfirmPassword) {
-            this.errors.confirm_password = 'Confirmation du mot de passe nécessaire';
+            switch (this.language) {
+              case 'fr':
+                this.errors.confirm_password = 'Confirmation du mot de passe nécessaire';
+                break;
+
+              case 'en':
+                this.errors.confirm_password = 'Confirmation du mot de passe nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.confirm_password = 'Confirmation du mot de passe nécessaire';
+                break;
+            }
           } else if (this.inputConfirmPassword && this.inputPassword && this.inputConfirmPassword !== this.inputPassword) {
-            this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
+            switch (this.language) {
+              case 'fr':
+                this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
+                break;
+
+              case 'en':
+                this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
+                break;
+
+              case 'nl':
+                this.errors.confirm_password = 'Vos mots de passe ne sont pas identiques';
+                break;
+            }
           } else {
             this.errors.confirm_password = '';
           }
@@ -2995,6 +3357,23 @@ __webpack_require__.r(__webpack_exports__);
         app.serverErrorsTab = error.response.data.errors;
       });
     }
+  },
+  mounted: function mounted() {
+    var app = this;
+    axios.get('/lang').then(function (response) {
+      app.language = response.data;
+      console.log(app.language);
+
+      if (app.language === 'fr') {
+        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...';
+      } else if (app.language === 'en') {
+        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...';
+      } else if (app.language === 'nl') {
+        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...';
+      }
+    })["catch"](function (error) {
+      console.error(error);
+    });
   },
   updated: function updated() {
     this.checkInput();
@@ -20742,7 +21121,9 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                            Informations personnelles\n                        "
+                        "\n                            " +
+                          _vm._s(_vm.lang.personnalInfo) +
+                          "\n                        "
                       )
                     ]
                   )
@@ -21049,11 +21430,21 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", {
-                    staticClass:
-                      "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-600",
-                    class: _vm.step === 1 ? "text-teal-600" : "text-gray-600"
-                  })
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-600",
+                      class: _vm.step === 1 ? "text-teal-600" : "text-gray-600"
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.lang.company) +
+                          "\n                        "
+                      )
+                    ]
+                  )
                 ]
               ),
               _vm._v(" "),
@@ -21238,11 +21629,21 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", {
-                    staticClass:
-                      "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
-                    class: _vm.step === 2 ? "text-teal-600" : "text-gray-600"
-                  })
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
+                      class: _vm.step === 2 ? "text-teal-600" : "text-gray-600"
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.lang.companyInfo) +
+                          "\n                        "
+                      )
+                    ]
+                  )
                 ]
               ),
               _vm._v(" "),
@@ -21341,11 +21742,21 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", {
-                    staticClass:
-                      "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
-                    class: _vm.step === 3 ? "text-teal-600" : "text-gray-600"
-                  })
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
+                      class: _vm.step === 3 ? "text-teal-600" : "text-gray-600"
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.lang.molengeek) +
+                          "\n                        "
+                      )
+                    ]
+                  )
                 ]
               )
             ])
@@ -21356,10 +21767,20 @@ var render = function() {
               ? _c("div", { staticClass: "h-auto" }, [
                   _c("div", { staticClass: "h-8 pl-4" }),
                   _vm._v(" "),
-                  _c("div", {
-                    staticClass:
-                      "font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 mt-3"
-                  }),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 mt-3"
+                    },
+                    [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(_vm.lang.fullName) +
+                          "\n                    "
+                      )
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "flex flex-col md:flex-row" }, [
                     _c(
@@ -21476,10 +21897,20 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c("div", {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        }),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.lang.birthday) +
+                                "\n                            "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -21538,10 +21969,20 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c("div", {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        }),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.lang.profession) +
+                                "\n                            "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -21602,10 +22043,20 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c("div", {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        }),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.lang.password) +
+                                "\n                            "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -21665,10 +22116,20 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c("div", {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        }),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.lang.confirmPassword) +
+                                "\n                            "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -21730,10 +22191,20 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c("div", {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        }),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.lang.email) +
+                                "\n                            "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -21800,10 +22271,20 @@ var render = function() {
                     "div",
                     { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                     [
-                      _c("div", {
-                        staticClass:
-                          "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                      }),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.lang.companyBoolean) +
+                              "\n                        "
+                          )
+                        ]
+                      ),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -21850,13 +22331,33 @@ var render = function() {
                               }
                             },
                             [
-                              _c("option", {
-                                attrs: { value: "", disabled: "" }
-                              }),
+                              _c(
+                                "option",
+                                { attrs: { value: "", disabled: "" } },
+                                [
+                                  _vm._v(
+                                    "\n                                    " +
+                                      _vm._s(_vm.lang.choice) +
+                                      "\n                                "
+                                  )
+                                ]
+                              ),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }),
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.lang.yes) +
+                                    "\n                                "
+                                )
+                              ]),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "0" } })
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.lang.no) +
+                                    "\n                                "
+                                )
+                              ])
                             ]
                           )
                         ]
@@ -21887,10 +22388,20 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c("div", {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        }),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.lang.companyName) +
+                                "\n                            "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -21946,10 +22457,20 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c("div", {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        }),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.lang.tva) +
+                                "\n                            "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -22009,10 +22530,20 @@ var render = function() {
                     "div",
                     { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                     [
-                      _c("div", {
-                        staticClass:
-                          "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                      }),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.lang.logo) +
+                              "\n                        "
+                          )
+                        ]
+                      ),
                       _vm._v(" "),
                       _c("input", {
                         ref: "inputLogo",
@@ -22034,18 +22565,28 @@ var render = function() {
                         on: { change: _vm.onFileChange }
                       }),
                       _vm._v(" "),
-                      _c("p", {
-                        staticClass:
-                          "hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center",
-                        staticStyle: { outline: "none" },
-                        attrs: { for: "file" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.$refs.inputLogo.click()
+                      _c(
+                        "p",
+                        {
+                          staticClass:
+                            "hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center",
+                          staticStyle: { outline: "none" },
+                          attrs: { for: "file" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.$refs.inputLogo.click()
+                            }
                           }
-                        }
-                      }),
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.lang.choose) +
+                              "\n                        "
+                          )
+                        ]
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "h-6 mt-2" }, [
                         this.inputLogo.length > 0
@@ -22067,7 +22608,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "h-4" }, [
                     _vm.errors.logo
-                      ? _c("p", { staticClass: "text-red-400 text-sm" }, [
+                      ? _c("p", { staticClass: "text-red-400 text-sm ml-2" }, [
                           _vm._v(
                             "\n                            " +
                               _vm._s(_vm.errors.logo) +
@@ -22115,10 +22656,20 @@ var render = function() {
                     "div",
                     { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                     [
-                      _c("div", {
-                        staticClass:
-                          "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                      }),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.lang.molengeekKnown) +
+                              "\n                        "
+                          )
+                        ]
+                      ),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -22139,7 +22690,7 @@ var render = function() {
                             staticClass:
                               "p-1 px-2 appearance-none outline-none w-full text-gray-800",
                             attrs: {
-                              placeholder: "Réponse ...",
+                              placeholder: _vm.lang.answer,
                               type: "text",
                               required: ""
                             },
@@ -22177,60 +22728,94 @@ var render = function() {
               : _vm._e(),
             _vm._v(" "),
             _c("div", { staticClass: "flex p-2 mt-4" }, [
-              _c("p", {
-                staticClass:
-                  "text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition",
-                class: _vm.step < 1 ? _vm.disabledClass : _vm.activeClass,
-                attrs: { disabled: _vm.step < 1 },
-                on: { click: _vm.decrementStep }
-              }),
+              _c(
+                "p",
+                {
+                  staticClass:
+                    "text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition",
+                  class: _vm.step < 1 ? _vm.disabledClass : _vm.activeClass,
+                  attrs: { disabled: _vm.step < 1 },
+                  on: { click: _vm.decrementStep }
+                },
+                [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm.lang.previous) +
+                      "\n                    "
+                  )
+                ]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "flex-auto flex flex-row-reverse" }, [
                 _vm.step !== 3
-                  ? _c("p", {
-                      class:
-                        "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
-                        _vm.nextStepClass,
-                      attrs: { disabled: !_vm.valid },
-                      on: {
-                        click: function($event) {
-                          return _vm.incrementStep()
+                  ? _c(
+                      "p",
+                      {
+                        class:
+                          "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
+                          _vm.nextStepClass,
+                        attrs: { disabled: !_vm.valid },
+                        on: {
+                          click: function($event) {
+                            return _vm.incrementStep()
+                          }
                         }
-                      }
-                    })
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm.lang.next) +
+                            "\n                        "
+                        )
+                      ]
+                    )
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.step === 3
-                  ? _c("button", {
-                      class:
-                        "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
-                        _vm.nextStepClass,
-                      attrs: { disabled: !_vm.valid, type: "submit" }
-                    })
+                  ? _c(
+                      "button",
+                      {
+                        class:
+                          "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
+                          _vm.nextStepClass,
+                        attrs: { disabled: !_vm.valid, type: "submit" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm.lang.validate) +
+                            "\n                        "
+                        )
+                      ]
+                    )
                   : _vm._e()
               ])
             ]),
             _vm._v(" "),
-            _vm._m(0)
+            _c("div", { staticClass: "flex items-center justify-end mt-4" }, [
+              _c(
+                "a",
+                {
+                  staticClass:
+                    "underline text-sm text-gray-600 hover:text-gray-900",
+                  attrs: { href: "/login" }
+                },
+                [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm.lang.alradyRegister) +
+                      "\n                    "
+                  )
+                ]
+              )
+            ])
           ])
         ])
       ])
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex items-center justify-end mt-4" }, [
-      _c("a", {
-        staticClass: "underline text-sm text-gray-600 hover:text-gray-900",
-        attrs: { href: "/login" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
