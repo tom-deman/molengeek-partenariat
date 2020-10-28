@@ -32,7 +32,9 @@
     <a href="{{ route( 'setlang', 'fr' ) }}">@lang('Français')</a>
     <a href="{{ route( 'setlang', 'nl' ) }}">@lang('Néerlandais')</a>
     <div id="app">
-        <stepper-register />
+        <stepper-register
+            test="@lang('informations personelles')"
+        />
     </div>
 </body>
 </html>

@@ -1,17 +1,6 @@
-require( './bootstrap' );
-import { Lang } from 'laravel-vue-lang';
+require( './bootstrap' )
 
-window.Vue = require('vue');
+window.Vue = require( 'vue' )
 
-Vue.use(Lang, {
-    locale: 'fr',
-    fallback: 'en',
-	ignore: {
-		fr: ['validation'],
-	},
-});
-
-Vue.component('stepper-register', require('./components/StepperRegister.vue').default);
-    const app = new Vue({
-        el: '#app',
-});
+Vue.component( 'stepper-register', require('./components/StepperRegister.vue').default )
+const app = new Vue({ el: '#app' })

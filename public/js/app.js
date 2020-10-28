@@ -2673,7 +2673,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    test: String
+  },
   data: function data() {
     return {
       step: 0,
@@ -2993,794 +3000,6 @@ __webpack_require__.r(__webpack_exports__);
     this.checkInput();
   }
 });
-
-/***/ }),
-
-/***/ "./node_modules/lang.js/src/lang.js":
-/*!******************************************!*\
-  !*** ./node_modules/lang.js/src/lang.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- *  Lang.js for Laravel localization in JavaScript.
- *
- *  @version 1.1.12
- *  @license MIT https://github.com/rmariuzzo/Lang.js/blob/master/LICENSE
- *  @site    https://github.com/rmariuzzo/Lang.js
- *  @author  Rubens Mariuzzo <rubens@mariuzzo.com>
- */
-
-(function(root, factory) {
-    'use strict';
-
-    if (true) {
-        // AMD support.
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else {}
-
-}(this, function() {
-    'use strict';
-
-    function inferLocale() {
-        if (typeof document !== 'undefined' && document.documentElement) {
-            return document.documentElement.lang;
-        }
-    };
-
-    function convertNumber(str) {
-        if (str === '-Inf') {
-            return -Infinity;
-        } else if (str === '+Inf' || str === 'Inf' || str === '*') {
-            return Infinity;
-        }
-        return parseInt(str, 10);
-    }
-
-    // Derived from: https://github.com/symfony/translation/blob/460390765eb7bb9338a4a323b8a4e815a47541ba/Interval.php
-    var intervalRegexp = /^({\s*(\-?\d+(\.\d+)?[\s*,\s*\-?\d+(\.\d+)?]*)\s*})|([\[\]])\s*(-Inf|\*|\-?\d+(\.\d+)?)\s*,\s*(\+?Inf|\*|\-?\d+(\.\d+)?)\s*([\[\]])$/;
-    var anyIntervalRegexp = /({\s*(\-?\d+(\.\d+)?[\s*,\s*\-?\d+(\.\d+)?]*)\s*})|([\[\]])\s*(-Inf|\*|\-?\d+(\.\d+)?)\s*,\s*(\+?Inf|\*|\-?\d+(\.\d+)?)\s*([\[\]])/;
-
-    // Default options //
-
-    var defaults = {
-        locale: 'en'/** The default locale if not set. */
-    };
-
-    // Constructor //
-
-    var Lang = function(options) {
-        options = options || {};
-        this.locale = options.locale || inferLocale() || defaults.locale;
-        this.fallback = options.fallback;
-        this.messages = options.messages;
-    };
-
-    // Methods //
-
-    /**
-     * Set messages source.
-     *
-     * @param messages {object} The messages source.
-     *
-     * @return void
-     */
-    Lang.prototype.setMessages = function(messages) {
-        this.messages = messages;
-    };
-
-    /**
-     * Get the current locale.
-     *
-     * @return {string} The current locale.
-     */
-    Lang.prototype.getLocale = function() {
-        return this.locale || this.fallback;
-    };
-
-    /**
-     * Set the current locale.
-     *
-     * @param locale {string} The locale to set.
-     *
-     * @return void
-     */
-    Lang.prototype.setLocale = function(locale) {
-        this.locale = locale;
-    };
-
-    /**
-     * Get the fallback locale being used.
-     *
-     * @return void
-     */
-    Lang.prototype.getFallback = function() {
-        return this.fallback;
-    };
-
-    /**
-     * Set the fallback locale being used.
-     *
-     * @param fallback {string} The fallback locale.
-     *
-     * @return void
-     */
-    Lang.prototype.setFallback = function(fallback) {
-        this.fallback = fallback;
-    };
-
-    /**
-     * This method act as an alias to get() method.
-     *
-     * @param key {string} The key of the message.
-     * @param locale {string} The locale of the message
-     *
-     * @return {boolean} true if the given key is defined on the messages source, otherwise false.
-     */
-    Lang.prototype.has = function(key, locale) {
-        if (typeof key !== 'string' || !this.messages) {
-            return false;
-        }
-
-        return this._getMessage(key, locale) !== null;
-    };
-
-    /**
-     * Get a translation message.
-     *
-     * @param key {string} The key of the message.
-     * @param replacements {object} The replacements to be done in the message.
-     * @param locale {string} The locale to use, if not passed use the default locale.
-     *
-     * @return {string} The translation message, if not found the given key.
-     */
-    Lang.prototype.get = function(key, replacements, locale) {
-        if (!this.has(key, locale)) {
-            return key;
-        }
-
-        var message = this._getMessage(key, locale);
-        if (message === null) {
-            return key;
-        }
-
-        if (replacements) {
-            message = this._applyReplacements(message, replacements);
-        }
-
-        return message;
-    };
-
-    /**
-     * This method act as an alias to get() method.
-     *
-     * @param key {string} The key of the message.
-     * @param replacements {object} The replacements to be done in the message.
-     *
-     * @return {string} The translation message, if not found the given key.
-     */
-    Lang.prototype.trans = function(key, replacements) {
-        return this.get(key, replacements);
-    };
-
-    /**
-     * Gets the plural or singular form of the message specified based on an integer value.
-     *
-     * @param key {string} The key of the message.
-     * @param count {number} The number of elements.
-     * @param replacements {object} The replacements to be done in the message.
-     * @param locale {string} The locale to use, if not passed use the default locale.
-     *
-     * @return {string} The translation message according to an integer value.
-     */
-    Lang.prototype.choice = function(key, number, replacements, locale) {
-        // Set default values for parameters replace and locale
-        replacements = typeof replacements !== 'undefined'
-            ? replacements
-            : {};
-
-        // The count must be replaced if found in the message
-        replacements.count = number;
-
-        // Message to get the plural or singular
-        var message = this.get(key, replacements, locale);
-
-        // Check if message is not null or undefined
-        if (message === null || message === undefined) {
-            return message;
-        }
-
-        // Separate the plural from the singular, if any
-        var messageParts = message.split('|');
-
-        // Get the explicit rules, If any
-        var explicitRules = [];
-
-        for (var i = 0; i < messageParts.length; i++) {
-            messageParts[i] = messageParts[i].trim();
-
-            if (anyIntervalRegexp.test(messageParts[i])) {
-                var messageSpaceSplit = messageParts[i].split(/\s/);
-                explicitRules.push(messageSpaceSplit.shift());
-                messageParts[i] = messageSpaceSplit.join(' ');
-            }
-        }
-
-        // Check if there's only one message
-        if (messageParts.length === 1) {
-            // Nothing to do here
-            return message;
-        }
-
-        // Check the explicit rules
-        for (var j = 0; j < explicitRules.length; j++) {
-            if (this._testInterval(number, explicitRules[j])) {
-                return messageParts[j];
-            }
-        }
-
-        locale = locale || this._getLocale(key);
-        var pluralForm = this._getPluralForm(number, locale);
-
-        return messageParts[pluralForm];
-    };
-
-    /**
-     * This method act as an alias to choice() method.
-     *
-     * @param key {string} The key of the message.
-     * @param count {number} The number of elements.
-     * @param replacements {object} The replacements to be done in the message.
-     *
-     * @return {string} The translation message according to an integer value.
-     */
-    Lang.prototype.transChoice = function(key, count, replacements) {
-        return this.choice(key, count, replacements);
-    };
-
-    /**
-     * Parse a message key into components.
-     *
-     * @param key {string} The message key to parse.
-     * @param key {string} The message locale to parse
-     * @return {object} A key object with source and entries properties.
-     */
-    Lang.prototype._parseKey = function(key, locale) {
-        if (typeof key !== 'string' || typeof locale !== 'string') {
-            return null;
-        }
-
-        var segments = key.split('.');
-        var source = segments[0].replace(/\//g, '.');
-
-        return {
-            source: locale + '.' + source,
-            sourceFallback: this.getFallback() + '.' + source,
-            entries: segments.slice(1)
-        };
-    };
-
-    /**
-     * Returns a translation message. Use `Lang.get()` method instead, this methods assumes the key exists.
-     *
-     * @param key {string} The key of the message.
-     * @param locale {string} The locale of the message
-     *
-     * @return {string} The translation message for the given key.
-     */
-    Lang.prototype._getMessage = function(key, locale) {
-        locale = locale || this.getLocale();
-        
-        key = this._parseKey(key, locale);
-
-        // Ensure message source exists.
-        if (this.messages[key.source] === undefined && this.messages[key.sourceFallback] === undefined) {
-            return null;
-        }
-
-        // Get message from default locale.
-        var message = this.messages[key.source];
-        var entries = key.entries.slice();
-        var subKey = entries.join('.');
-        message = message !== undefined ? this._getValueInKey(message, subKey) : undefined;
-
-
-        // Get message from fallback locale.
-        if (typeof message !== 'string' && this.messages[key.sourceFallback]) {
-            message = this.messages[key.sourceFallback];
-            entries = key.entries.slice();
-            subKey = '';
-            while (entries.length && message !== undefined) {
-                var subKey = !subKey ? entries.shift() : subKey.concat('.', entries.shift());
-                if (message[subKey]) {
-                    message = message[subKey]
-                    subKey = '';
-                }
-            }
-        }
-
-        if (typeof message !== 'string') {
-            return null;
-        }
-
-        return message;
-    };
-
-    Lang.prototype._getValueInKey = function(obj, str) {
-        // If the full key exists just return the value
-        if (typeof obj[str] === 'string') {
-            return obj[str]
-        }
-
-        str = str.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-        str = str.replace(/^\./, '');           // strip a leading dot
-
-        var parts = str.split('.');
-
-        for (var i = 0, n = parts.length; i < n; ++i) {
-            var currentKey = parts.slice(0, i + 1).join('.');
-            var restOfTheKey = parts.slice(i + 1, parts.length).join('.')
-            
-            if (obj[currentKey]) {
-                return this._getValueInKey(obj[currentKey], restOfTheKey)
-            }
-        }
-
-        return obj;
-    };
-
-    /**
-     * Return the locale to be used between default and fallback.
-     * @param {String} key
-     * @return {String}
-     */
-    Lang.prototype._getLocale = function(key) {
-        key = this._parseKey(key, this.locale)
-        if (this.messages[key.source]) {
-            return this.locale;
-        }
-        if (this.messages[key.sourceFallback]) {
-            return this.fallback;
-        }
-        return null;
-    };
-
-    /**
-     * Find a message in a translation tree using both dotted keys and regular ones
-     *
-     * @param pathSegments {array} An array of path segments such as ['family', 'father']
-     * @param tree {object} The translation tree
-     */
-    Lang.prototype._findMessageInTree = function(pathSegments, tree) {
-        while (pathSegments.length && tree !== undefined) {
-            var dottedKey = pathSegments.join('.');
-            if (tree[dottedKey]) {
-                tree = tree[dottedKey];
-                break;
-            }
-
-            tree = tree[pathSegments.shift()]
-        }
-
-        return tree;
-    };
-
-    /**
-     * Sort replacement keys by length in descending order.
-     *
-     * @param a {string} Replacement key
-     * @param b {string} Sibling replacement key
-     * @return {number}
-     * @private
-     */
-    Lang.prototype._sortReplacementKeys = function(a, b) {
-        return b.length - a.length;
-    };
-
-    /**
-     * Apply replacements to a string message containing placeholders.
-     *
-     * @param message {string} The text message.
-     * @param replacements {object} The replacements to be done in the message.
-     *
-     * @return {string} The string message with replacements applied.
-     */
-    Lang.prototype._applyReplacements = function(message, replacements) {
-        var keys = Object.keys(replacements).sort(this._sortReplacementKeys);
-
-        keys.forEach(function(replace) {
-            message = message.replace(new RegExp(':' + replace, 'gi'), function (match) {
-                var value = replacements[replace];
-
-                // Capitalize all characters.
-                var allCaps = match === match.toUpperCase();
-                if (allCaps) {
-                    return value.toUpperCase();
-                }
-
-                // Capitalize first letter.
-                var firstCap = match === match.replace(/\w/i, function(letter) {
-                    return letter.toUpperCase();
-                });
-                if (firstCap) {
-                    return value.charAt(0).toUpperCase() + value.slice(1);
-                }
-
-                return value;
-            })
-        });
-        return message;
-    };
-
-    /**
-     * Checks if the given `count` is within the interval defined by the {string} `interval`
-     *
-     * @param  count     {int}    The amount of items.
-     * @param  interval  {string} The interval to be compared with the count.
-     * @return {boolean}          Returns true if count is within interval; false otherwise.
-     */
-    Lang.prototype._testInterval = function(count, interval) {
-        /**
-         * From the Symfony\Component\Translation\Interval Docs
-         *
-         * Tests if a given number belongs to a given math interval.
-         *
-         * An interval can represent a finite set of numbers:
-         *
-         *  {1,2,3,4}
-         *
-         * An interval can represent numbers between two numbers:
-         *
-         *  [1, +Inf]
-         *  ]-1,2[
-         *
-         * The left delimiter can be [ (inclusive) or ] (exclusive).
-         * The right delimiter can be [ (exclusive) or ] (inclusive).
-         * Beside numbers, you can use -Inf and +Inf for the infinite.
-         */
-
-        if (typeof interval !== 'string') {
-            throw 'Invalid interval: should be a string.';
-        }
-
-        interval = interval.trim();
-
-        var matches = interval.match(intervalRegexp);
-        if (!matches) {
-            throw 'Invalid interval: ' + interval;
-        }
-
-        if (matches[2]) {
-            var items = matches[2].split(',');
-            for (var i = 0; i < items.length; i++) {
-                if (parseInt(items[i], 10) === count) {
-                    return true;
-                }
-            }
-        } else {
-            // Remove falsy values.
-            matches = matches.filter(function(match) {
-                return !!match;
-            });
-
-            var leftDelimiter = matches[1];
-            var leftNumber = convertNumber(matches[2]);
-            if (leftNumber === Infinity) {
-                leftNumber = -Infinity;
-            }
-            var rightNumber = convertNumber(matches[3]);
-            var rightDelimiter = matches[4];
-
-            return (leftDelimiter === '[' ? count >= leftNumber : count > leftNumber)
-                && (rightDelimiter === ']' ? count <= rightNumber : count < rightNumber);
-        }
-
-        return false;
-    };
-
-    /**
-     * Returns the plural position to use for the given locale and number.
-     *
-     * The plural rules are derived from code of the Zend Framework (2010-09-25),
-     * which is subject to the new BSD license (http://framework.zend.com/license/new-bsd).
-     * Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
-     *
-     * @param {Number} count
-     * @param {String} locale
-     * @return {Number}
-     */
-    Lang.prototype._getPluralForm = function(count, locale) {
-        switch (locale) {
-            case 'az':
-            case 'bo':
-            case 'dz':
-            case 'id':
-            case 'ja':
-            case 'jv':
-            case 'ka':
-            case 'km':
-            case 'kn':
-            case 'ko':
-            case 'ms':
-            case 'th':
-            case 'tr':
-            case 'vi':
-            case 'zh':
-                return 0;
-
-            case 'af':
-            case 'bn':
-            case 'bg':
-            case 'ca':
-            case 'da':
-            case 'de':
-            case 'el':
-            case 'en':
-            case 'eo':
-            case 'es':
-            case 'et':
-            case 'eu':
-            case 'fa':
-            case 'fi':
-            case 'fo':
-            case 'fur':
-            case 'fy':
-            case 'gl':
-            case 'gu':
-            case 'ha':
-            case 'he':
-            case 'hu':
-            case 'is':
-            case 'it':
-            case 'ku':
-            case 'lb':
-            case 'ml':
-            case 'mn':
-            case 'mr':
-            case 'nah':
-            case 'nb':
-            case 'ne':
-            case 'nl':
-            case 'nn':
-            case 'no':
-            case 'om':
-            case 'or':
-            case 'pa':
-            case 'pap':
-            case 'ps':
-            case 'pt':
-            case 'so':
-            case 'sq':
-            case 'sv':
-            case 'sw':
-            case 'ta':
-            case 'te':
-            case 'tk':
-            case 'ur':
-            case 'zu':
-                return (count == 1)
-                    ? 0
-                    : 1;
-
-            case 'am':
-            case 'bh':
-            case 'fil':
-            case 'fr':
-            case 'gun':
-            case 'hi':
-            case 'hy':
-            case 'ln':
-            case 'mg':
-            case 'nso':
-            case 'xbr':
-            case 'ti':
-            case 'wa':
-                return ((count === 0) || (count === 1))
-                    ? 0
-                    : 1;
-
-            case 'be':
-            case 'bs':
-            case 'hr':
-            case 'ru':
-            case 'sr':
-            case 'uk':
-                return ((count % 10 == 1) && (count % 100 != 11))
-                    ? 0
-                    : (((count % 10 >= 2) && (count % 10 <= 4) && ((count % 100 < 10) || (count % 100 >= 20)))
-                        ? 1
-                        : 2);
-
-            case 'cs':
-            case 'sk':
-                return (count == 1)
-                    ? 0
-                    : (((count >= 2) && (count <= 4))
-                        ? 1
-                        : 2);
-
-            case 'ga':
-                return (count == 1)
-                    ? 0
-                    : ((count == 2)
-                        ? 1
-                        : 2);
-
-            case 'lt':
-                return ((count % 10 == 1) && (count % 100 != 11))
-                    ? 0
-                    : (((count % 10 >= 2) && ((count % 100 < 10) || (count % 100 >= 20)))
-                        ? 1
-                        : 2);
-
-            case 'sl':
-                return (count % 100 == 1)
-                    ? 0
-                    : ((count % 100 == 2)
-                        ? 1
-                        : (((count % 100 == 3) || (count % 100 == 4))
-                            ? 2
-                            : 3));
-
-            case 'mk':
-                return (count % 10 == 1)
-                    ? 0
-                    : 1;
-
-            case 'mt':
-                return (count == 1)
-                    ? 0
-                    : (((count === 0) || ((count % 100 > 1) && (count % 100 < 11)))
-                        ? 1
-                        : (((count % 100 > 10) && (count % 100 < 20))
-                            ? 2
-                            : 3));
-
-            case 'lv':
-                return (count === 0)
-                    ? 0
-                    : (((count % 10 == 1) && (count % 100 != 11))
-                        ? 1
-                        : 2);
-
-            case 'pl':
-                return (count == 1)
-                    ? 0
-                    : (((count % 10 >= 2) && (count % 10 <= 4) && ((count % 100 < 12) || (count % 100 > 14)))
-                        ? 1
-                        : 2);
-
-            case 'cy':
-                return (count == 1)
-                    ? 0
-                    : ((count == 2)
-                        ? 1
-                        : (((count == 8) || (count == 11))
-                            ? 2
-                            : 3));
-
-            case 'ro':
-                return (count == 1)
-                    ? 0
-                    : (((count === 0) || ((count % 100 > 0) && (count % 100 < 20)))
-                        ? 1
-                        : 2);
-
-            case 'ar':
-                return (count === 0)
-                    ? 0
-                    : ((count == 1)
-                        ? 1
-                        : ((count == 2)
-                            ? 2
-                            : (((count % 100 >= 3) && (count % 100 <= 10))
-                                ? 3
-                                : (((count % 100 >= 11) && (count % 100 <= 99))
-                                    ? 4
-                                    : 5))));
-
-            default:
-                return 0;
-        }
-    };
-
-    return Lang;
-
-}));
-
-
-/***/ }),
-
-/***/ "./node_modules/laravel-vue-lang/dist/index.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/laravel-vue-lang/dist/index.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Lang = exports.default = void 0;
-const lang_js_1 = __importDefault(__webpack_require__(/*! lang.js */ "./node_modules/lang.js/src/lang.js"));
-/*
-|--------------------------------------------------------------------------
-| Helpers
-|--------------------------------------------------------------------------
-*/
-/**
- * Determines if the given locale and domain combination is ignored.
- */
-function shouldIgnore(ignore, locale, domain) {
-    for (let [ignoreLocale, ignoreDomains] of Object.entries(ignore)) {
-        if (locale === ignoreLocale && ignoreDomains.includes(domain)) {
-            return true;
-        }
-    }
-    return false;
-}
-/**
- * Imports translations from the configured alias.
- */
-function importTranslations({ ignore, globalTranslationsKey }) {
-    const catalogue = {};
-    const files = __webpack_require__("./resources/lang sync recursive \\.(php|json)$");
-    files.keys().forEach((file) => {
-        var _a, _b;
-        // Find localization files at the root directory
-        const [isGlobal, rootLocale] = (_a = /\.\/([A-Za-z0-9-_]+).(?:php|json)/.exec(file)) !== null && _a !== void 0 ? _a : [];
-        if (isGlobal) {
-            catalogue[`${rootLocale}.${globalTranslationsKey}`] = files(file);
-            return;
-        }
-        // Find localization files in a /lang/ directory
-        const [isScoped, locale, domain] = (_b = /\.\/([A-Za-z0-9-_]+)\/([A-Za-z0-9-_]+).(?:php|json)/.exec(file)) !== null && _b !== void 0 ? _b : [];
-        if (!ignore || !shouldIgnore(ignore, locale, domain)) {
-            catalogue[`${locale}.${domain}`] = files(file);
-        }
-    });
-    return catalogue;
-}
-/**
- * Adds localization to Vue.
- */
-const Lang = {
-    install: (Vue, options = {}) => {
-        var _a;
-        // Defines default options
-        options = Object.assign({ globalTranslationsKey: '__global__' }, options);
-        // Creates the Lang.js object
-        const i18n = new lang_js_1.default(Object.assign({ fallback: document.documentElement.lang || navigator.language, messages: (_a = options === null || options === void 0 ? void 0 : options.messages) !== null && _a !== void 0 ? _a : importTranslations(options) }, options));
-        // Defines a global translation function
-        const __ = (key, ...args) => {
-            // Non-global translations
-            if (key.match(/^[\w-]+(?:\.[\w-]+)+$/)) {
-                return i18n.get(key, ...args);
-            }
-            // Global translations
-            const result = i18n.get(`${options.globalTranslationsKey}.${key}`, ...args);
-            return result.startsWith(options.globalTranslationsKey)
-                ? result.substr(options.globalTranslationsKey.length + 1)
-                : result;
-        };
-        Vue.mixin({
-            methods: {
-                $lang: () => i18n,
-                __,
-            },
-        });
-    },
-};
-exports.default = Lang;
-exports.Lang = Lang;
-
 
 /***/ }),
 
@@ -21523,9 +20742,7 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                            " +
-                          _vm._s(_vm.__("Informations personelles")) +
-                          "\n                        "
+                        "\n                            Informations personnelles\n                        "
                       )
                     ]
                   )
@@ -21832,21 +21049,11 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-600",
-                      class: _vm.step === 1 ? "text-teal-600" : "text-gray-600"
-                    },
-                    [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(_vm.__("Entreprise")) +
-                          "\n                        "
-                      )
-                    ]
-                  )
+                  _c("div", {
+                    staticClass:
+                      "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-600",
+                    class: _vm.step === 1 ? "text-teal-600" : "text-gray-600"
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -22031,21 +21238,11 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
-                      class: _vm.step === 2 ? "text-teal-600" : "text-gray-600"
-                    },
-                    [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(_vm.__("Informations de l'entreprise")) +
-                          "\n                        "
-                      )
-                    ]
-                  )
+                  _c("div", {
+                    staticClass:
+                      "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
+                    class: _vm.step === 2 ? "text-teal-600" : "text-gray-600"
+                  })
                 ]
               ),
               _vm._v(" "),
@@ -22144,21 +21341,11 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
-                      class: _vm.step === 3 ? "text-teal-600" : "text-gray-600"
-                    },
-                    [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(_vm.__("MolenGeek et vous")) +
-                          "\n                        "
-                      )
-                    ]
-                  )
+                  _c("div", {
+                    staticClass:
+                      "absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium text-gray-500",
+                    class: _vm.step === 3 ? "text-teal-600" : "text-gray-600"
+                  })
                 ]
               )
             ])
@@ -22169,20 +21356,10 @@ var render = function() {
               ? _c("div", { staticClass: "h-auto" }, [
                   _c("div", { staticClass: "h-8 pl-4" }),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 mt-3"
-                    },
-                    [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(_vm.__("Nom complet")) +
-                          "\n                    "
-                      )
-                    ]
-                  ),
+                  _c("div", {
+                    staticClass:
+                      "font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 mt-3"
+                  }),
                   _vm._v(" "),
                   _c("div", { staticClass: "flex flex-col md:flex-row" }, [
                     _c(
@@ -22299,20 +21476,10 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.__("Date de naissance")) +
-                                "\n                            "
-                            )
-                          ]
-                        ),
+                        _c("div", {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        }),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -22333,7 +21500,7 @@ var render = function() {
                               staticClass:
                                 "p-1 px-2 appearance-none outline-none w-full text-gray-800",
                               attrs: {
-                                placeholder: _vm.__("01/01/2000"),
+                                placeholder: "01/01/2000",
                                 required: ""
                               },
                               domProps: { value: _vm.inputBirthday },
@@ -22371,20 +21538,10 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.__("Profession")) +
-                                "\n                            "
-                            )
-                          ]
-                        ),
+                        _c("div", {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        }),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -22445,20 +21602,10 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.__("Mot de passe")) +
-                                "\n                            "
-                            )
-                          ]
-                        ),
+                        _c("div", {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        }),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -22518,20 +21665,10 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.__("Confirmer mot de passe")) +
-                                "\n                            "
-                            )
-                          ]
-                        ),
+                        _c("div", {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        }),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -22593,20 +21730,10 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.__("Adresse email")) +
-                                "\n                            "
-                            )
-                          ]
-                        ),
+                        _c("div", {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        }),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -22673,20 +21800,10 @@ var render = function() {
                     "div",
                     { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                     [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        },
-                        [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(_vm.__("Avez vous une entreprise ?")) +
-                              "\n                        "
-                          )
-                        ]
-                      ),
+                      _c("div", {
+                        staticClass:
+                          "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                      }),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -22733,27 +21850,13 @@ var render = function() {
                               }
                             },
                             [
-                              _c(
-                                "option",
-                                { attrs: { value: "", disabled: "" } },
-                                [
-                                  _vm._v(
-                                    "\n                                    " +
-                                      _vm._s(
-                                        _vm.__("Veuillez faire un choix")
-                                      ) +
-                                      "\n                                "
-                                  )
-                                ]
-                              ),
+                              _c("option", {
+                                attrs: { value: "", disabled: "" }
+                              }),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v(_vm._s(_vm.__("Oui")))
-                              ]),
+                              _c("option", { attrs: { value: "1" } }),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "0" } }, [
-                                _vm._v(_vm._s(_vm.__("Non")))
-                              ])
+                              _c("option", { attrs: { value: "0" } })
                             ]
                           )
                         ]
@@ -22784,20 +21887,10 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.__("Nom de l'entreprise")) +
-                                "\n                            "
-                            )
-                          ]
-                        ),
+                        _c("div", {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        }),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -22853,20 +21946,10 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.__("Numéro de TVA")) +
-                                "\n                            "
-                            )
-                          ]
-                        ),
+                        _c("div", {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        }),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -22926,20 +22009,10 @@ var render = function() {
                     "div",
                     { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                     [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        },
-                        [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(_vm.__("Logo de l'entreprise")) +
-                              "\n                        "
-                          )
-                        ]
-                      ),
+                      _c("div", {
+                        staticClass:
+                          "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                      }),
                       _vm._v(" "),
                       _c("input", {
                         ref: "inputLogo",
@@ -22961,28 +22034,18 @@ var render = function() {
                         on: { change: _vm.onFileChange }
                       }),
                       _vm._v(" "),
-                      _c(
-                        "p",
-                        {
-                          staticClass:
-                            "hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center",
-                          staticStyle: { outline: "none" },
-                          attrs: { for: "file" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.$refs.inputLogo.click()
-                            }
+                      _c("p", {
+                        staticClass:
+                          "hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center",
+                        staticStyle: { outline: "none" },
+                        attrs: { for: "file" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.$refs.inputLogo.click()
                           }
-                        },
-                        [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(_vm.__("Choisissez un fichier")) +
-                              "\n                        "
-                          )
-                        ]
-                      ),
+                        }
+                      }),
                       _vm._v(" "),
                       _c("div", { staticClass: "h-6 mt-2" }, [
                         this.inputLogo.length > 0
@@ -23052,22 +22115,10 @@ var render = function() {
                     "div",
                     { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
                     [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-                        },
-                        [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(
-                                _vm.__("Comment avez-vous connu MolenGeek ?")
-                              ) +
-                              "\n                        "
-                          )
-                        ]
-                      ),
+                      _c("div", {
+                        staticClass:
+                          "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                      }),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -23126,94 +22177,60 @@ var render = function() {
               : _vm._e(),
             _vm._v(" "),
             _c("div", { staticClass: "flex p-2 mt-4" }, [
-              _c(
-                "p",
-                {
-                  staticClass:
-                    "text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition",
-                  class: _vm.step < 1 ? _vm.disabledClass : _vm.activeClass,
-                  attrs: { disabled: _vm.step < 1 },
-                  on: { click: _vm.decrementStep }
-                },
-                [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(_vm.__("Précédent")) +
-                      "\n                    "
-                  )
-                ]
-              ),
+              _c("p", {
+                staticClass:
+                  "text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition",
+                class: _vm.step < 1 ? _vm.disabledClass : _vm.activeClass,
+                attrs: { disabled: _vm.step < 1 },
+                on: { click: _vm.decrementStep }
+              }),
               _vm._v(" "),
               _c("div", { staticClass: "flex-auto flex flex-row-reverse" }, [
                 _vm.step !== 3
-                  ? _c(
-                      "p",
-                      {
-                        class:
-                          "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
-                          _vm.nextStepClass,
-                        attrs: { disabled: !_vm.valid },
-                        on: {
-                          click: function($event) {
-                            return _vm.incrementStep()
-                          }
+                  ? _c("p", {
+                      class:
+                        "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
+                        _vm.nextStepClass,
+                      attrs: { disabled: !_vm.valid },
+                      on: {
+                        click: function($event) {
+                          return _vm.incrementStep()
                         }
-                      },
-                      [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.__("Suivant")) +
-                            "\n                        "
-                        )
-                      ]
-                    )
+                      }
+                    })
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.step === 3
-                  ? _c(
-                      "button",
-                      {
-                        class:
-                          "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
-                          _vm.nextStepClass,
-                        attrs: { disabled: !_vm.valid, type: "submit" }
-                      },
-                      [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.__("Valider")) +
-                            "\n                        "
-                        )
-                      ]
-                    )
+                  ? _c("button", {
+                      class:
+                        "text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer border duration-200 ease-in-out transition " +
+                        _vm.nextStepClass,
+                      attrs: { disabled: !_vm.valid, type: "submit" }
+                    })
                   : _vm._e()
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "flex items-center justify-end mt-4" }, [
-              _c(
-                "a",
-                {
-                  staticClass:
-                    "underline text-sm text-gray-600 hover:text-gray-900",
-                  attrs: { href: "/login" }
-                },
-                [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(_vm.__("Déjà inscrit ?")) +
-                      "\n                    "
-                  )
-                ]
-              )
-            ])
+            _vm._m(0)
           ])
         ])
       ])
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex items-center justify-end mt-4" }, [
+      _c("a", {
+        staticClass: "underline text-sm text-gray-600 hover:text-gray-900",
+        attrs: { href: "/login" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -35397,24 +34414,12 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var laravel_vue_lang__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-vue-lang */ "./node_modules/laravel-vue-lang/dist/index.js");
-/* harmony import */ var laravel_vue_lang__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(laravel_vue_lang__WEBPACK_IMPORTED_MODULE_0__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-Vue.use(laravel_vue_lang__WEBPACK_IMPORTED_MODULE_0__["Lang"], {
-  locale: 'fr',
-  fallback: 'en',
-  ignore: {
-    fr: ['validation']
-  }
-});
 Vue.component('stepper-register', __webpack_require__(/*! ./components/StepperRegister.vue */ "./resources/js/components/StepperRegister.vue")["default"]);
 var app = new Vue({
   el: '#app'
@@ -35527,230 +34532,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StepperRegister_vue_vue_type_template_id_22710a0e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
-
-/***/ }),
-
-/***/ "./resources/lang sync recursive \\.(php|json)$":
-/*!*******************************************!*\
-  !*** ./resources/lang sync \.(php|json)$ ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./en.json": "./resources/lang/en.json",
-	"./en/auth.php": "./resources/lang/en/auth.php",
-	"./en/pagination.php": "./resources/lang/en/pagination.php",
-	"./en/passwords.php": "./resources/lang/en/passwords.php",
-	"./en/validation.php": "./resources/lang/en/validation.php",
-	"./fr/auth.php": "./resources/lang/fr/auth.php",
-	"./fr/pagination.php": "./resources/lang/fr/pagination.php",
-	"./fr/passwords.php": "./resources/lang/fr/passwords.php",
-	"./fr/validation-inline.php": "./resources/lang/fr/validation-inline.php",
-	"./fr/validation.php": "./resources/lang/fr/validation.php",
-	"./nl.json": "./resources/lang/nl.json",
-	"./nl/auth.php": "./resources/lang/nl/auth.php",
-	"./nl/pagination.php": "./resources/lang/nl/pagination.php",
-	"./nl/passwords.php": "./resources/lang/nl/passwords.php",
-	"./nl/validation-inline.php": "./resources/lang/nl/validation-inline.php",
-	"./nl/validation.php": "./resources/lang/nl/validation.php"
-};
-
-
-function webpackContext(req) {
-	var id = webpackContextResolve(req);
-	return __webpack_require__(id);
-}
-function webpackContextResolve(req) {
-	if(!__webpack_require__.o(map, req)) {
-		var e = new Error("Cannot find module '" + req + "'");
-		e.code = 'MODULE_NOT_FOUND';
-		throw e;
-	}
-	return map[req];
-}
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = "./resources/lang sync recursive \\.(php|json)$";
-
-/***/ }),
-
-/***/ "./resources/lang/en.json":
-/*!********************************!*\
-  !*** ./resources/lang/en.json ***!
-  \********************************/
-/*! exports provided: bonjour, Entreprise, default */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"bonjour\":\"hello\",\"Entreprise\":\"English\"}");
-
-/***/ }),
-
-/***/ "./resources/lang/en/auth.php":
-/*!************************************!*\
-  !*** ./resources/lang/en/auth.php ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"failed":"These credentials do not match our records.","throttle":"Too many login attempts. Please try again in :seconds seconds."};
-
-/***/ }),
-
-/***/ "./resources/lang/en/pagination.php":
-/*!******************************************!*\
-  !*** ./resources/lang/en/pagination.php ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"previous":"&laquo; Previous","next":"Next &raquo;"};
-
-/***/ }),
-
-/***/ "./resources/lang/en/passwords.php":
-/*!*****************************************!*\
-  !*** ./resources/lang/en/passwords.php ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"reset":"Your password has been reset!","sent":"We have emailed your password reset link!","throttled":"Please wait before retrying.","token":"This password reset token is invalid.","user":"We can't find a user with that email address."};
-
-/***/ }),
-
-/***/ "./resources/lang/en/validation.php":
-/*!******************************************!*\
-  !*** ./resources/lang/en/validation.php ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"accepted":"The :attribute must be accepted.","active_url":"The :attribute is not a valid URL.","after":"The :attribute must be a date after :date.","after_or_equal":"The :attribute must be a date after or equal to :date.","alpha":"The :attribute may only contain letters.","alpha_dash":"The :attribute may only contain letters, numbers, dashes and underscores.","alpha_num":"The :attribute may only contain letters and numbers.","array":"The :attribute must be an array.","before":"The :attribute must be a date before :date.","before_or_equal":"The :attribute must be a date before or equal to :date.","between":{"numeric":"The :attribute must be between :min and :max.","file":"The :attribute must be between :min and :max kilobytes.","string":"The :attribute must be between :min and :max characters.","array":"The :attribute must have between :min and :max items."},"boolean":"The :attribute field must be true or false.","confirmed":"The :attribute confirmation does not match.","date":"The :attribute is not a valid date.","date_equals":"The :attribute must be a date equal to :date.","date_format":"The :attribute does not match the format :format.","different":"The :attribute and :other must be different.","digits":"The :attribute must be :digits digits.","digits_between":"The :attribute must be between :min and :max digits.","dimensions":"The :attribute has invalid image dimensions.","distinct":"The :attribute field has a duplicate value.","email":"The :attribute must be a valid email address.","ends_with":"The :attribute must end with one of the following: :values.","exists":"The selected :attribute is invalid.","file":"The :attribute must be a file.","filled":"The :attribute field must have a value.","gt":{"numeric":"The :attribute must be greater than :value.","file":"The :attribute must be greater than :value kilobytes.","string":"The :attribute must be greater than :value characters.","array":"The :attribute must have more than :value items."},"gte":{"numeric":"The :attribute must be greater than or equal :value.","file":"The :attribute must be greater than or equal :value kilobytes.","string":"The :attribute must be greater than or equal :value characters.","array":"The :attribute must have :value items or more."},"image":"The :attribute must be an image.","in":"The selected :attribute is invalid.","in_array":"The :attribute field does not exist in :other.","integer":"The :attribute must be an integer.","ip":"The :attribute must be a valid IP address.","ipv4":"The :attribute must be a valid IPv4 address.","ipv6":"The :attribute must be a valid IPv6 address.","json":"The :attribute must be a valid JSON string.","lt":{"numeric":"The :attribute must be less than :value.","file":"The :attribute must be less than :value kilobytes.","string":"The :attribute must be less than :value characters.","array":"The :attribute must have less than :value items."},"lte":{"numeric":"The :attribute must be less than or equal :value.","file":"The :attribute must be less than or equal :value kilobytes.","string":"The :attribute must be less than or equal :value characters.","array":"The :attribute must not have more than :value items."},"max":{"numeric":"The :attribute may not be greater than :max.","file":"The :attribute may not be greater than :max kilobytes.","string":"The :attribute may not be greater than :max characters.","array":"The :attribute may not have more than :max items."},"mimes":"The :attribute must be a file of type: :values.","mimetypes":"The :attribute must be a file of type: :values.","min":{"numeric":"The :attribute must be at least :min.","file":"The :attribute must be at least :min kilobytes.","string":"The :attribute must be at least :min characters.","array":"The :attribute must have at least :min items."},"not_in":"The selected :attribute is invalid.","not_regex":"The :attribute format is invalid.","numeric":"The :attribute must be a number.","password":"The password is incorrect.","present":"The :attribute field must be present.","regex":"The :attribute format is invalid.","required":"The :attribute field is required.","required_if":"The :attribute field is required when :other is :value.","required_unless":"The :attribute field is required unless :other is in :values.","required_with":"The :attribute field is required when :values is present.","required_with_all":"The :attribute field is required when :values are present.","required_without":"The :attribute field is required when :values is not present.","required_without_all":"The :attribute field is required when none of :values are present.","same":"The :attribute and :other must match.","size":{"numeric":"The :attribute must be :size.","file":"The :attribute must be :size kilobytes.","string":"The :attribute must be :size characters.","array":"The :attribute must contain :size items."},"starts_with":"The :attribute must start with one of the following: :values.","string":"The :attribute must be a string.","timezone":"The :attribute must be a valid zone.","unique":"The :attribute has already been taken.","uploaded":"The :attribute failed to upload.","url":"The :attribute format is invalid.","uuid":"The :attribute must be a valid UUID.","custom":{"attribute-name":{"rule-name":"custom-message"}},"attributes":[]};
-
-/***/ }),
-
-/***/ "./resources/lang/fr/auth.php":
-/*!************************************!*\
-  !*** ./resources/lang/fr/auth.php ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"failed":"Ces identifiants ne correspondent pas à nos enregistrements","throttle":"Tentatives de connexion trop nombreuses. Veuillez essayer de nouveau dans :seconds secondes."};
-
-/***/ }),
-
-/***/ "./resources/lang/fr/pagination.php":
-/*!******************************************!*\
-  !*** ./resources/lang/fr/pagination.php ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"previous":"&laquo; Précédent","next":"Suivant &raquo;"};
-
-/***/ }),
-
-/***/ "./resources/lang/fr/passwords.php":
-/*!*****************************************!*\
-  !*** ./resources/lang/fr/passwords.php ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"reset":"Votre mot de passe a été réinitialisé !","sent":"Nous vous avons envoyé par email le lien de réinitialisation du mot de passe !","throttled":"Veuillez patienter avant de réessayer.","token":"Ce jeton de réinitialisation du mot de passe n'est pas valide.","user":"Aucun utilisateur n'a été trouvé avec cette adresse email."};
-
-/***/ }),
-
-/***/ "./resources/lang/fr/validation-inline.php":
-/*!*************************************************!*\
-  !*** ./resources/lang/fr/validation-inline.php ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"accepted":"Ce champ doit être accepté.","active_url":"Ce n'est pas une URL valide","after":"La date doit être postérieure au :date.","after_or_equal":"La date doit être postérieure ou égale au :date.","alpha":"Ce champ doit contenir uniquement des lettres","alpha_dash":"Ce champ doit contenir uniquement des lettres, des chiffres et des tirets.","alpha_num":"Ce champ doit contenir uniquement des chiffres et des lettres.","array":"Ce champ doit être un tableau.","before":"Ce champ doit être une date antérieure au :date.","before_or_equal":"Ce champ doit être une date antérieure ou égale au :date.","between":{"numeric":"La valeur doit être comprise entre :min et :max.","file":"La taille du fichier doit être comprise entre :min et :max kilo-octets.","string":"Le texte doit contenir entre :min et :max caractères.","array":"Le tableau doit contenir entre :min et :max éléments."},"boolean":"Ce champ doit être vrai ou faux.","confirmed":"Le champ de confirmation ne correspond pas.","date":"Ce n'est pas une date valide.","date_equals":"La date doit être égale à :date.","date_format":"Ce champ ne correspond pas au format :format.","different":"Cette valeur doit être différente de :other.","digits":"Ce champ doit contenir :digits chiffres.","digits_between":"Ce champ doit contenir entre :min et :max chiffres.","dimensions":"La taille de l'image n'est pas conforme.","distinct":"Ce champ a une valeur en double.","email":"Ce champ doit être une adresse email valide.","ends_with":"Ce champ doit se terminer par une des valeurs suivantes : :values","exists":"Ce champ sélectionné est invalide.","file":"Ce champ doit être un fichier.","filled":"Ce champ doit avoir une valeur.","gt":{"numeric":"La valeur doit être supérieure à :value.","file":"La taille du fichier doit être supérieure à :value kilo-octets.","string":"Le texte doit contenir plus de :value caractères.","array":"Le tableau doit contenir plus de :value éléments."},"gte":{"numeric":"La valeur doit être supérieure ou égale à :value.","file":"La taille du fichier doit être supérieure ou égale à :value kilo-octets.","string":"Le texte doit contenir au moins :value caractères.","array":"Le tableau doit contenir au moins :value éléments."},"image":"Ce champ doit être une image.","in":"Ce champ est invalide.","in_array":"Ce champ n'existe pas dans :other.","integer":"Ce champ doit être un entier.","ip":"Ce champ doit être une adresse IP valide.","ipv4":"Ce champ doit être une adresse IPv4 valide.","ipv6":"Ce champ doit être une adresse IPv6 valide.","json":"Ce champ doit être un document JSON valide.","lt":{"numeric":"La valeur doit être inférieure à :value.","file":"La taille du fichier doit être inférieure à :value kilo-octets.","string":"Le texte doit contenir moins de :value caractères.","array":"Le tableau doit contenir moins de :value éléments."},"lte":{"numeric":"La valeur doit être inférieure ou égale à :value.","file":"La taille du fichier doit être inférieure ou égale à :value kilo-octets.","string":"Le texte doit contenir au plus :value caractères.","array":"Le tableau doit contenir au plus :value éléments."},"max":{"numeric":"La valeur ne peut être supérieure à :max.","file":"La taille du fichier ne peut pas dépasser :max kilo-octets.","string":"Le texte ne peut contenir plus de :max caractères.","array":"Le tableau ne peut contenir plus de :max éléments."},"mimes":"Le fichier doit être de type : :values.","mimetypes":"Le fichier doit être de type : :values.","min":{"numeric":"La valeur doit être supérieure ou égale à :min.","file":"La taille du fichier doit être supérieure à :min kilo-octets.","string":"Le texte doit contenir au moins :min caractères.","array":"Le tableau doit contenir au moins :min éléments."},"not_in":"Le champ sélectionné n'est pas valide.","not_regex":"Le format du champ n'est pas valide.","numeric":"Ce champ doit contenir un nombre.","password":"Le mot de passe est incorrect","present":"Ce champ doit être présent.","regex":"Le format du champ est invalide.","required":"Ce champ est obligatoire.","required_if":"Ce champ est obligatoire quand la valeur de :other est :value.","required_unless":"Ce champ est obligatoire sauf si :other est :values.","required_with":"Ce champ est obligatoire quand :values est présent.","required_with_all":"Ce champ est obligatoire quand :values sont présents.","required_without":"Ce champ est obligatoire quand :values n'est pas présent.","required_without_all":"Ce champ est requis quand aucun de :values n'est présent.","same":"Ce champ doit être identique à :other.","size":{"numeric":"La valeur doit être :size.","file":"La taille du fichier doit être de :size kilo-octets.","string":"Le texte doit contenir :size caractères.","array":"Le tableau doit contenir :size éléments."},"starts_with":"Ce champ doit commencer avec une des valeurs suivantes : :values","string":"Ce champ doit être une chaîne de caractères.","timezone":"Ce champ doit être un fuseau horaire valide.","unique":"La valeur est déjà utilisée.","uploaded":"Le fichier n'a pu être téléversé.","url":"Le format de l'URL n'est pas valide.","uuid":"Ce champ doit être un UUID valide","custom":{"attribute-name":{"rule-name":"custom-message"}},"attributes":{"name":"nom","username":"nom d'utilisateur","email":"adresse email","first_name":"prénom","last_name":"nom","password":"mot de passe","password_confirmation":"confirmation du mot de passe","city":"ville","country":"pays","address":"adresse","phone":"téléphone","mobile":"portable","age":"âge","sex":"sexe","gender":"genre","day":"jour","month":"mois","year":"année","hour":"heure","minute":"minute","second":"seconde","title":"titre","content":"contenu","description":"description","excerpt":"extrait","date":"date","time":"heure","available":"disponible","size":"taille"}};
-
-/***/ }),
-
-/***/ "./resources/lang/fr/validation.php":
-/*!******************************************!*\
-  !*** ./resources/lang/fr/validation.php ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"accepted":"Le champ :attribute doit être accepté.","active_url":"Le champ :attribute n'est pas une URL valide.","after":"Le champ :attribute doit être une date postérieure au :date.","after_or_equal":"Le champ :attribute doit être une date postérieure ou égale au :date.","alpha":"Le champ :attribute doit contenir uniquement des lettres.","alpha_dash":"Le champ :attribute doit contenir uniquement des lettres, des chiffres et des tirets.","alpha_num":"Le champ :attribute doit contenir uniquement des chiffres et des lettres.","array":"Le champ :attribute doit être un tableau.","before":"Le champ :attribute doit être une date antérieure au :date.","before_or_equal":"Le champ :attribute doit être une date antérieure ou égale au :date.","between":{"numeric":"La valeur de :attribute doit être comprise entre :min et :max.","file":"La taille du fichier de :attribute doit être comprise entre :min et :max kilo-octets.","string":"Le texte :attribute doit contenir entre :min et :max caractères.","array":"Le tableau :attribute doit contenir entre :min et :max éléments."},"boolean":"Le champ :attribute doit être vrai ou faux.","confirmed":"Le champ de confirmation :attribute ne correspond pas.","date":"Le champ :attribute n'est pas une date valide.","date_equals":"Le champ :attribute doit être une date égale à :date.","date_format":"Le champ :attribute ne correspond pas au format :format.","different":"Les champs :attribute et :other doivent être différents.","digits":"Le champ :attribute doit contenir :digits chiffres.","digits_between":"Le champ :attribute doit contenir entre :min et :max chiffres.","dimensions":"La taille de l'image :attribute n'est pas conforme.","distinct":"Le champ :attribute a une valeur en double.","email":"Le champ :attribute doit être une adresse email valide.","ends_with":"Le champ :attribute doit se terminer par une des valeurs suivantes : :values","exists":"Le champ :attribute sélectionné est invalide.","file":"Le champ :attribute doit être un fichier.","filled":"Le champ :attribute doit avoir une valeur.","gt":{"numeric":"La valeur de :attribute doit être supérieure à :value.","file":"La taille du fichier de :attribute doit être supérieure à :value kilo-octets.","string":"Le texte :attribute doit contenir plus de :value caractères.","array":"Le tableau :attribute doit contenir plus de :value éléments."},"gte":{"numeric":"La valeur de :attribute doit être supérieure ou égale à :value.","file":"La taille du fichier de :attribute doit être supérieure ou égale à :value kilo-octets.","string":"Le texte :attribute doit contenir au moins :value caractères.","array":"Le tableau :attribute doit contenir au moins :value éléments."},"image":"Le champ :attribute doit être une image.","in":"Le champ :attribute est invalide.","in_array":"Le champ :attribute n'existe pas dans :other.","integer":"Le champ :attribute doit être un entier.","ip":"Le champ :attribute doit être une adresse IP valide.","ipv4":"Le champ :attribute doit être une adresse IPv4 valide.","ipv6":"Le champ :attribute doit être une adresse IPv6 valide.","json":"Le champ :attribute doit être un document JSON valide.","lt":{"numeric":"La valeur de :attribute doit être inférieure à :value.","file":"La taille du fichier de :attribute doit être inférieure à :value kilo-octets.","string":"Le texte :attribute doit contenir moins de :value caractères.","array":"Le tableau :attribute doit contenir moins de :value éléments."},"lte":{"numeric":"La valeur de :attribute doit être inférieure ou égale à :value.","file":"La taille du fichier de :attribute doit être inférieure ou égale à :value kilo-octets.","string":"Le texte :attribute doit contenir au plus :value caractères.","array":"Le tableau :attribute doit contenir au plus :value éléments."},"max":{"numeric":"La valeur de :attribute ne peut être supérieure à :max.","file":"La taille du fichier de :attribute ne peut pas dépasser :max kilo-octets.","string":"Le texte de :attribute ne peut contenir plus de :max caractères.","array":"Le tableau :attribute ne peut contenir plus de :max éléments."},"mimes":"Le champ :attribute doit être un fichier de type : :values.","mimetypes":"Le champ :attribute doit être un fichier de type : :values.","min":{"numeric":"La valeur de :attribute doit être supérieure ou égale à :min.","file":"La taille du fichier de :attribute doit être supérieure à :min kilo-octets.","string":"Le texte :attribute doit contenir au moins :min caractères.","array":"Le tableau :attribute doit contenir au moins :min éléments."},"not_in":"Le champ :attribute sélectionné n'est pas valide.","not_regex":"Le format du champ :attribute n'est pas valide.","numeric":"Le champ :attribute doit contenir un nombre.","password":"Le mot de passe est incorrect","present":"Le champ :attribute doit être présent.","regex":"Le format du champ :attribute est invalide.","required":"Le champ :attribute est obligatoire.","required_if":"Le champ :attribute est obligatoire quand la valeur de :other est :value.","required_unless":"Le champ :attribute est obligatoire sauf si :other est :values.","required_with":"Le champ :attribute est obligatoire quand :values est présent.","required_with_all":"Le champ :attribute est obligatoire quand :values sont présents.","required_without":"Le champ :attribute est obligatoire quand :values n'est pas présent.","required_without_all":"Le champ :attribute est requis quand aucun de :values n'est présent.","same":"Les champs :attribute et :other doivent être identiques.","size":{"numeric":"La valeur de :attribute doit être :size.","file":"La taille du fichier de :attribute doit être de :size kilo-octets.","string":"Le texte de :attribute doit contenir :size caractères.","array":"Le tableau :attribute doit contenir :size éléments."},"starts_with":"Le champ :attribute doit commencer avec une des valeurs suivantes : :values","string":"Le champ :attribute doit être une chaîne de caractères.","timezone":"Le champ :attribute doit être un fuseau horaire valide.","unique":"La valeur du champ :attribute est déjà utilisée.","uploaded":"Le fichier du champ :attribute n'a pu être téléversé.","url":"Le format de l'URL de :attribute n'est pas valide.","uuid":"Le champ :attribute doit être un UUID valide","custom":{"attribute-name":{"rule-name":"custom-message"}},"attributes":{"name":"nom","username":"nom d'utilisateur","email":"adresse email","first_name":"prénom","last_name":"nom","password":"mot de passe","password_confirmation":"confirmation du mot de passe","city":"ville","country":"pays","address":"adresse","phone":"téléphone","mobile":"portable","age":"âge","sex":"sexe","gender":"genre","day":"jour","month":"mois","year":"année","hour":"heure","minute":"minute","second":"seconde","title":"titre","content":"contenu","description":"description","excerpt":"extrait","date":"date","time":"heure","available":"disponible","size":"taille"}};
-
-/***/ }),
-
-/***/ "./resources/lang/nl.json":
-/*!********************************!*\
-  !*** ./resources/lang/nl.json ***!
-  \********************************/
-/*! exports provided: bonjour, Entreprise, default */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"bonjour\":\"hallo\",\"Entreprise\":\"Nederlands\"}");
-
-/***/ }),
-
-/***/ "./resources/lang/nl/auth.php":
-/*!************************************!*\
-  !*** ./resources/lang/nl/auth.php ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"failed":"Deze combinatie van e-mailadres en wachtwoord is niet geldig.","throttle":"Te veel mislukte loginpogingen. Probeer het over :seconds seconden nogmaals."};
-
-/***/ }),
-
-/***/ "./resources/lang/nl/pagination.php":
-/*!******************************************!*\
-  !*** ./resources/lang/nl/pagination.php ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"previous":"&laquo; Vorige","next":"Volgende &raquo;"};
-
-/***/ }),
-
-/***/ "./resources/lang/nl/passwords.php":
-/*!*****************************************!*\
-  !*** ./resources/lang/nl/passwords.php ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"reset":"Het wachtwoord van uw account is gewijzigd.","sent":"We hebben een e-mail verstuurd met instructies om een nieuw wachtwoord in te stellen.","throttled":"Gelieve even te wachten voor u het opnieuw probeert.","token":"Dit wachtwoordhersteltoken is niet geldig.","user":"Geen gebruiker bekend met het e-mailadres."};
-
-/***/ }),
-
-/***/ "./resources/lang/nl/validation-inline.php":
-/*!*************************************************!*\
-  !*** ./resources/lang/nl/validation-inline.php ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"accepted":"Dit veld moet geaccepteerd zijn.","active_url":"Dit is geen geldige URL.","after":"Dit moet een datum na :date zijn.","after_or_equal":"Dit moet een datum na of gelijk aan :date zijn.","alpha":"Dit veld mag alleen letters bevatten.","alpha_dash":"Dit veld mag alleen letters, nummers, underscores (_) en streepjes (-) bevatten.","alpha_num":"Dit veld mag alleen letters en nummers bevatten.","array":"Dit veld moet geselecteerde elementen bevatten.","before":"Dit moet een datum voor :date zijn.","before_or_equal":"Dit moet een datum voor of gelijk aan :date zijn.","between":{"numeric":"Dit moet tussen :min en :max zijn.","file":"Dit moet tussen :min en :max kilobytes zijn.","string":"Dit moet tussen :min en :max karakters zijn.","array":"Dit moet tussen :min en :max items bevatten."},"boolean":"Dit veld moet ja of nee zijn.","confirmed":"De bevestiging komt niet overeen.","date":"Dit is geen geldige datum","date_equals":"Dit moet een datum gelijk aan :date zijn.","date_format":"Dit voldoet niet aan het formaat :format.","different":"Dit en :other moeten verschillend zijn.","digits":"Dit moet bestaan uit :digits cijfers.","digits_between":"Dit moet bestaan uit minimaal :min en maximaal :max cijfers.","dimensions":"Deze afbeelding heeft geen geldige afmetingen.","distinct":"Dit veld heeft een dubbele waarde.","email":"Dit is geen geldig e-mailadres.","ends_with":"Dit moet met één van de volgende waarden eindigen: :values.","exists":"De geselecteerde waarde bestaat niet.","file":"Dit moet een bestand zijn.","filled":"Dit veld is verplicht.","gt":{"numeric":"De waarde moet groter zijn dan :value.","file":"Het bestand moet groter zijn dan :value kilobytes.","string":"De waarde moet meer dan :value tekens bevatten.","array":"De inhoud moet meer dan :value waardes bevatten."},"gte":{"numeric":"De waarde moet groter of gelijk zijn aan :value.","file":"Het bestand moet groter of gelijk zijn aan :value kilobytes.","string":"De waarde moet minimaal :value tekens bevatten.","array":"De inhoud moet :value waardes of meer bevatten."},"image":"Dit moet een afbeelding zijn.","in":"De geselecteerde waarde is ongeldig.","in_array":"Deze waarde bestaat niet in :other.","integer":"Dit moet een getal zijn.","ip":"Dit moet een geldig IP-adres zijn.","ipv4":"Dit moet een geldig IPv4-adres zijn.","ipv6":"Dit moet een geldig IPv6-adres zijn.","json":"Dit moet een geldige JSON-string zijn.","lt":{"numeric":"De waarde moet kleiner zijn dan :value.","file":"Het bestand moet kleiner zijn dan :value kilobytes.","string":"De waarde moet minder dan :value tekens bevatten.","array":"De inhoud moet minder dan :value waardes bevatten."},"lte":{"numeric":"De waarde moet kleiner of gelijk zijn aan :value.","file":"Het bestand moet kleiner of gelijk zijn aan :value kilobytes.","string":"De waarde moet maximaal :value tekens bevatten.","array":"De inhoud moet :value waardes of minder bevatten."},"max":{"numeric":"De waarde mag niet hoger dan :max zijn.","file":"Het bestand mag niet meer dan :max kilobytes zijn.","string":"De waarde mag niet uit meer dan :max tekens bestaan.","array":"De inhoud mag niet meer dan :max items bevatten."},"mimes":"Dit moet een bestand zijn van het bestandstype :values.","mimetypes":"Dit moet een bestand zijn van het bestandstype :values.","min":{"numeric":"De waarde moet minimaal :min zijn.","file":"Het bestand moet minimaal :min kilobytes zijn.","string":"De waarde moet minimaal :min tekens zijn.","array":"De inhoud moet minimaal :min items bevatten."},"not_in":"De geselecteerde waarde is ongeldig.","not_regex":"Dit formaat is ongeldig.","numeric":"Dit moet een nummer zijn","password":"Het wachtwoord is onjuist.","present":"Dit veld moet bestaan.","regex":"Dit formaat is ongeldig.","required":"Dit veld is verplicht.","required_if":"Dit veld is verplicht indien :other gelijk is aan :value.","required_unless":"Dit veld is verplicht tenzij :other gelijk is aan :values.","required_with":"Dit veld is verplicht i.c.m. :values","required_with_all":"Dit veld is verplicht i.c.m. :values","required_without":"Dit veld is verplicht als :values niet ingevuld is.","required_without_all":"Dit veld is verplicht als :values niet ingevuld zijn.","same":"De waarde van dit veld en :other moeten overeenkomen.","size":{"numeric":":De waarde moet :size zijn.","file":":Het bestand moet :size kilobyte zijn.","string":":De waarde moet :size tekens zijn.","array":":de inhoud moet :size items bevatten."},"starts_with":"Dit moet starten met een van de volgende: :values.","string":"Dit moet een tekst zijn.","timezone":"Dit moet een geldige tijdzone zijn.","unique":"Deze is al in gebruik","uploaded":"Het uploaden hiervan is mislukt.","url":"Dit moet een geldige URL zijn.","uuid":"Dit moet een geldige UUID zijn.","custom":{"attribute-name":{"rule-name":"custom-message"}}};
-
-/***/ }),
-
-/***/ "./resources/lang/nl/validation.php":
-/*!******************************************!*\
-  !*** ./resources/lang/nl/validation.php ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {"accepted":":Attribute moet geaccepteerd zijn.","active_url":":Attribute is geen geldige URL.","after":":Attribute moet een datum na :date zijn.","after_or_equal":":Attribute moet een datum na of gelijk aan :date zijn.","alpha":":Attribute mag alleen letters bevatten.","alpha_dash":":Attribute mag alleen letters, nummers, underscores (_) en streepjes (-) bevatten.","alpha_num":":Attribute mag alleen letters en nummers bevatten.","array":":Attribute moet geselecteerde elementen bevatten.","before":":Attribute moet een datum voor :date zijn.","before_or_equal":":Attribute moet een datum voor of gelijk aan :date zijn.","between":{"numeric":":Attribute moet tussen :min en :max zijn.","file":":Attribute moet tussen :min en :max kilobytes zijn.","string":":Attribute moet tussen :min en :max karakters zijn.","array":":Attribute moet tussen :min en :max items bevatten."},"boolean":":Attribute moet ja of nee zijn.","confirmed":":Attribute bevestiging komt niet overeen.","date":":Attribute moet een datum bevatten.","date_equals":":Attribute moet een datum gelijk aan :date zijn.","date_format":":Attribute moet een geldig datum formaat bevatten.","different":":Attribute en :other moeten verschillend zijn.","digits":":Attribute moet bestaan uit :digits cijfers.","digits_between":":Attribute moet bestaan uit minimaal :min en maximaal :max cijfers.","dimensions":":Attribute heeft geen geldige afmetingen voor afbeeldingen.","distinct":":Attribute heeft een dubbele waarde.","email":":Attribute is geen geldig e-mailadres.","ends_with":":Attribute moet met één van de volgende waarden eindigen: :values.","exists":":Attribute bestaat niet.","file":":Attribute moet een bestand zijn.","filled":":Attribute is verplicht.","gt":{"numeric":"De :attribute moet groter zijn dan :value.","file":"De :attribute moet groter zijn dan :value kilobytes.","string":"De :attribute moet meer dan :value tekens bevatten.","array":"De :attribute moet meer dan :value waardes bevatten."},"gte":{"numeric":"De :attribute moet groter of gelijk zijn aan :value.","file":"De :attribute moet groter of gelijk zijn aan :value kilobytes.","string":"De :attribute moet minimaal :value tekens bevatten.","array":"De :attribute moet :value waardes of meer bevatten."},"image":":Attribute moet een afbeelding zijn.","in":":Attribute is ongeldig.","in_array":":Attribute bestaat niet in :other.","integer":":Attribute moet een getal zijn.","ip":":Attribute moet een geldig IP-adres zijn.","ipv4":":Attribute moet een geldig IPv4-adres zijn.","ipv6":":Attribute moet een geldig IPv6-adres zijn.","json":":Attribute moet een geldige JSON-string zijn.","lt":{"numeric":"De :attribute moet kleiner zijn dan :value.","file":"De :attribute moet kleiner zijn dan :value kilobytes.","string":"De :attribute moet minder dan :value tekens bevatten.","array":"De :attribute moet minder dan :value waardes bevatten."},"lte":{"numeric":"De :attribute moet kleiner of gelijk zijn aan :value.","file":"De :attribute moet kleiner of gelijk zijn aan :value kilobytes.","string":"De :attribute moet maximaal :value tekens bevatten.","array":"De :attribute moet :value waardes of minder bevatten."},"max":{"numeric":":Attribute mag niet hoger dan :max zijn.","file":":Attribute mag niet meer dan :max kilobytes zijn.","string":":Attribute mag niet uit meer dan :max tekens bestaan.","array":":Attribute mag niet meer dan :max items bevatten."},"mimes":":Attribute moet een bestand zijn van het bestandstype :values.","mimetypes":":Attribute moet een bestand zijn van het bestandstype :values.","min":{"numeric":":Attribute moet minimaal :min zijn.","file":":Attribute moet minimaal :min kilobytes zijn.","string":":Attribute moet minimaal :min tekens zijn.","array":":Attribute moet minimaal :min items bevatten."},"not_in":"Het formaat van :attribute is ongeldig.","not_regex":"De :attribute formaat is ongeldig.","numeric":":Attribute moet een nummer zijn.","password":"Wachtwoord is onjuist.","present":":Attribute moet bestaan.","regex":":Attribute formaat is ongeldig.","required":":Attribute is verplicht.","required_if":":Attribute is verplicht indien :other gelijk is aan :value.","required_unless":":Attribute is verplicht tenzij :other gelijk is aan :values.","required_with":":Attribute is verplicht i.c.m. :values","required_with_all":":Attribute is verplicht i.c.m. :values","required_without":":Attribute is verplicht als :values niet ingevuld is.","required_without_all":":Attribute is verplicht als :values niet ingevuld zijn.","same":":Attribute en :other moeten overeenkomen.","size":{"numeric":":Attribute moet :size zijn.","file":":Attribute moet :size kilobyte zijn.","string":":Attribute moet :size tekens zijn.","array":":Attribute moet :size items bevatten."},"starts_with":":Attribute moet starten met een van de volgende: :values.","string":":Attribute moet een tekst zijn.","timezone":":Attribute moet een geldige tijdzone zijn.","unique":":Attribute is al in gebruik.","uploaded":"Het uploaden van :attribute is mislukt.","url":":Attribute moet een geldig URL zijn.","uuid":":Attribute moet een geldig UUID zijn.","custom":{"attribute-name":{"rule-name":"custom-message"}},"attributes":{"address":"adres","age":"leeftijd","amount":"bedrag","available":"beschikbaar","city":"stad","content":"inhoud","country":"land","currency":"valuta","date":"datum","date_of_birth":"geboortedatum","day":"dag","description":"omschrijving","duration":"tijdsduur","email":"e-mailadres","excerpt":"uittreksel","first_name":"voornaam","gender":"geslacht","group":"groep","hour":"uur","last_name":"achternaam","lesson":"les","message":"bericht","minute":"minuut","mobile":"mobiel","month":"maand","name":"naam","password":"wachtwoord","password_confirmation":"wachtwoordbevestiging","phone":"telefoonnummer","price":"prijs","second":"seconde","sex":"geslacht","size":"grootte","street":"straatnaam","student":"student","subject":"onderwerp","teacher":"Docent","time":"tijd","title":"titel","username":"gebruikersnaam","year":"jaar"}};
 
 /***/ }),
 
