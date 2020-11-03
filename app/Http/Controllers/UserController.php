@@ -11,73 +11,75 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
-{
+class UserController extends Controller {
     use PasswordValidationRules;
 
-    public function create(Request $input)
-    {
-        $input->validate([
+    public function create( Request $input ) {
+        $input -> validate( [
             'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'birthday' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'email'      => 'required|string|email|max:255|unique:users',
+            'birthday'   => 'required|string|max:255',
             'profession' => 'required|string|max:255',
-            'password' => $this->passwordRules(),
-            'company' => 'required|boolean',
-            'value' => 'required|string|max:255'
-        ]);
+            'password'   => $this->passwordRules(),
+            'company'    => 'required|boolean',
+            'value'      => 'required|string|max:255'
+        ] );
 
-        if( $input['company'] === "1" ){
-            $input->validate([
+        if( $input['company'] === "1" ) {
+            $input -> validate( [
                 'name' => 'required|string:max:255',
-                'tva' => 'required|string:max:255',
-                // 'logo' => 'required|file|image'
-            ]);
+                'tva'  => 'required|string:max:255',
+                'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg'
+            ] );
         }
 
-        DB::transaction(function () use ($input) {
-            tap($user = User::create([
-                'first_name' => $input['first_name'],
-                'last_name' => $input['last_name'],
-                'email' => $input['email'],
-                'birthday' => $input['birthday'],
-                'profession' => $input['profession'],
-                'password' => Hash::make($input['password']),
-                'company' => $input['company']
-            ]), function (User $user) {
-                $this->createTeam($user);
-            });
 
-            if( $input['company'] === "1" ){
+
+        DB::transaction(function () use ($input) {
+            tap( $user = User::create( [
+                'first_name' => $input[ 'first_name' ],
+                'last_name'  => $input[ 'last_name' ],
+                'email'      => $input[ 'email' ],
+                'birthday'   => $input[ 'birthday' ],
+                'profession' => $input[ 'profession' ],
+                'password'   => Hash::make( $input[ 'password' ] ),
+                'company'    => $input[ 'company' ]
+            ] ), function( User $user ) {
+                $this -> createTeam( $user );
+            } );
+
+            if( $input[ 'company' ] === "1" ){
+                $imageName = time() . '.' . $input -> logo -> extension();
+                $input -> logo -> move( public_path( 'storage' ), $imageName );
+
                 $company = new Company();
 
-                $company -> user_id = $user->id;
-                $company -> name = $input->input( 'name' );
-                $company -> tva = $input->input( 'tva' );
-                $company -> logo = 'hi';
+                $company -> user_id = $user  -> id;
+                $company -> name    = $input -> input( 'name' );
+                $company -> tva     = $input -> input( 'tva' );
+                $company -> logo    = 'storage/' . $imageName;
 
                 $company -> save();
             }
 
             $question = new QuestionUser();
 
-            $question -> user_id = $user->id;
+            $question -> user_id     = $user->id;
             $question -> question_id = 1;
-            $question -> value = $input->input( 'value' );
+            $question -> value       = $input->input( 'value' );
 
             $question -> save();
         });
 
-        return response("OK",204);
+        return response( "OK", 204 );
     }
 
-    protected function createTeam(User $user)
-    {
-        $user->ownedTeams()->save(Team::forceCreate([
-            'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0]."'s Team",
-            'personal_team' => true,
-        ]));
+    protected function createTeam( User $user ) {
+        $user -> ownedTeams() -> save( Team::forceCreate( [
+            'user_id'       => $user->id,
+            'name'          => explode( ' ', $user->name, 2 )[ 0 ] . "'s Team",
+            'personal_team' => true
+        ] ) );
     }
 }

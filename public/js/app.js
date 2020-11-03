@@ -2576,107 +2576,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2781,8 +2680,8 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     decrementStep: function decrementStep(e) {
-      this.checkInput();
       e.preventDefault();
+      this.checkInput();
 
       if (this.step === 1) {
         this.stepOneClass = 'text-gray-600';
@@ -2811,8 +2710,6 @@ __webpack_require__.r(__webpack_exports__);
       if (!file.length) return;
 
       if (file[0].size > 5000000) {
-        this.inputLogo = '';
-
         switch (this.language) {
           case 'fr':
             this.errors.logo = 'Votre fichier est trop grand';
@@ -2827,13 +2724,15 @@ __webpack_require__.r(__webpack_exports__);
             break;
         }
 
+        this.inputLogo = '';
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       } else {
-        this.inputLogo = file;
+        this.inputLogo = file[0];
         this.errors.logo = '';
         this.checkInput();
         this.checkErrors('logo');
+        console.log('logo: ', this.inputLogo);
       }
     },
     checkInput: function checkInput() {
@@ -3362,7 +3261,6 @@ __webpack_require__.r(__webpack_exports__);
     var app = this;
     axios.get('/lang').then(function (response) {
       app.language = response.data;
-      console.log(app.language);
 
       if (app.language === 'fr') {
         app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...';
@@ -22079,7 +21977,8 @@ var render = function() {
                               attrs: {
                                 placeholder: "******",
                                 type: "password",
-                                required: ""
+                                required: "",
+                                autocomplete: "on"
                               },
                               domProps: { value: _vm.inputPassword },
                               on: {
@@ -22152,6 +22051,7 @@ var render = function() {
                               attrs: {
                                 placeholder: "******",
                                 type: "password",
+                                autocomplete: "on",
                                 required: ""
                               },
                               domProps: { value: _vm.inputConfirmPassword },
@@ -22559,7 +22459,6 @@ var render = function() {
                         attrs: {
                           type: "file",
                           name: "file",
-                          id: "",
                           accept: "image/*"
                         },
                         on: { change: _vm.onFileChange }
@@ -22589,14 +22488,14 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "h-6 mt-2" }, [
-                        this.inputLogo.length > 0
+                        this.inputLogo
                           ? _c(
                               "p",
                               { staticClass: "text-sm text-gray-800 h-6" },
                               [
                                 _vm._v(
                                   "\n                                " +
-                                    _vm._s(_vm.inputLogo[0].name) +
+                                    _vm._s(_vm.inputLogo.name) +
                                     "\n                            "
                                 )
                               ]

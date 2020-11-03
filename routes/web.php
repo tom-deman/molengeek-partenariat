@@ -27,7 +27,7 @@ Route::get( '/dashboard/form', function() {
     return view( 'dashboard.form' );
 } );
 
-Route::post( '/register', [ UserController::class, 'create' ] )->name( 'register' );
+Route::post( '/register', [ UserController::class, 'create' ] ) -> name( 'register' );
 
 Route::get( '/lang', [ LocalizationController::class, 'getLang' ] ) -> name( 'getLang' );
 

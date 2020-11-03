@@ -26,34 +26,30 @@
             />
         <link
             rel="stylesheet"
-            href="./assets/vendor/@fortawesome/fontawesome-free/css/all.min.css"
-            />
-        <link
-            rel="stylesheet"
             href="https://cdn.jsdelivr.net/gh/creativetimofficial/tailwind-starter-kit/compiled-tailwind.min.css"
         />
         <title>
-            @lang('Tableau de bord')
+            @lang( 'Tableau de bord' )
         </title>
     </head>
 
     <body class="text-gray-800 antialiased">
         <noscript>
-            @lang('Vous devez activer Javascript pour utiliser cette application.')
+            @lang( 'Vous devez activer Javascript pour utiliser cette application.' )
         </noscript>
 
         <div id="root">
             <nav class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
                 <div class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
                     <img
-                        src="{{ asset('img/molengeek_logo.png') }}"
+                        src="{{ asset( 'img/molengeek_logo.png' ) }}"
                         class="h-24 object-cover"
                         alt="logo MolenGeek"
                     >
                     <button
                         class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
                         type="button"
-                        onclick="toggleNavbar('example-collapse-sidebar')"
+                        onclick="toggleNavbar( 'example-collapse-sidebar' )"
                     >
                         <i class="fas fa-bars"></i>
                     </button>
@@ -61,7 +57,7 @@
                         class="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
                         href="/dashboard"
                     >
-                        @lang('MolenGeek Partenariat')
+                        @lang( 'MolenGeek Partenariat' )
                     </a>
 
                     <ul class="md:hidden items-center flex flex-wrap list-none">
@@ -69,7 +65,7 @@
                             <a
                                 class="text-gray-600 block py-1 px-3"
                                 href="#"
-                                onclick="openDropdown(event,'notification-dropdown')"
+                                onclick="openDropdown( event,'notification-dropdown' )"
                             >
                                 <i class="fas fa-bell"></i>
                             </a>
@@ -79,22 +75,22 @@
                                 id="notification-dropdown"
                             >
                             <div class="block px-4 py-2 text-xs text-gray-500">
-                                {{ __('Gerer mon compte') }}
+                                {{ __( 'Gerer mon compte' ) }}
                             </div>
                                 <a
-                                    href="{{ route('profile.show') }}"
+                                    href="{{ route( 'profile.show' ) }}"
                                     class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
                                 >
-                                    @lang('Profile')
+                                    @lang( 'Profile' )
                                 </a>
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form method="POST" action="{{ route( 'logout' ) }}">
                                     @csrf
                                     <a
-                                        href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); this.closest('form').submit();"
+                                        href="{{ route( 'logout' ) }}"
+                                        onclick="event.preventDefault(); this.closest( 'form' ).submit();"
                                         class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
                                     >
-                                        @lang('Déconnexion')
+                                        @lang( 'Déconnexion' )
                                     </a>
                                 </form>
                             </div>
@@ -104,13 +100,13 @@
                             <a
                                 class="text-gray-600 block"
                                 href="#"
-                                onclick="openDropdown(event,'user-responsive-dropdown')"
+                                onclick="openDropdown( event,'user-responsive-dropdown' )"
                             >
                                 <div class="items-center flex">
                                     <img
                                         class="h-8 w-8 rounded-full object-cover"
-                                        src="{{ Auth::user()->profile_photo_url }}"
-                                        alt="{{ Auth::user()->name }}"
+                                        src="{{ Auth::user() -> profile_photo_url }}"
+                                        alt="{{ Auth::user() -> name }}"
                                     />
                                 </div>
                             </a>
@@ -120,22 +116,22 @@
                                 id="user-responsive-dropdown"
                             >
                                 <div class="block px-4 py-2 text-xs text-gray-500">
-                                    {{ __('Gerer mon compte') }}
+                                    {{ __( 'Gerer mon compte' ) }}
                                 </div>
                                 <a
-                                    href="{{ route('profile.show') }}"
+                                    href="{{ route( 'profile.show' ) }}"
                                     class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
                                 >
-                                    @lang('Profile')
+                                    @lang( 'Profile' )
                                 </a>
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form method="POST" action="{{ route( 'logout' ) }}">
                                     @csrf
                                     <a
-                                        href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); this.closest('form').submit();"
+                                        href="{{ route( 'logout' ) }}"
+                                        onclick="event.preventDefault(); this.closest( 'form' ).submit();"
                                         class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
                                     >
-                                        @lang('Déconnexion')
+                                        @lang( 'Déconnexion' )
                                     </a>
                                 </form>
                             </div>
@@ -153,14 +149,14 @@
                                         class="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
                                         href="/dashboard"
                                     >
-                                        @lang('MolenGeek Partenariat')
+                                        @lang( 'MolenGeek Partenariat' )
                                     </a>
                                 </div>
                                 <div class="w-6/12 flex justify-end">
                                     <button
                                         type="button"
                                         class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-                                        onclick="toggleNavbar('example-collapse-sidebar')"
+                                        onclick="toggleNavbar( 'example-collapse-sidebar' )"
                                     >
                                         <i class="fas fa-times"></i>
                                     </button>
@@ -213,13 +209,13 @@
                             <a
                                 class="text-gray-600 block"
                                 href="#"
-                                onclick="openDropdown(event,'user-dropdown')"
+                                onclick="openDropdown( event,'user-dropdown' )"
                             >
                                 <div class="items-center flex">
                                     <img
                                         class="h-12 w-12 rounded-full object-cover"
-                                        src="{{ Auth::user()->profile_photo_url }}"
-                                        alt="{{ Auth::user()->name }}"
+                                        src="{{ Auth::user() -> profile_photo_url }}"
+                                        alt="{{ Auth::user() -> name }}"
                                     />
                                     </span>
                                 </div>
@@ -230,22 +226,22 @@
                                 id="user-dropdown"
                             >
                                 <div class="block px-4 py-2 text-xs text-gray-500">
-                                    {{ __('Gerer mon compte') }}
+                                    {{ __( 'Gerer mon compte' ) }}
                                 </div>
                                 <a
-                                    href="{{ route('profile.show') }}"
+                                    href="{{ route( 'profile.show' ) }}"
                                     class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
                                 >
-                                    @lang('Profile')
+                                    @lang( 'Profile' )
                                 </a>
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form method="POST" action="{{ route( 'logout' ) }}">
                                     @csrf
                                     <a
-                                        href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); this.closest('form').submit();"
+                                        href="{{ route( 'logout' ) }}"
+                                        onclick="event.preventDefault(); this.closest( 'form' ).submit();"
                                         class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
                                     >
-                                        @lang('Déconnexion')
+                                        @lang( 'Déconnexion' )
                                     </a>
                                 </form>
                             </div>

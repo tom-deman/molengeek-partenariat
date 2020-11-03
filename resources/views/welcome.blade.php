@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace( '_', '-', app() -> getLocale() ) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@lang('MolenGeek Partenariat')</title>
+        <title>@lang( 'MolenGeek Partenariat' )</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,23 +23,34 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="antialiased">
-        @if (Route::has('login'))
+        @if (Route::has( 'login' ))
             <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                 @auth
-                    <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">@lang('Tableau de bord')</a>
+                    <a href="{{ url( '/dashboard' ) }}" class="text-sm text-gray-700 underline">
+                        @lang( 'Tableau de bord' )
+                    </a>
                 @else
-                    <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">@lang('Connexion')</a>
+                    <a href="{{ route( 'login' ) }}" class="text-sm text-gray-700 underline">
+                        @lang( 'Connexion' )
+                    </a>
 
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">@lang('S\'inscrire')</a>
+                    @if (Route::has( 'register' ))
+                        <a href="{{ route( 'register' ) }}" class="ml-4 text-sm text-gray-700 underline">
+                            @lang( 'S\'inscrire' )
+                        </a>
                     @endif
                 @endif
             </div>
         @endif
         <p>{{ __( 'bonjour' ) }}</p>
-        <a href="{{ route( 'setlang', 'en' ) }}">@lang('Anglais')</a>
-        <a href="{{ route( 'setlang', 'fr' ) }}">@lang('Français')</a>
-        <a href="{{ route( 'setlang', 'nl' ) }}">@lang('Néerlandais')</a>
-        </div>
+        <a href="{{ route( 'setlang', 'en' ) }}">
+            @lang( 'Anglais' )
+        </a>
+        <a href="{{ route( 'setlang', 'fr' ) }}">
+            @lang( 'Français' )
+        </a>
+        <a href="{{ route( 'setlang', 'nl' ) }}">
+            @lang( 'Néerlandais' )
+        </a>
     </body>
 </html>
