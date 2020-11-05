@@ -4,22 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuestionUser extends Migration
-{
+class CreateQuestionUser extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('question_users', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('question_id')->constrained();
-            $table->text('value');
-            $table->timestamps();
-        });
+    public function up() {
+        Schema::create( 'question_users', function( Blueprint $table ) {
+            $table -> id();
+            $table -> foreignId( 'user_id' )     -> constrained();
+            $table -> foreignId( 'question_id' ) -> constrained();
+            $table -> text( 'value' );
+            $table -> timestamps();
+        } );
     }
 
     /**
@@ -27,8 +25,7 @@ class CreateQuestionUser extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('question_user');
+    public function down() {
+        Schema::dropIfExists( 'question_user' );
     }
 }

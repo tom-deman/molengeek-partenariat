@@ -4,22 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttachmentsTable extends Migration
-{
+class CreateAttachmentsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('attachments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('question_id')->constrained()->cascadeOnDelete();
-            $table->string('url');
-            $table->string('name');
-            $table->timestamps();
-        });
+    public function up() {
+        Schema::create( 'attachments', function( Blueprint $table ) {
+            $table -> id();
+            $table -> foreignId( 'question_id') -> constrained() -> cascadeOnDelete();
+            $table -> string( 'url' );
+            $table -> string( 'name' );
+            $table -> timestamps();
+        } );
     }
 
     /**
@@ -27,8 +25,7 @@ class CreateAttachmentsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('attachments');
+    public function down() {
+        Schema::dropIfExists( 'attachments' );
     }
 }

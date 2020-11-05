@@ -4,23 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompaniesTable extends Migration
-{
+class CreateCompaniesTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('companies', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string( 'name', 255 );
-            $table->string( 'logo' );
-            $table->string( 'tva', 255 );
-            $table->timestamps();
-        });
+    public function up() {
+        Schema::create( 'companies', function( Blueprint $table ) {
+            $table -> id();
+            $table -> foreignId( 'user_id' ) -> constrained() -> cascadeOnDelete();
+            $table -> string( 'name', 255 );
+            $table -> string( 'logo' );
+            $table -> string( 'tva', 255 );
+            $table -> timestamps();
+        } );
     }
 
     /**
@@ -28,8 +26,7 @@ class CreateCompaniesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('companies');
     }
 }
