@@ -13,8 +13,8 @@ class CreateQuestionUser extends Migration {
     public function up() {
         Schema::create( 'question_users', function( Blueprint $table ) {
             $table -> id();
-            $table -> foreignId( 'user_id' )     -> constrained();
-            $table -> foreignId( 'question_id' ) -> constrained();
+            $table -> foreignId( 'user_id' )     -> constrained() -> onDelete('cascade');
+            $table -> foreignId( 'question_id' ) -> constrained() -> onDelete('cascade');
             $table -> text( 'value' );
             $table -> timestamps();
         } );

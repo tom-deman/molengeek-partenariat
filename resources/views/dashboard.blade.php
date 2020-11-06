@@ -81,7 +81,7 @@
                                     href="{{ route( 'profile.show' ) }}"
                                     class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
                                 >
-                                    @lang( 'Profile' )
+                                    @lang( 'Profil' )
                                 </a>
                                 <form method="POST" action="{{ route( 'logout' ) }}">
                                     @csrf
@@ -122,7 +122,7 @@
                                     href="{{ route( 'profile.show' ) }}"
                                     class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
                                 >
-                                    @lang( 'Profile' )
+                                    @lang( 'Profil' )
                                 </a>
                                 <form method="POST" action="{{ route( 'logout' ) }}">
                                     @csrf
@@ -232,7 +232,7 @@
                                     href="{{ route( 'profile.show' ) }}"
                                     class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
                                 >
-                                    @lang( 'Profile' )
+                                    @lang( 'Profil' )
                                 </a>
                                 <form method="POST" action="{{ route( 'logout' ) }}">
                                     @csrf
@@ -279,7 +279,7 @@
 
             (function() {
                 /* Add current date to the footer */
-                document.getElementById("javascript-date").innerHTML = new Date().getFullYear();
+                // document.getElementById("javascript-date").innerHTML = new Date().getFullYear();
                 /* Chart initialisations */
                 /* Line Chart */
                 var config = {
@@ -382,8 +382,8 @@
                     }
                 }
                 };
-                var ctx = document.getElementById("line-chart").getContext("2d");
-                window.myLine = new Chart(ctx, config);
+                // var ctx = document.getElementById("line-chart").getContext("2d");
+                // window.myLine = new Chart(ctx, config);
 
                 /* Bar Chart */
                 config = {
@@ -478,8 +478,8 @@
                     }
                 }
                 };
-                ctx = document.getElementById("bar-chart").getContext("2d");
-                window.myBar = new Chart(ctx, config);
+                // ctx = document.getElementById("bar-chart").getContext("2d");
+                // window.myBar = new Chart(ctx, config);
             })();
         </script>
     </body>

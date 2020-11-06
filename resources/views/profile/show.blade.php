@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
+            {{ __('Profil') }}
         </h2>
     </x-slot>
 
@@ -18,17 +18,17 @@
             @endif
 
             @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-                <x-jet-section-border />
+                {{-- <x-jet-section-border />
 
                 <div class="mt-10 sm:mt-0">
                     @livewire('profile.two-factor-authentication-form')
-                </div>
+                </div> --}}
             @endif
 
-            <x-jet-section-border />
+            {{-- <x-jet-section-border /> --}}
 
             <div class="mt-10 sm:mt-0">
-                @livewire('profile.logout-other-browser-sessions-form')
+                {{-- @livewire('profile.logout-other-browser-sessions-form') --}}
             </div>
 
             <x-jet-section-border />
