@@ -176,5 +176,7 @@ return [
         'time'                  => 'heure',
         'available'             => 'disponible',
         'size'                  => 'taille',
+        'profession'            => 'profession',
+        'birthday'              => 'date de naissance'
     ],
 ];

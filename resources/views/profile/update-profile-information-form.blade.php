@@ -31,7 +31,7 @@
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="! photoPreview">
-                    <img src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->first_name }}" class="rounded-full h-20 w-20 object-cover">
+                    <img src="{{ $this -> user -> profile_photo_path }}" alt="{{ $this -> user -> first_name }}" class="rounded-full h-20 w-20 object-cover">
                 </div>
 
                 <!-- New Profile Photo Preview -->
@@ -47,7 +47,7 @@
                     {{ __('Selectionner une nouvelle photo') }}
                 </x-jet-secondary-button>
 
-                @if ($this->user->profile_photo_path)
+                @if( $this -> user -> profile_photo_path )
                     <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
                         {{ __('Supprimer la photo') }}
                     </x-jet-secondary-button>
@@ -76,11 +76,24 @@
             <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="state.email" />
             <x-jet-input-error for="email" class="mt-2" />
         </div>
+
+        <!-- Profession -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="profession" value="{{ __('Profession') }}" />
+            <x-jet-input id="profession" type="profession" class="mt-1 block w-full" wire:model.defer="state.profession" />
+            <x-jet-input-error for="profession" class="mt-2" />
+        </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="birthday" value="{{ __('Date de naissance') }}" />
+            <x-jet-input id="birthday" type="birthday" class="mt-1 block w-full" wire:model.defer="state.birthday" />
+            <x-jet-input-error for="birthday" class="mt-2" />
+        </div>
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
-            {{ __('Sauvegarder') }}
+        <x-jet-action-message class="mr-3 text-green-500" on="saved">
+            {{ __('Sauvegardé') }}
         </x-jet-action-message>
 
         <x-jet-button wire:loading.attr="disabled" wire:target="photo">

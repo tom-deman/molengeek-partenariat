@@ -10,6 +10,7 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class UserController extends Controller {
     use PasswordValidationRules;
@@ -34,8 +35,6 @@ class UserController extends Controller {
             ] );
         }
 
-
-
         DB::transaction(function () use ($input) {
             tap( $user = User::create( [
                 'first_name' => $input[ 'first_name' ],
@@ -49,31 +48,27 @@ class UserController extends Controller {
                 $this -> createTeam( $user );
             } );
 
+            $question = new QuestionUser();
+            $question -> user_id     = $user->id;
+            $question -> question_id = 1;
+            $question -> value       = $input->input( 'value' );
+            $question -> save();
+
             if( $input[ 'company' ] === "1" ){
                 $imageName = time() . '.' . $input -> logo -> extension();
                 $input -> logo -> move( public_path( 'storage' ), $imageName );
 
                 $company = new Company();
-
                 $company -> user_id = $user  -> id;
                 $company -> name    = $input -> input( 'name' );
                 $company -> tva     = $input -> input( 'tva' );
                 $company -> logo    = 'storage/' . $imageName;
-
                 $company -> save();
             }
-
-            $question = new QuestionUser();
-
-            $question -> user_id     = $user->id;
-            $question -> question_id = 1;
-            $question -> value       = $input->input( 'value' );
-
-            $question -> save();
         });
-
         return response( "OK", 204 );
     }
+
 
     protected function createTeam( User $user ) {
         $user -> ownedTeams() -> save( Team::forceCreate( [

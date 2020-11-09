@@ -3,7 +3,7 @@
         <x-slot name="logo">
             <img
                 src="{{ asset( 'img/molengeek_logo.png' ) }}"
-                class="h-40 object-cover"
+                class="h-40 object-cover mt-0 sm:-mt-32 md:-mt-40 lg:-mt-40 xl:-mt-40"
                 alt="logo MolenGeek"
             >
         </x-slot>
