@@ -1355,6 +1355,7 @@
                 data.append( 'logo'                 , this.inputLogo )
 
                 let app = this
+
                 axios
                     .post( '/register', data )
                     .then( function( response ){

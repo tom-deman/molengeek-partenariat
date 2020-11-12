@@ -382,8 +382,8 @@
                     }
                 }
                 };
-                // var ctx = document.getElementById("line-chart").getContext("2d");
-                // window.myLine = new Chart(ctx, config);
+                var ctx = document.getElementById("line-chart").getContext("2d");
+                window.myLine = new Chart(ctx, config);
 
                 /* Bar Chart */
                 config = {
@@ -478,8 +478,8 @@
                     }
                 }
                 };
-                // ctx = document.getElementById("bar-chart").getContext("2d");
-                // window.myBar = new Chart(ctx, config);
+                ctx = document.getElementById("bar-chart").getContext("2d");
+                window.myBar = new Chart(ctx, config);
             })();
         </script>
     </body>

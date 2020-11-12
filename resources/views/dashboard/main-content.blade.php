@@ -4,7 +4,7 @@
     <!-- Header -->
     <div class="relative bg-purple-600 md:pt-32 pb-32 pt-12">
         <div class="px-4 md:px-10 mx-auto w-full">
-            {{-- <div>
+            <div>
                 <!-- Card stats -->
                 <div class="flex flex-wrap">
                     <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
@@ -126,10 +126,10 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
-    {{-- <div class="px-4 md:px-10 mx-auto w-full -m-24">
+    <div class="px-4 md:px-10 mx-auto w-full -m-24">
         <div class="flex flex-wrap">
             <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
                 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-gray-900">
@@ -513,5 +513,5 @@
                 </div>
             </div>
         </footer>
-    </div> --}}
+    </div>
 @endsection
