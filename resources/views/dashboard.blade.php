@@ -103,11 +103,19 @@
                                 onclick="openDropdown( event,'user-responsive-dropdown' )"
                             >
                                 <div class="items-center flex">
-                                    <img
-                                        class="h-8 w-8 rounded-full object-cover"
-                                        src="{{ Auth::user() -> profile_photo_url }}"
-                                        alt="{{ Auth::user() -> name }}"
-                                    />
+                                    @if( Auth::user()->profile_photo_path === null )
+                                        <img
+                                            src="{{ asset( 'img/bg.png' ) }}"
+                                            alt="{{ Auth::user()->first_name }}"
+                                            class="rounded-full h-20 w-20 object-cover"
+                                        />
+                                    @else
+                                        <img
+                                            class="h-8 w-8 rounded-full object-cover"
+                                            src="{{ 'storage/' . Auth::user()->profile_photo_path }}"
+                                            alt="{{ Auth::user()->first_name }}"
+                                        />
+                                    @endif
                                 </div>
                             </a>
                             <div
@@ -212,11 +220,19 @@
                                 onclick="openDropdown( event,'user-dropdown' )"
                             >
                                 <div class="items-center flex">
-                                    <img
-                                        class="h-12 w-12 rounded-full object-cover"
-                                        src="{{ Auth::user() -> profile_photo_url }}"
-                                        alt="{{ Auth::user() -> name }}"
-                                    />
+                                    @if( Auth::user()->profile_photo_path === null )
+                                        <img
+                                            src="{{ asset( 'img/bg.png' ) }}"
+                                            alt="{{ Auth::user()->first_name }}"
+                                            class="rounded-full h-12 w-12 object-cover"
+                                        />
+                                    @else
+                                        <img
+                                            class="h-12 w-12 rounded-full object-cover"
+                                            src="{{ 'storage/' . Auth::user()->profile_photo_path }}"
+                                            alt="{{ Auth::user()->first_name }}"
+                                        />
+                                    @endif
                                     </span>
                                 </div>
                             </a>
