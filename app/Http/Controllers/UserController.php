@@ -24,18 +24,23 @@ class UserController extends Controller {
             'profession' => 'required|string|max:255',
             'password'   => $this->passwordRules(),
             'company'    => 'required|boolean',
-            'value'      => 'required|string|max:255'
+            'value'      => 'required|string|max:255',
+            'country'    => 'required|string|max:255',
+            'id_photo'   => 'required|file|image|mimes:jpeg,png,jpg,gif,svg'
         ] );
 
         if( $input['company'] === "1" ) {
             $input -> validate( [
                 'name' => 'required|string:max:255',
                 'tva'  => 'required|string:max:255',
-                'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg'
+                'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg',
+                'company_country' => 'required|string:max:255'
             ] );
         }
 
         DB::transaction(function () use ($input) {
+            $idPhotoName = time() . '.' . $input -> id_photo -> extension();
+            $input -> id_photo -> move( public_path( 'storage' ), $idPhotoName );
             tap( $user = User::create( [
                 'first_name' => $input[ 'first_name' ],
                 'last_name'  => $input[ 'last_name' ],
@@ -43,7 +48,9 @@ class UserController extends Controller {
                 'birthday'   => $input[ 'birthday' ],
                 'profession' => $input[ 'profession' ],
                 'password'   => Hash::make( $input[ 'password' ] ),
-                'company'    => $input[ 'company' ]
+                'company'    => $input[ 'company' ],
+                'country'    => $input[ 'country' ],
+                'id_photo'   => 'storage/' . $idPhotoName,
             ] ), function( User $user ) {
                 $this -> createTeam( $user );
             } );
@@ -63,6 +70,7 @@ class UserController extends Controller {
                 $company -> name    = $input -> input( 'name' );
                 $company -> tva     = $input -> input( 'tva' );
                 $company -> logo    = 'storage/' . $imageName;
+                $company -> country = $input -> input( 'company_country' );
                 $company -> save();
             }
         });

@@ -445,6 +445,68 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="w-full mx-2 flex-1 svelte-1l8159u">
+                                <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
+                                    {{ lang.country }}
+                                </div>
+                                <div class="bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u">
+                                    <input
+                                        @blur="checkErrors( 'country' )"
+                                        @keydown="checkInput"
+                                        placeholder="Belgium"
+                                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                                        v-model="inputCountry"
+                                        type="text"
+                                        required
+                                    />
+                                </div>
+                                <div class="h-4">
+                                    <p
+                                        class="text-red-400 text-sm"
+                                        v-if="errors.country"
+                                    >
+                                        {{ errors.country }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full mx-2 flex-1 svelte-1l8159u">
+                            <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
+                                {{ lang.idPhoto }}
+                            </div>
+                            <input
+                                ref="inputIdPhoto"
+                                type="file"
+                                name="file"
+                                class="inputfile"
+                                style="width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;"
+                                @change="onFileChangeId"
+                                accept="image/*"
+                            />
+                            <p
+                                for="file"
+                                @click.prevent="$refs.inputIdPhoto.click()"
+                                class="hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center"
+                                style="outline: none;"
+                            >
+                                {{ lang.chooseId }}
+                            </p>
+                            <div class="h-6 mt-2">
+                                <p
+                                    v-if="this.inputIdPhoto"
+                                    class="text-sm text-gray-800 h-6"
+                                >
+                                    {{ inputLogoId.name }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="h-4">
+                            <p
+                                class="text-red-400 text-sm ml-2"
+                                v-if="errors.id_photo"
+                            >
+                                {{ errors.id_photo }}
+                            </p>
                         </div>
                     </div>
                     <div
@@ -539,6 +601,32 @@
                                         v-if="errors.tva"
                                     >
                                         {{ errors.tva }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:flex-row">
+                            <div class="w-full mx-2 flex-1 svelte-1l8159u">
+                                <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
+                                    {{ lang.companyCountry }}
+                                </div>
+                                <div class="bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u">
+                                    <input
+                                        @blur="checkErrors( 'companyCountry' )"
+                                        @keydown="checkInput"
+                                        placeholder="Belgium"
+                                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                                        v-model="inputCompanyCountry"
+                                        type="text"
+                                        required
+                                    />
+                                </div>
+                                <div class="h-4">
+                                    <p
+                                        class="text-red-400 text-sm"
+                                        v-if="errors.companyCountry"
+                                    >
+                                        {{ errors.companyCountry }}
                                     </p>
                                 </div>
                             </div>
@@ -688,6 +776,9 @@
             inputTva            : '',
             inputLogo           : '',
             inputEmail          : '',
+            inputCountry        : '',
+            inputCompanyCountry : '',
+            inputIdPhoto        : '',
             valid               : false,
             serverErrors        : false,
             serverErrorsTab     : '',
@@ -704,7 +795,9 @@
                 tva             : '',
                 password        : '',
                 confirm_password: '',
-                email           : ''
+                email           : '',
+                country         : '',
+                id_photo        : ''
             },
             lang                : {
                 personnalInfo   : 'Informations personnelles',
@@ -730,7 +823,11 @@
                 next            : 'Suivant',
                 validate        : 'Valider',
                 alreadyRegister : 'Déjà inscrit ?',
-                answer          : 'Réponse ...'
+                answer          : 'Réponse ...',
+                country         : 'Pays',
+                companyCountry  : 'Pays',
+                idPhoto         : 'Copie de la carte d\'identité',
+                chooseId        : 'Choisissez un fichier'
             }
         }),
 
@@ -749,6 +846,8 @@
                     && /^.{8,255}$/.test( this.inputPassword )
                     && this.inputConfirmPassword && this.inputConfirmPassword.length < 255
                     && ( this.inputPassword === this.inputConfirmPassword )
+                    && this.inputCountry
+                    && this.inputCountry.length < 255
                 ) {
                     this.stepOneClass   = 'text-white'
                     this.stepTwoClass   = 'text-gray-600'
@@ -781,6 +880,8 @@
                     && this.inputCompanyName.length < 255
                     && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva )
                     && this.inputLogo
+                    && this.inputCompanyCountry
+                    && this.inputCompanyCountry.length < 255
                 ) {
                     this.stepOneClass   = 'text-teal-600'
                     this.stepTwoClass   = 'text-teal-600'
@@ -847,7 +948,35 @@
                     this.errors.logo = ''
                     this.checkInput()
                     this.checkErrors( 'logo' )
-                    console.log( 'logo: ', this.inputLogo )
+                }
+            },
+
+            onFileChangeId( e ){
+                const file = e.target.files || e.dataTransfer.files
+                if( !file.length )
+                    return
+
+                if( file[ 0 ].size > 5000000 ) {
+                    switch( this.language ) {
+                        case 'fr':
+                            this.errors.id_photo = 'Votre fichier est trop grand'
+                        break
+                        case 'en':
+                            this.errors.id_photo = 'Your file is too big'
+                        break
+                        case 'nl':
+                            this.errors.id_photo = 'Votre fichier est trop grand'
+                        break
+                    }
+                    this.inputIdPhoto  = ''
+                    this.valid         = false
+                    this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
+                }
+                else {
+                    this.inputIdPhoto    = file[ 0 ]
+                    this.errors.id_photo = ''
+                    this.checkInput()
+                    this.checkErrors( 'id_photo' )
                 }
             },
 
@@ -866,6 +995,9 @@
                     && (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail ))
                     && this.inputEmail.length < 255
                     && ( this.inputPassword === this.inputConfirmPassword )
+                    && this.inputCountry
+                    && this.inputCountry.length < 255
+                    && this.inputIdPhoto
                 ) {
                     this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
                     this.valid         = true
@@ -884,6 +1016,9 @@
                     || (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail ))
                     || this.inputEmail.length > 255
                     || ( this.inputPassword !== this.inputConfirmPassword )
+                    || !this.inputCountry
+                    || this.inputCountry.length > 255
+                    || !this.inputIdPhoto
                 ) {
                     this.valid         = false
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
@@ -905,6 +1040,8 @@
                     && this.inputCompanyName.length < 255
                     && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva )
                     && this.inputLogo
+                    && this.inputCompanyCountry
+                    && this.inputCompanyCountry.length < 255
                 ) {
                     this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
                     this.valid         = true
@@ -912,7 +1049,10 @@
                 else if( this.step === 2
                     && ( !this.inputCompanyName
                     || this.inputCompanyName.length > 255
-                    || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva ) 
+                    || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva )
+                    || !this.inputLogo
+                    || !this.inputCompanyCountry
+                    || this.inputCompanyCountry.length < 255
                     ) ) {
                     this.valid         = false
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
@@ -1336,6 +1476,88 @@
                         else {
                             this.errors.confirm_password = ''
                         }
+                    break
+                    case 'country':
+                        if( !this.inputCountry ) {
+                            switch( this.language ) {
+                                case 'fr':
+                                    this.errors.country = 'Pays nécessaire'
+                                break
+                                case 'en':
+                                    this.errors.country = 'Pays nécessaire'
+                                break
+                                case 'nl':
+                                    this.errors.country = 'Pays nécessaire'
+                                break
+                            }
+                        }
+                        else if( this.inputCountry.length > 255 ) {
+                            switch( this.language ) {
+                                case 'fr':
+                                    this.errors.country = 'Champ trop grand'
+                                break
+                                case 'en':
+                                    this.errors.country = 'Champ trop grand'
+                                break
+                                case 'nl':
+                                    this.errors.country = 'Champ trop grand'
+                                break
+                            }
+                        }
+                        else {
+                            this.errors.country = ''
+                        }
+                    break
+                    case 'companyCountry':
+                        if( !this.inputCompanyCountry ) {
+                            switch( this.language ) {
+                                case 'fr':
+                                    this.errors.companyCountry = 'Pays nécessaire'
+                                break
+                                case 'en':
+                                    this.errors.companyCountry = 'Pays nécessaire'
+                                break
+                                case 'nl':
+                                    this.errors.companyCountry = 'Pays nécessaire'
+                                break
+                            }
+                        }
+                        else if( this.inputCountry.length > 255 ) {
+                            switch( this.language ) {
+                                case 'fr':
+                                    this.errors.companyCountry = 'Champ trop grand'
+                                break
+                                case 'en':
+                                    this.errors.companyCountry = 'Champ trop grand'
+                                break
+                                case 'nl':
+                                    this.errors.companyCountry = 'Champ trop grand'
+                                break
+                            }
+                        }
+                        else {
+                            this.errors.companyCountry = ''
+                        }
+                    break
+                    case 'id_photo':
+                        this.serverErrorsTab = ''
+                        if( !this.inputIdPhoto ) {
+                            switch( this.language ) {
+                                case 'fr':
+                                    this.errors.id_photo = 'Copie de la carte d\'identité nécessaire'
+                                break
+                                case 'en':
+                                    this.errors.id_photo = 'Copie de la carte d\'identité nécessaire'
+                                break
+                                case 'nl':
+                                    this.errors.id_photo = 'Copie de la carte d\'identité nécessaire'
+                                break
+                            }
+                        }
+                        else {
+                            this.errors.id_photo = ''
+                        }
+                    break
                 }
             },
 
@@ -1353,12 +1575,14 @@
                 data.append( 'name'                 , this.inputCompanyName )
                 data.append( 'tva'                  , this.inputTva )
                 data.append( 'logo'                 , this.inputLogo )
+                data.append( 'country'              , this.inputCountry )
+                data.append( 'company_country'      , this.inputCompanyCountry )
+                data.append( 'id_photo'             , this.inputIdPhoto )
 
                 let app = this
-
                 axios
                     .post( '/register', data )
-                    .then( function( response ){
+                    .then( function( response ) {
                         window.location.href = '/login'
                     })
                     .catch(function( error ) {
@@ -1398,7 +1622,9 @@
                         app.lang.next            = 'Suivant',
                         app.lang.validate        = 'Valider',
                         app.lang.alreadyRegister = 'Déjà inscrit ?',
-                        app.lang.answer          = 'Réponse ...'
+                        app.lang.answer          = 'Réponse ...',
+                        app.lang.country         = 'Pays',
+                        app.lang.companyCountry  = 'Pays'
                     }
                     else if( app.language === 'en' ){
                         app.lang.personnalInfo   = 'Informations personnelles',
@@ -1424,7 +1650,9 @@
                         app.lang.next            = 'Suivant',
                         app.lang.validate        = 'Valider',
                         app.lang.alreadyRegister = 'Déjà inscrit ?',
-                        app.lang.answer          = 'Réponse ...'
+                        app.lang.answer          = 'Réponse ...',
+                        app.lang.country         = 'Pays',
+                        app.lang.companyCountry  = 'Pays'
                     }
                     else if( app.language === 'nl' ) {
                         app.lang.personnalInfo   = 'Informations personnelles',
@@ -1451,6 +1679,8 @@
                         app.lang.validate        = 'Valider',
                         app.lang.alreadyRegister = 'Déjà inscrit ?',
                         app.lang.answer          = 'Réponse ...'
+                        app.lang.country         = 'Pays',
+                        app.lang.companyCountry  = 'Pays'
                     }
                 })
                 .catch( function( error ) {

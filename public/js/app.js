@@ -2576,6 +2576,94 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2598,6 +2686,9 @@ __webpack_require__.r(__webpack_exports__);
       inputTva: '',
       inputLogo: '',
       inputEmail: '',
+      inputCountry: '',
+      inputCompanyCountry: '',
+      inputIdPhoto: '',
       valid: false,
       serverErrors: false,
       serverErrorsTab: '',
@@ -2614,7 +2705,9 @@ __webpack_require__.r(__webpack_exports__);
         tva: '',
         password: '',
         confirm_password: '',
-        email: ''
+        email: '',
+        country: '',
+        id_photo: ''
       },
       lang: {
         personnalInfo: 'Informations personnelles',
@@ -2640,13 +2733,17 @@ __webpack_require__.r(__webpack_exports__);
         next: 'Suivant',
         validate: 'Valider',
         alreadyRegister: 'Déjà inscrit ?',
-        answer: 'Réponse ...'
+        answer: 'Réponse ...',
+        country: 'Pays',
+        companyCountry: 'Pays',
+        idPhoto: 'Copie de la carte d\'identité',
+        chooseId: 'Choisissez un fichier'
       }
     };
   },
   methods: {
     incrementStep: function incrementStep() {
-      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && this.inputPassword === this.inputConfirmPassword) {
+      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && this.inputPassword === this.inputConfirmPassword && this.inputCountry && this.inputCountry.length < 255) {
         this.stepOneClass = 'text-white';
         this.stepTwoClass = 'text-gray-600';
         this.stepThreeClass = 'text-gray-600';
@@ -2670,7 +2767,7 @@ __webpack_require__.r(__webpack_exports__);
         this.stepThreeClass = 'text-white';
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
         this.valid = false;
-      } else if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo) {
+      } else if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo && this.inputCompanyCountry && this.inputCompanyCountry.length < 255) {
         this.stepOneClass = 'text-teal-600';
         this.stepTwoClass = 'text-teal-600';
         this.stepThreeClass = 'text-white';
@@ -2732,14 +2829,42 @@ __webpack_require__.r(__webpack_exports__);
         this.errors.logo = '';
         this.checkInput();
         this.checkErrors('logo');
-        console.log('logo: ', this.inputLogo);
+      }
+    },
+    onFileChangeId: function onFileChangeId(e) {
+      var file = e.target.files || e.dataTransfer.files;
+      if (!file.length) return;
+
+      if (file[0].size > 5000000) {
+        switch (this.language) {
+          case 'fr':
+            this.errors.id_photo = 'Votre fichier est trop grand';
+            break;
+
+          case 'en':
+            this.errors.id_photo = 'Your file is too big';
+            break;
+
+          case 'nl':
+            this.errors.id_photo = 'Votre fichier est trop grand';
+            break;
+        }
+
+        this.inputIdPhoto = '';
+        this.valid = false;
+        this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
+      } else {
+        this.inputIdPhoto = file[0];
+        this.errors.id_photo = '';
+        this.checkInput();
+        this.checkErrors('id_photo');
       }
     },
     checkInput: function checkInput() {
-      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && this.inputPassword === this.inputConfirmPassword) {
+      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && this.inputPassword === this.inputConfirmPassword && this.inputCountry && this.inputCountry.length < 255 && this.inputIdPhoto) {
         this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
         this.valid = true;
-      } else if (this.step === 0 && !this.inputLastName || this.inputLastName.length > 255 || !this.inputFirstName || this.inputFirstName.length > 255 || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) || !this.inputProfession || this.inputProfession.length > 255 || !/^.{8,255}$/.test(this.inputPassword) || !this.inputConfirmPassword || this.inputConfirmPassword.length > 255 || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) || this.inputEmail.length > 255 || this.inputPassword !== this.inputConfirmPassword) {
+      } else if (this.step === 0 && !this.inputLastName || this.inputLastName.length > 255 || !this.inputFirstName || this.inputFirstName.length > 255 || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) || !this.inputProfession || this.inputProfession.length > 255 || !/^.{8,255}$/.test(this.inputPassword) || !this.inputConfirmPassword || this.inputConfirmPassword.length > 255 || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) || this.inputEmail.length > 255 || this.inputPassword !== this.inputConfirmPassword || !this.inputCountry || this.inputCountry.length > 255 || !this.inputIdPhoto) {
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       }
@@ -2754,10 +2879,10 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo) {
+      if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo && this.inputCompanyCountry && this.inputCompanyCountry.length < 255) {
         this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
         this.valid = true;
-      } else if (this.step === 2 && (!this.inputCompanyName || this.inputCompanyName.length > 255 || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva))) {
+      } else if (this.step === 2 && (!this.inputCompanyName || this.inputCompanyName.length > 255 || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) || !this.inputLogo || !this.inputCompanyCountry || this.inputCompanyCountry.length < 255)) {
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       }
@@ -3232,6 +3357,100 @@ __webpack_require__.r(__webpack_exports__);
             this.errors.confirm_password = '';
           }
 
+          break;
+
+        case 'country':
+          if (!this.inputCountry) {
+            switch (this.language) {
+              case 'fr':
+                this.errors.country = 'Pays nécessaire';
+                break;
+
+              case 'en':
+                this.errors.country = 'Pays nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.country = 'Pays nécessaire';
+                break;
+            }
+          } else if (this.inputCountry.length > 255) {
+            switch (this.language) {
+              case 'fr':
+                this.errors.country = 'Champ trop grand';
+                break;
+
+              case 'en':
+                this.errors.country = 'Champ trop grand';
+                break;
+
+              case 'nl':
+                this.errors.country = 'Champ trop grand';
+                break;
+            }
+          } else {
+            this.errors.country = '';
+          }
+
+          break;
+
+        case 'companyCountry':
+          if (!this.inputCompanyCountry) {
+            switch (this.language) {
+              case 'fr':
+                this.errors.companyCountry = 'Pays nécessaire';
+                break;
+
+              case 'en':
+                this.errors.companyCountry = 'Pays nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.companyCountry = 'Pays nécessaire';
+                break;
+            }
+          } else if (this.inputCountry.length > 255) {
+            switch (this.language) {
+              case 'fr':
+                this.errors.companyCountry = 'Champ trop grand';
+                break;
+
+              case 'en':
+                this.errors.companyCountry = 'Champ trop grand';
+                break;
+
+              case 'nl':
+                this.errors.companyCountry = 'Champ trop grand';
+                break;
+            }
+          } else {
+            this.errors.companyCountry = '';
+          }
+
+          break;
+
+        case 'id_photo':
+          this.serverErrorsTab = '';
+
+          if (!this.inputIdPhoto) {
+            switch (this.language) {
+              case 'fr':
+                this.errors.id_photo = 'Copie de la carte d\'identité nécessaire';
+                break;
+
+              case 'en':
+                this.errors.id_photo = 'Copie de la carte d\'identité nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.id_photo = 'Copie de la carte d\'identité nécessaire';
+                break;
+            }
+          } else {
+            this.errors.id_photo = '';
+          }
+
+          break;
       }
     },
     sendForm: function sendForm() {
@@ -3248,6 +3467,9 @@ __webpack_require__.r(__webpack_exports__);
       data.append('name', this.inputCompanyName);
       data.append('tva', this.inputTva);
       data.append('logo', this.inputLogo);
+      data.append('country', this.inputCountry);
+      data.append('company_country', this.inputCompanyCountry);
+      data.append('id_photo', this.inputIdPhoto);
       var app = this;
       axios.post('/register', data).then(function (response) {
         window.location.href = '/login';
@@ -3263,11 +3485,12 @@ __webpack_require__.r(__webpack_exports__);
       app.language = response.data;
 
       if (app.language === 'fr') {
-        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...';
+        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...', app.lang.country = 'Pays', app.lang.companyCountry = 'Pays';
       } else if (app.language === 'en') {
-        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...';
+        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...', app.lang.country = 'Pays', app.lang.companyCountry = 'Pays';
       } else if (app.language === 'nl') {
         app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...';
+        app.lang.country = 'Pays', app.lang.companyCountry = 'Pays';
       }
     })["catch"](function (error) {
       console.error(error);
@@ -22158,7 +22381,171 @@ var render = function() {
                             : _vm._e()
                         ])
                       ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.lang.country) +
+                                "\n                            "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.inputCountry,
+                                  expression: "inputCountry"
+                                }
+                              ],
+                              staticClass:
+                                "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                              attrs: {
+                                placeholder: "Belgium",
+                                type: "text",
+                                required: ""
+                              },
+                              domProps: { value: _vm.inputCountry },
+                              on: {
+                                blur: function($event) {
+                                  return _vm.checkErrors("country")
+                                },
+                                keydown: _vm.checkInput,
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.inputCountry = $event.target.value
+                                }
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "h-4" }, [
+                          _vm.errors.country
+                            ? _c("p", { staticClass: "text-red-400 text-sm" }, [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.errors.country) +
+                                    "\n                                "
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ]
                     )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.lang.idPhoto) +
+                              "\n                        "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        ref: "inputIdPhoto",
+                        staticClass: "inputfile",
+                        staticStyle: {
+                          width: "0.1px",
+                          height: "0.1px",
+                          opacity: "0",
+                          overflow: "hidden",
+                          position: "absolute",
+                          "z-index": "-1"
+                        },
+                        attrs: {
+                          type: "file",
+                          name: "file",
+                          accept: "image/*"
+                        },
+                        on: { change: _vm.onFileChangeId }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        {
+                          staticClass:
+                            "hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center",
+                          staticStyle: { outline: "none" },
+                          attrs: { for: "file" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.$refs.inputIdPhoto.click()
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.lang.chooseId) +
+                              "\n                        "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "h-6 mt-2" }, [
+                        this.inputIdPhoto
+                          ? _c(
+                              "p",
+                              { staticClass: "text-sm text-gray-800 h-6" },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(_vm.inputLogoId.name) +
+                                    "\n                            "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "h-4" }, [
+                    _vm.errors.id_photo
+                      ? _c("p", { staticClass: "text-red-400 text-sm ml-2" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.errors.id_photo) +
+                              "\n                        "
+                          )
+                        ])
+                      : _vm._e()
                   ])
                 ])
               : _vm._e(),
@@ -22417,6 +22804,81 @@ var render = function() {
                                 _vm._v(
                                   "\n                                    " +
                                     _vm._s(_vm.errors.tva) +
+                                    "\n                                "
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex flex-col md:flex-row" }, [
+                    _c(
+                      "div",
+                      { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.lang.companyCountry) +
+                                "\n                            "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.inputCompanyCountry,
+                                  expression: "inputCompanyCountry"
+                                }
+                              ],
+                              staticClass:
+                                "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+                              attrs: {
+                                placeholder: "Belgium",
+                                type: "text",
+                                required: ""
+                              },
+                              domProps: { value: _vm.inputCompanyCountry },
+                              on: {
+                                blur: function($event) {
+                                  return _vm.checkErrors("companyCountry")
+                                },
+                                keydown: _vm.checkInput,
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.inputCompanyCountry = $event.target.value
+                                }
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "h-4" }, [
+                          _vm.errors.companyCountry
+                            ? _c("p", { staticClass: "text-red-400 text-sm" }, [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.errors.companyCountry) +
                                     "\n                                "
                                 )
                               ])

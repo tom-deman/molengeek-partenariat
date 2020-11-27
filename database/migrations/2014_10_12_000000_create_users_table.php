@@ -20,9 +20,9 @@ class CreateUsersTable extends Migration {
             $table -> foreignId( 'current_team_id' )   -> nullable();
             $table -> text( 'profile_photo_path' )     -> nullable();
             $table -> text( 'id_photo' )               -> nullable();
-            $table -> text( 'country' )                -> nullable();
+            $table -> text( 'country' );
             $table -> string( 'birthday' );
-            $table -> boolean( 'company' )             -> nullable();
+            $table -> boolean( 'company' );
             $table -> string( 'profession' );
             $table -> string( 'first_name' );
             $table -> string( 'last_name' );
