@@ -19,6 +19,8 @@ class CreateUsersTable extends Migration {
             $table -> rememberToken();
             $table -> foreignId( 'current_team_id' )   -> nullable();
             $table -> text( 'profile_photo_path' )     -> nullable();
+            $table -> text( 'id_photo' )               -> nullable();
+            $table -> text( 'country' )                -> nullable();
             $table -> string( 'birthday' );
             $table -> boolean( 'company' )             -> nullable();
             $table -> string( 'profession' );

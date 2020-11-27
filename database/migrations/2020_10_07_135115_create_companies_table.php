@@ -14,6 +14,7 @@ class CreateCompaniesTable extends Migration {
         Schema::create( 'companies', function( Blueprint $table ) {
             $table -> id();
             $table -> foreignId( 'user_id' ) -> constrained() -> cascadeOnDelete();
+            $table -> text( 'country' ) -> nullable();
             $table -> string( 'name', 255 );
             $table -> string( 'logo' );
             $table -> string( 'tva', 255 );
