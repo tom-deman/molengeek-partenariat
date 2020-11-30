@@ -496,7 +496,7 @@
                                     v-if="this.inputIdPhoto"
                                     class="text-sm text-gray-800 h-6"
                                 >
-                                    {{ inputLogoId.name }}
+                                    {{ inputIdPhoto.name }}
                                 </p>
                             </div>
                         </div>

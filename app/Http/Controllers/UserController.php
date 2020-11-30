@@ -39,7 +39,7 @@ class UserController extends Controller {
         }
 
         DB::transaction(function () use ($input) {
-            $idPhotoName = time() . '.' . $input -> id_photo -> extension();
+            $idPhotoName = time() . \Str::random(6) . '.' . $input -> id_photo -> extension();
             $input -> id_photo -> move( public_path( 'storage' ), $idPhotoName );
             tap( $user = User::create( [
                 'first_name' => $input[ 'first_name' ],
@@ -62,7 +62,7 @@ class UserController extends Controller {
             $question -> save();
 
             if( $input[ 'company' ] === "1" ){
-                $imageName = time() . '.' . $input -> logo -> extension();
+                $imageName = time() . \Str::random(6) . '.' . $input -> logo -> extension();
                 $input -> logo -> move( public_path( 'storage' ), $imageName );
 
                 $company = new Company();
