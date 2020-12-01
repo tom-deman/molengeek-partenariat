@@ -10,7 +10,6 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class UserController extends Controller {
     use PasswordValidationRules;

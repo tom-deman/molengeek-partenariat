@@ -453,6 +453,7 @@
                                     <input
                                         @blur="checkErrors( 'country' )"
                                         @keydown="checkInput"
+                                        @keypress="getCountries"
                                         placeholder="Belgium"
                                         class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
                                         v-model="inputCountry"
@@ -978,6 +979,14 @@
                     this.checkInput()
                     this.checkErrors( 'id_photo' )
                 }
+            },
+
+            getCountries() {
+                axios
+                    .get( '/getCountries' )
+                    .then( function( response ) {
+                        
+                    } )
             },
 
             checkInput() {

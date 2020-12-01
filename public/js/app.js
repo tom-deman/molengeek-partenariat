@@ -2664,6 +2664,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2859,6 +2860,9 @@ __webpack_require__.r(__webpack_exports__);
         this.checkInput();
         this.checkErrors('id_photo');
       }
+    },
+    getCountries: function getCountries() {
+      axios.get('/getCountries').then(function (response) {});
     },
     checkInput: function checkInput() {
       if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && this.inputPassword === this.inputConfirmPassword && this.inputCountry && this.inputCountry.length < 255 && this.inputIdPhoto) {
@@ -22431,6 +22435,7 @@ var render = function() {
                                   return _vm.checkErrors("country")
                                 },
                                 keydown: _vm.checkInput,
+                                keypress: _vm.getCountries,
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
