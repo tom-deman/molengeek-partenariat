@@ -15,7 +15,7 @@
             <li
                 v-for="( suggestion, index ) in matches"
                 :key="index"
-                @click.prevent="suggestionClick( index )"
+                @click="suggestionClick( index )"
                 class="my-1 px-2 py-2 hover:text-gray-600 hover:bg-teal-100 cursor-pointer"
             >
                 <p>
@@ -29,16 +29,12 @@
 
 <script>
     export default {
-        name: 'autocomplete-country',
+        name: 'autocomplete-country-company',
 
         props: {
             suggestions: {
                 type    : Array,
                 required: true
-            },
-
-            inputValue:{
-                type: String
             }
         },
 
@@ -54,7 +50,7 @@
                     this.selection = this.matches[ this.current ]
                 }
                 this.open = false
-                this.$emit( 'getCountry', this.selection )
+                this.$emit( 'getCountryCompany', this.selection )
                 this.$emit( 'checkErrors' )
             },
 
@@ -68,7 +64,7 @@
             suggestionClick( index ) {
                 this.selection = this.matches[ index ]
                 this.open = false
-                this.$emit( 'getCountry', this.selection )
+                this.$emit( 'getCountryCompany', this.selection )
                 this.$emit( 'checkErrors' )
             }
         },

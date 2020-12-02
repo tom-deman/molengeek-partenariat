@@ -451,17 +451,12 @@
                                 </div>
                                 <div class="p-1 flex rounded svelte-1l8159u">
                                     <div style="width: 100%" class="bg-white my-1 p-1 flex border border-gray-200 rounded svelte-1l8159u">
-                                        <autocomplete-country :suggestions="countries" @getCountry="getCountry" />
+                                        <autocomplete-country
+                                            :suggestions="countries"
+                                            @getCountry="getCountry"
+                                            @checkErrors="checkErrors( 'country' )"
+                                        />
                                     </div>
-                                    <!-- <input
-                                        @blur="checkErrors( 'country' )"
-                                        @keydown="checkInput"
-                                        placeholder="Belgium"
-                                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
-                                        v-model="inputCountry"
-                                        type="text"
-                                        required
-                                    /> -->
                                 </div>
                                 <div class="h-4">
                                     <p
@@ -473,43 +468,84 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full mx-2 flex-1 svelte-1l8159u">
-                            <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
-                                {{ lang.idPhoto }}
-                            </div>
-                            <input
-                                ref="inputIdPhoto"
-                                type="file"
-                                name="file"
-                                class="inputfile"
-                                style="width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;"
-                                @change="onFileChangeId"
-                                accept="image/*"
-                            />
-                            <p
-                                for="file"
-                                @click.prevent="$refs.inputIdPhoto.click()"
-                                class="hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center"
-                                style="outline: none;"
-                            >
-                                {{ lang.chooseId }}
-                            </p>
-                            <div class="h-6 mt-2">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="mx-2 w-1/2 svelte-1l8159u">
+                                <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
+                                    {{ lang.idPhoto }}
+                                </div>
+                                <input
+                                    ref="inputIdPhoto"
+                                    type="file"
+                                    name="file"
+                                    class="inputfile"
+                                    style="width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;"
+                                    @change="onFileChangeId"
+                                    accept="image/*"
+                                />
                                 <p
-                                    v-if="this.inputIdPhoto"
-                                    class="text-sm text-gray-800 h-6"
+                                    for="file"
+                                    @click.prevent="$refs.inputIdPhoto.click()"
+                                    class="hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center"
+                                    style="outline: none;"
                                 >
-                                    {{ inputIdPhoto.name }}
+                                    {{ lang.chooseId }}
                                 </p>
+                                <div class="h-6 mt-2">
+                                    <p
+                                        v-if="this.inputIdPhoto"
+                                        class="text-sm text-gray-800 h-6"
+                                    >
+                                        {{ inputIdPhoto.name }}
+                                    </p>
+                                </div>
+                                <div class="h-4">
+                                    <p
+                                        class="text-red-400 text-sm ml-2"
+                                        v-if="errors.id_photo"
+                                    >
+                                        {{ errors.id_photo }}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="h-4">
-                            <p
-                                class="text-red-400 text-sm ml-2"
-                                v-if="errors.id_photo"
-                            >
-                                {{ errors.id_photo }}
-                            </p>
+
+                            <div class="mx-2 w-1/2 svelte-1l8159u">
+                                <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
+                                    {{ lang.idPhotoBack }}
+                                </div>
+                                <input
+                                    ref="inputIdPhotoBack"
+                                    type="file"
+                                    name="file"
+                                    class="inputfile"
+                                    style="width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;"
+                                    @change="onFileChangeIdBack"
+                                    accept="image/*"
+                                />
+                                <p
+                                    for="file"
+                                    @click.prevent="$refs.inputIdPhotoBack.click()"
+                                    class="hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center"
+                                    style="outline: none;"
+                                >
+                                    {{ lang.chooseIdBack }}
+                                </p>
+                                <div class="h-6 mt-2">
+                                    <p
+                                        v-if="this.inputIdPhotoBack"
+                                        class="text-sm text-gray-800 h-6"
+                                    >
+                                        {{ inputIdPhotoBack.name }}
+                                    </p>
+                                </div>
+                                <div class="h-4">
+                                    <p
+                                        class="text-red-400 text-sm ml-2"
+                                        v-if="errors.id_photo_back"
+                                    >
+                                        {{ errors.id_photo_back }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div
@@ -613,16 +649,14 @@
                                 <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
                                     {{ lang.companyCountry }}
                                 </div>
-                                <div class="bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u">
-                                    <input
-                                        @blur="checkErrors( 'companyCountry' )"
-                                        @keydown="checkInput"
-                                        placeholder="Belgium"
-                                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
-                                        v-model="inputCompanyCountry"
-                                        type="text"
-                                        required
-                                    />
+                                <div class="p-1 flex rounded svelte-1l8159u">
+                                    <div style="width: 100%" class="bg-white my-1 p-1 flex border border-gray-200 rounded svelte-1l8159u">
+                                        <autocomplete-country-company
+                                            :suggestions="countries"
+                                            @getCountryCompany="getCountryCompany"
+                                            @checkErrors="checkErrors( 'companyCountry' )"
+                                        />
+                                    </div>
                                 </div>
                                 <div class="h-4">
                                     <p
@@ -759,10 +793,12 @@
 
 <script>
     import autocompleteCountry from './AutocompleteCountry'
+    import autocompleteCountryCompany from './AutoCompleteCountryCompany'
 
     export default {
         components: {
-            autocompleteCountry
+            autocompleteCountry,
+            autocompleteCountryCompany
         },
 
         data: () => ({
@@ -788,6 +824,7 @@
             inputCountry        : '',
             inputCompanyCountry : '',
             inputIdPhoto        : '',
+            inputIdPhotoBack    : '',
             valid               : false,
             serverErrors        : false,
             serverErrorsTab     : '',
@@ -807,7 +844,9 @@
                 confirm_password: '',
                 email           : '',
                 country         : '',
-                id_photo        : ''
+                companyCountry  : '',
+                id_photo        : '',
+                id_photo_back   : ''
             },
             lang                : {
                 personnalInfo   : 'Informations personnelles',
@@ -836,8 +875,10 @@
                 answer          : 'Réponse ...',
                 country         : 'Pays',
                 companyCountry  : 'Pays',
-                idPhoto         : 'Copie de la carte d\'identité',
-                chooseId        : 'Choisissez un fichier'
+                idPhoto         : 'Recto carte d\'identité',
+                idPhotoBack     : 'Verso carte d\'identité',
+                chooseId        : 'Choisissez un fichier',
+                chooseIdBack    : 'Choisissez un fichier'
             }
         }),
 
@@ -857,6 +898,7 @@
                     && this.inputConfirmPassword && this.inputConfirmPassword.length < 255
                     && ( this.inputPassword === this.inputConfirmPassword )
                     && this.inputCountry
+                    && this.countries.includes( this.inputCountry )
                     && this.inputCountry.length < 255
                 ) {
                     this.stepOneClass   = 'text-white'
@@ -891,6 +933,7 @@
                     && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva )
                     && this.inputLogo
                     && this.inputCompanyCountry
+                    && this.countries.includes( this.inputCompanyCountry )
                     && this.inputCompanyCountry.length < 255
                 ) {
                     this.stepOneClass   = 'text-teal-600'
@@ -937,7 +980,7 @@
                 if( !file.length )
                     return
 
-                if( file[ 0 ].size > 5000000 ) {
+                if( file[ 0 ].size > 500000 ) {
                     switch( this.language ) {
                         case 'fr':
                             this.errors.logo = 'Votre fichier est trop grand'
@@ -966,7 +1009,7 @@
                 if( !file.length )
                     return
 
-                if( file[ 0 ].size > 5000000 ) {
+                if( file[ 0 ].size > 500000 ) {
                     switch( this.language ) {
                         case 'fr':
                             this.errors.id_photo = 'Votre fichier est trop grand'
@@ -990,6 +1033,35 @@
                 }
             },
 
+            onFileChangeIdBack( e ){
+                const file = e.target.files || e.dataTransfer.files
+                if( !file.length )
+                    return
+
+                if( file[ 0 ].size > 500000 ) {
+                    switch( this.language ) {
+                        case 'fr':
+                            this.errors.id_photo_back = 'Votre fichier est trop grand'
+                        break
+                        case 'en':
+                            this.errors.id_photo_back = 'Your file is too big'
+                        break
+                        case 'nl':
+                            this.errors.id_photo_back = 'Votre fichier est trop grand'
+                        break
+                    }
+                    this.inputIdPhotoBack  = ''
+                    this.valid         = false
+                    this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
+                }
+                else {
+                    this.inputIdPhotoBack     = file[ 0 ]
+                    this.errors.id_photo_back = ''
+                    this.checkInput()
+                    this.checkErrors( 'id_photo_back' )
+                }
+            },
+
             checkInput() {
                 if( this.step === 0
                     && this.inputLastName
@@ -1007,7 +1079,9 @@
                     && ( this.inputPassword === this.inputConfirmPassword )
                     && this.inputCountry
                     && this.inputCountry.length < 255
+                    && this.countries.includes( this.inputCountry )
                     && this.inputIdPhoto
+                    && this.inputIdPhotoBack
                 ) {
                     this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
                     this.valid         = true
@@ -1027,8 +1101,10 @@
                     || this.inputEmail.length > 255
                     || ( this.inputPassword !== this.inputConfirmPassword )
                     || !this.inputCountry
+                    || !this.countries.includes( this.inputCountry )
                     || this.inputCountry.length > 255
                     || !this.inputIdPhoto
+                    || !this.inputIdPhotoBack
                 ) {
                     this.valid         = false
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
@@ -1051,6 +1127,7 @@
                     && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva )
                     && this.inputLogo
                     && this.inputCompanyCountry
+                    && this.countries.includes( this.inputCompanyCountry )
                     && this.inputCompanyCountry.length < 255
                 ) {
                     this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100'
@@ -1062,7 +1139,8 @@
                     || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test( this.inputTva )
                     || !this.inputLogo
                     || !this.inputCompanyCountry
-                    || this.inputCompanyCountry.length < 255
+                    || !this.countries.includes( this.inputCompanyCountry )
+                    || this.inputCompanyCountry.length > 255
                     ) ) {
                     this.valid         = false
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
@@ -1086,6 +1164,10 @@
 
             getCountry( country ) {
                 this.inputCountry = country
+            },
+
+            getCountryCompany( country ) {
+                this.inputCompanyCountry = country
             },
 
             checkErrors( a ){
@@ -1492,7 +1574,20 @@
                         }
                     break
                     case 'country':
-                        if( !this.inputCountry ) {
+                        if( !this.countries.includes( this.inputCountry ) ){
+                            switch( this.language ) {
+                                case 'fr':
+                                    this.errors.country = 'Pays non valide, veuillez choisir dans la liste.'
+                                break
+                                case 'en':
+                                    this.errors.country = 'Pays non valide, veuillez choisir dans la liste.'
+                                break
+                                case 'nl':
+                                    this.errors.country = 'Pays non valide, veuillez choisir dans la liste.'
+                                break
+                            }
+                        }
+                        else if( !this.inputCountry ) {
                             switch( this.language ) {
                                 case 'fr':
                                     this.errors.country = 'Pays nécessaire'
@@ -1523,7 +1618,20 @@
                         }
                     break
                     case 'companyCountry':
-                        if( !this.inputCompanyCountry ) {
+                        if( !this.countries.includes( this.inputCompanyCountry ) ){
+                            switch( this.language ) {
+                                case 'fr':
+                                    this.errors.companyCountry = 'Pays non valide, veuillez choisir dans la liste.'
+                                break
+                                case 'en':
+                                    this.errors.companyCountry = 'Pays non valide, veuillez choisir dans la liste.'
+                                break
+                                case 'nl':
+                                    this.errors.companyCountry = 'Pays non valide, veuillez choisir dans la liste.'
+                                break
+                            }
+                        }
+                        else if( !this.inputCompanyCountry ) {
                             switch( this.language ) {
                                 case 'fr':
                                     this.errors.companyCountry = 'Pays nécessaire'
@@ -1572,6 +1680,25 @@
                             this.errors.id_photo = ''
                         }
                     break
+                    case 'id_photo_back':
+                        this.serverErrorsTab = ''
+                        if( !this.inputIdPhotoBack ) {
+                            switch( this.language ) {
+                                case 'fr':
+                                    this.errors.id_photo_back = 'Copie de la carte d\'identité nécessaire'
+                                break
+                                case 'en':
+                                    this.errors.id_photo_back = 'Copie de la carte d\'identité nécessaire'
+                                break
+                                case 'nl':
+                                    this.errors.id_photo_back = 'Copie de la carte d\'identité nécessaire'
+                                break
+                            }
+                        }
+                        else {
+                            this.errors.id_photo_back = ''
+                        }
+                    break
                 }
             },
 
@@ -1592,6 +1719,7 @@
                 data.append( 'country'              , this.inputCountry )
                 data.append( 'company_country'      , this.inputCompanyCountry )
                 data.append( 'id_photo'             , this.inputIdPhoto )
+                data.append( 'id_photo_back'        , this.inputIdPhotoBack )
 
                 let app = this
                 axios
@@ -1613,88 +1741,100 @@
                 .then( function( response ) {
                     app.language = response.data
                     if( app.language === 'fr' ) {
-                        app.lang.personnalInfo   = 'Informations personnelles',
-                        app.lang.company         = 'Entreprise',
-                        app.lang.companyInfo     = 'Informations de l\'entreprise',
-                        app.lang.molengeek       = 'MolenGeek et vous',
-                        app.lang.fullName        = 'Nom complet',
-                        app.lang.birthday        = 'Date de naissance',
-                        app.lang.profession      = 'Profession',
-                        app.lang.password        = 'Mot de passe',
-                        app.lang.confirmPassword = 'Confirmer mot de passe',
-                        app.lang.email           = 'Adresse email',
-                        app.lang.companyBoolean  = 'Avez vous une entreprise ?',
-                        app.lang.choice          = 'Veuillez faire un choix',
-                        app.lang.yes             = 'Oui',
-                        app.lang.no              = 'Non',
-                        app.lang.companyName     = 'Nom de l\'entreprise',
-                        app.lang.tva             = 'Numéro de TVA',
-                        app.lang.logo            = 'Logo de l\'entreprise',
-                        app.lang.choose          = 'Choisissez un fichier',
-                        app.lang.molengeekKnown  = 'Comment avez-vous connu MolenGeek ?',
-                        app.lang.previous        = 'Précédent',
-                        app.lang.next            = 'Suivant',
-                        app.lang.validate        = 'Valider',
-                        app.lang.alreadyRegister = 'Déjà inscrit ?',
-                        app.lang.answer          = 'Réponse ...',
-                        app.lang.country         = 'Pays',
-                        app.lang.companyCountry  = 'Pays'
+                        app.lang.personnalInfo    = 'Informations personnelles',
+                        app.lang.company          = 'Entreprise',
+                        app.lang.companyInfo      = 'Informations de l\'entreprise',
+                        app.lang.molengeek        = 'MolenGeek et vous',
+                        app.lang.fullName         = 'Nom complet',
+                        app.lang.birthday         = 'Date de naissance',
+                        app.lang.profession       = 'Profession',
+                        app.lang.password         = 'Mot de passe',
+                        app.lang.confirmPassword  = 'Confirmer mot de passe',
+                        app.lang.email            = 'Adresse email',
+                        app.lang.companyBoolean   = 'Avez vous une entreprise ?',
+                        app.lang.choice           = 'Veuillez faire un choix',
+                        app.lang.yes              = 'Oui',
+                        app.lang.no               = 'Non',
+                        app.lang.companyName      = 'Nom de l\'entreprise',
+                        app.lang.tva              = 'Numéro de TVA',
+                        app.lang.logo             = 'Logo de l\'entreprise',
+                        app.lang.choose           = 'Choisissez un fichier',
+                        app.lang.molengeekKnown   = 'Comment avez-vous connu MolenGeek ?',
+                        app.lang.previous         = 'Précédent',
+                        app.lang.next             = 'Suivant',
+                        app.lang.validate         = 'Valider',
+                        app.lang.alreadyRegister  = 'Déjà inscrit ?',
+                        app.lang.answer           = 'Réponse ...',
+                        app.lang.country          = 'Pays',
+                        app.lang.companyCountry   = 'Pays',
+                        app.language.idPhoto      = 'Recto carte d\'identité',
+                        app.language.idPhotoBack  = 'Verso carte d\'identité',
+                        app.language.chooseId     = 'Choisissez un fichier',
+                        app.language.chooseIdBack = 'Choisissez un fichier'
                     }
                     else if( app.language === 'en' ){
-                        app.lang.personnalInfo   = 'Informations personnelles',
-                        app.lang.company         = 'Entreprise',
-                        app.lang.companyInfo     = 'Informations de l\'entreprise',
-                        app.lang.molengeek       = 'MolenGeek et vous',
-                        app.lang.fullName        = 'Nom complet',
-                        app.lang.birthday        = 'Date de naissance',
-                        app.lang.profession      = 'Profession',
-                        app.lang.password        = 'Mot de passe',
-                        app.lang.confirmPassword = 'Confirmer mot de passe',
-                        app.lang.email           = 'Adresse email',
-                        app.lang.companyBoolean  = 'Avez vous une entreprise ?',
-                        app.lang.choice          = 'Veuillez faire un choix',
-                        app.lang.yes             = 'Oui',
-                        app.lang.no              = 'Non',
-                        app.lang.companyName     = 'Nom de l\'entreprise',
-                        app.lang.tva             = 'Numéro de TVA',
-                        app.lang.logo            = 'Logo de l\'entreprise',
-                        app.lang.choose          = 'Choisissez un fichier',
-                        app.lang.molengeekKnown  = 'Comment avez-vous connu MolenGeek ?',
-                        app.lang.previous        = 'Précédent',
-                        app.lang.next            = 'Suivant',
-                        app.lang.validate        = 'Valider',
-                        app.lang.alreadyRegister = 'Déjà inscrit ?',
-                        app.lang.answer          = 'Réponse ...',
-                        app.lang.country         = 'Pays',
-                        app.lang.companyCountry  = 'Pays'
+                        app.lang.personnalInfo    = 'Informations personnelles',
+                        app.lang.company          = 'Entreprise',
+                        app.lang.companyInfo      = 'Informations de l\'entreprise',
+                        app.lang.molengeek        = 'MolenGeek et vous',
+                        app.lang.fullName         = 'Nom complet',
+                        app.lang.birthday         = 'Date de naissance',
+                        app.lang.profession       = 'Profession',
+                        app.lang.password         = 'Mot de passe',
+                        app.lang.confirmPassword  = 'Confirmer mot de passe',
+                        app.lang.email            = 'Adresse email',
+                        app.lang.companyBoolean   = 'Avez vous une entreprise ?',
+                        app.lang.choice           = 'Veuillez faire un choix',
+                        app.lang.yes              = 'Oui',
+                        app.lang.no               = 'Non',
+                        app.lang.companyName      = 'Nom de l\'entreprise',
+                        app.lang.tva              = 'Numéro de TVA',
+                        app.lang.logo             = 'Logo de l\'entreprise',
+                        app.lang.choose           = 'Choisissez un fichier',
+                        app.lang.molengeekKnown   = 'Comment avez-vous connu MolenGeek ?',
+                        app.lang.previous         = 'Précédent',
+                        app.lang.next             = 'Suivant',
+                        app.lang.validate         = 'Valider',
+                        app.lang.alreadyRegister  = 'Déjà inscrit ?',
+                        app.lang.answer           = 'Réponse ...',
+                        app.lang.country          = 'Pays',
+                        app.lang.companyCountry   = 'Pays',
+                        app.language.idPhoto      = 'Recto carte d\'identité',
+                        app.language.idPhotoBack  = 'Verso carte d\'identité',
+                        app.language.chooseId     = 'Choisissez un fichier',
+                        app.language.chooseIdBack = 'Choisissez un fichier'
                     }
                     else if( app.language === 'nl' ) {
-                        app.lang.personnalInfo   = 'Informations personnelles',
-                        app.lang.company         = 'Entreprise',
-                        app.lang.companyInfo     = 'Informations de l\'entreprise',
-                        app.lang.molengeek       = 'MolenGeek et vous',
-                        app.lang.fullName        = 'Nom complet',
-                        app.lang.birthday        = 'Date de naissance',
-                        app.lang.profession      = 'Profession',
-                        app.lang.password        = 'Mot de passe',
-                        app.lang.confirmPassword = 'Confirmer mot de passe',
-                        app.lang.email           = 'Adresse email',
-                        app.lang.companyBoolean  = 'Avez vous une entreprise ?',
-                        app.lang.choice          = 'Veuillez faire un choix',
-                        app.lang.yes             = 'Oui',
-                        app.lang.no              = 'Non',
-                        app.lang.companyName     = 'Nom de l\'entreprise',
-                        app.lang.tva             = 'Numéro de TVA',
-                        app.lang.logo            = 'Logo de l\'entreprise',
-                        app.lang.choose          = 'Choisissez un fichier',
-                        app.lang.molengeekKnown  = 'Comment avez-vous connu MolenGeek ?',
-                        app.lang.previous        = 'Précédent',
-                        app.lang.next            = 'Suivant',
-                        app.lang.validate        = 'Valider',
-                        app.lang.alreadyRegister = 'Déjà inscrit ?',
-                        app.lang.answer          = 'Réponse ...'
-                        app.lang.country         = 'Pays',
-                        app.lang.companyCountry  = 'Pays'
+                        app.lang.personnalInfo    = 'Informations personnelles',
+                        app.lang.company          = 'Entreprise',
+                        app.lang.companyInfo      = 'Informations de l\'entreprise',
+                        app.lang.molengeek        = 'MolenGeek et vous',
+                        app.lang.fullName         = 'Nom complet',
+                        app.lang.birthday         = 'Date de naissance',
+                        app.lang.profession       = 'Profession',
+                        app.lang.password         = 'Mot de passe',
+                        app.lang.confirmPassword  = 'Confirmer mot de passe',
+                        app.lang.email            = 'Adresse email',
+                        app.lang.companyBoolean   = 'Avez vous une entreprise ?',
+                        app.lang.choice           = 'Veuillez faire un choix',
+                        app.lang.yes              = 'Oui',
+                        app.lang.no               = 'Non',
+                        app.lang.companyName      = 'Nom de l\'entreprise',
+                        app.lang.tva              = 'Numéro de TVA',
+                        app.lang.logo             = 'Logo de l\'entreprise',
+                        app.lang.choose           = 'Choisissez un fichier',
+                        app.lang.molengeekKnown   = 'Comment avez-vous connu MolenGeek ?',
+                        app.lang.previous         = 'Précédent',
+                        app.lang.next             = 'Suivant',
+                        app.lang.validate         = 'Valider',
+                        app.lang.alreadyRegister  = 'Déjà inscrit ?',
+                        app.lang.answer           = 'Réponse ...',
+                        app.lang.country          = 'Pays',
+                        app.lang.companyCountry   = 'Pays',
+                        app.language.idPhoto      = 'Recto carte d\'identité',
+                        app.language.idPhotoBack  = 'Verso carte d\'identité',
+                        app.language.chooseId     = 'Choisissez un fichier',
+                        app.language.chooseIdBack = 'Choisissez un fichier'
                     }
                 })
                 .catch( function( error ) {

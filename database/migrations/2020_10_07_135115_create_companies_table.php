@@ -15,7 +15,7 @@ class CreateCompaniesTable extends Migration {
             $table -> id();
             $table -> foreignId( 'user_id' ) -> constrained() -> cascadeOnDelete();
             $table -> text( 'country' ) -> nullable();
-            $table -> string( 'name', 255 );
+            $table -> string( 'name', 255 ) -> unique();
             $table -> string( 'logo' );
             $table -> string( 'tva', 255 );
             $table -> timestamps();

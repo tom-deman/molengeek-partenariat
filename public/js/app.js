@@ -1899,6 +1899,98 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'autocomplete-country-company',
+  props: {
+    suggestions: {
+      type: Array,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      open: false,
+      current: 0,
+      selection: ''
+    };
+  },
+  methods: {
+    enter: function enter() {
+      if (this.selection !== '') {
+        this.selection = this.matches[this.current];
+      }
+
+      this.open = false;
+      this.$emit('getCountryCompany', this.selection);
+      this.$emit('checkErrors');
+    },
+    change: function change() {
+      if (this.open === false) {
+        this.open = true;
+        this.current = 0;
+      }
+    },
+    suggestionClick: function suggestionClick(index) {
+      this.selection = this.matches[index];
+      this.open = false;
+      this.$emit('getCountryCompany', this.selection);
+      this.$emit('checkErrors');
+    }
+  },
+  computed: {
+    matches: function matches() {
+      var _this = this;
+
+      return this.suggestions.filter(function (str) {
+        return str.toLowerCase().includes(_this.selection.toLowerCase());
+      });
+    },
+    openSuggestion: function openSuggestion() {
+      return this.selection !== '' && this.matches.length !== 0 && this.open === true;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutocompleteCountry.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AutocompleteCountry.vue?vue&type=script&lang=js& ***!
@@ -1943,6 +2035,9 @@ __webpack_require__.r(__webpack_exports__);
     suggestions: {
       type: Array,
       required: true
+    },
+    inputValue: {
+      type: String
     }
   },
   data: function data() {
@@ -1954,9 +2049,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     enter: function enter() {
-      this.selection = this.matches[this.current];
+      if (this.selection !== '') {
+        this.selection = this.matches[this.current];
+      }
+
       this.open = false;
       this.$emit('getCountry', this.selection);
+      this.$emit('checkErrors');
     },
     change: function change() {
       if (this.open === false) {
@@ -1968,6 +2067,7 @@ __webpack_require__.r(__webpack_exports__);
       this.selection = this.matches[index];
       this.open = false;
       this.$emit('getCountry', this.selection);
+      this.$emit('checkErrors');
     }
   },
   computed: {
@@ -1981,9 +2081,6 @@ __webpack_require__.r(__webpack_exports__);
     openSuggestion: function openSuggestion() {
       return this.selection !== '' && this.matches.length !== 0 && this.open === true;
     }
-  },
-  updated: function updated() {
-    console.log(this.selection.toLowerCase());
   }
 });
 
@@ -1999,6 +2096,41 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutocompleteCountry__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutocompleteCountry */ "./resources/js/components/AutocompleteCountry.vue");
+/* harmony import */ var _AutoCompleteCountryCompany__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoCompleteCountryCompany */ "./resources/js/components/AutoCompleteCountryCompany.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2759,9 +2891,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    autocompleteCountry: _AutocompleteCountry__WEBPACK_IMPORTED_MODULE_0__["default"]
+    autocompleteCountry: _AutocompleteCountry__WEBPACK_IMPORTED_MODULE_0__["default"],
+    autocompleteCountryCompany: _AutoCompleteCountryCompany__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -2787,6 +2921,7 @@ __webpack_require__.r(__webpack_exports__);
       inputCountry: '',
       inputCompanyCountry: '',
       inputIdPhoto: '',
+      inputIdPhotoBack: '',
       valid: false,
       serverErrors: false,
       serverErrorsTab: '',
@@ -2806,7 +2941,9 @@ __webpack_require__.r(__webpack_exports__);
         confirm_password: '',
         email: '',
         country: '',
-        id_photo: ''
+        companyCountry: '',
+        id_photo: '',
+        id_photo_back: ''
       },
       lang: {
         personnalInfo: 'Informations personnelles',
@@ -2835,14 +2972,16 @@ __webpack_require__.r(__webpack_exports__);
         answer: 'Réponse ...',
         country: 'Pays',
         companyCountry: 'Pays',
-        idPhoto: 'Copie de la carte d\'identité',
-        chooseId: 'Choisissez un fichier'
+        idPhoto: 'Recto carte d\'identité',
+        idPhotoBack: 'Verso carte d\'identité',
+        chooseId: 'Choisissez un fichier',
+        chooseIdBack: 'Choisissez un fichier'
       }
     };
   },
   methods: {
     incrementStep: function incrementStep() {
-      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && this.inputPassword === this.inputConfirmPassword && this.inputCountry && this.inputCountry.length < 255) {
+      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && this.inputPassword === this.inputConfirmPassword && this.inputCountry && this.countries.includes(this.inputCountry) && this.inputCountry.length < 255) {
         this.stepOneClass = 'text-white';
         this.stepTwoClass = 'text-gray-600';
         this.stepThreeClass = 'text-gray-600';
@@ -2866,7 +3005,7 @@ __webpack_require__.r(__webpack_exports__);
         this.stepThreeClass = 'text-white';
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
         this.valid = false;
-      } else if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo && this.inputCompanyCountry && this.inputCompanyCountry.length < 255) {
+      } else if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo && this.inputCompanyCountry && this.countries.includes(this.inputCompanyCountry) && this.inputCompanyCountry.length < 255) {
         this.stepOneClass = 'text-teal-600';
         this.stepTwoClass = 'text-teal-600';
         this.stepThreeClass = 'text-white';
@@ -2905,7 +3044,7 @@ __webpack_require__.r(__webpack_exports__);
       var file = e.target.files || e.dataTransfer.files;
       if (!file.length) return;
 
-      if (file[0].size > 5000000) {
+      if (file[0].size > 500000) {
         switch (this.language) {
           case 'fr':
             this.errors.logo = 'Votre fichier est trop grand';
@@ -2934,7 +3073,7 @@ __webpack_require__.r(__webpack_exports__);
       var file = e.target.files || e.dataTransfer.files;
       if (!file.length) return;
 
-      if (file[0].size > 5000000) {
+      if (file[0].size > 500000) {
         switch (this.language) {
           case 'fr':
             this.errors.id_photo = 'Votre fichier est trop grand';
@@ -2959,11 +3098,40 @@ __webpack_require__.r(__webpack_exports__);
         this.checkErrors('id_photo');
       }
     },
+    onFileChangeIdBack: function onFileChangeIdBack(e) {
+      var file = e.target.files || e.dataTransfer.files;
+      if (!file.length) return;
+
+      if (file[0].size > 500000) {
+        switch (this.language) {
+          case 'fr':
+            this.errors.id_photo_back = 'Votre fichier est trop grand';
+            break;
+
+          case 'en':
+            this.errors.id_photo_back = 'Your file is too big';
+            break;
+
+          case 'nl':
+            this.errors.id_photo_back = 'Votre fichier est trop grand';
+            break;
+        }
+
+        this.inputIdPhotoBack = '';
+        this.valid = false;
+        this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
+      } else {
+        this.inputIdPhotoBack = file[0];
+        this.errors.id_photo_back = '';
+        this.checkInput();
+        this.checkErrors('id_photo_back');
+      }
+    },
     checkInput: function checkInput() {
-      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && this.inputPassword === this.inputConfirmPassword && this.inputCountry && this.inputCountry.length < 255 && this.inputIdPhoto) {
+      if (this.step === 0 && this.inputLastName && this.inputLastName.length < 255 && this.inputFirstName && this.inputFirstName.length < 255 && /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) && this.inputProfession && this.inputProfession.length < 255 && /^.{8,255}$/.test(this.inputPassword) && this.inputConfirmPassword && this.inputConfirmPassword.length < 255 && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) && this.inputEmail.length < 255 && this.inputPassword === this.inputConfirmPassword && this.inputCountry && this.inputCountry.length < 255 && this.countries.includes(this.inputCountry) && this.inputIdPhoto && this.inputIdPhotoBack) {
         this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
         this.valid = true;
-      } else if (this.step === 0 && !this.inputLastName || this.inputLastName.length > 255 || !this.inputFirstName || this.inputFirstName.length > 255 || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) || !this.inputProfession || this.inputProfession.length > 255 || !/^.{8,255}$/.test(this.inputPassword) || !this.inputConfirmPassword || this.inputConfirmPassword.length > 255 || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) || this.inputEmail.length > 255 || this.inputPassword !== this.inputConfirmPassword || !this.inputCountry || this.inputCountry.length > 255 || !this.inputIdPhoto) {
+      } else if (this.step === 0 && !this.inputLastName || this.inputLastName.length > 255 || !this.inputFirstName || this.inputFirstName.length > 255 || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(this.inputBirthday) || !this.inputProfession || this.inputProfession.length > 255 || !/^.{8,255}$/.test(this.inputPassword) || !this.inputConfirmPassword || this.inputConfirmPassword.length > 255 || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.inputEmail) || this.inputEmail.length > 255 || this.inputPassword !== this.inputConfirmPassword || !this.inputCountry || !this.countries.includes(this.inputCountry) || this.inputCountry.length > 255 || !this.inputIdPhoto || !this.inputIdPhotoBack) {
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       }
@@ -2978,10 +3146,10 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo && this.inputCompanyCountry && this.inputCompanyCountry.length < 255) {
+      if (this.step === 2 && this.inputCompanyName && this.inputCompanyName.length < 255 && /^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) && this.inputLogo && this.inputCompanyCountry && this.countries.includes(this.inputCompanyCountry) && this.inputCompanyCountry.length < 255) {
         this.nextStepClass = 'border-teal-600 hover:bg-teal-600 bg-teal-600 text-teal-100';
         this.valid = true;
-      } else if (this.step === 2 && (!this.inputCompanyName || this.inputCompanyName.length > 255 || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) || !this.inputLogo || !this.inputCompanyCountry || this.inputCompanyCountry.length < 255)) {
+      } else if (this.step === 2 && (!this.inputCompanyName || this.inputCompanyName.length > 255 || !/^(ATU[0-9]{8}|BE[01][0-9]{9}|BG[0-9]{9,10}|HR[0-9]{11}|CY[A-Z0-9]{9}|CZ[0-9]{8,10}|DK[0-9]{8}|EE[0-9]{9}|FI[0-9]{8}|FR[0-9A-Z]{2}[0-9]{9}|DE[0-9]{9}|EL[0-9]{9}|HU[0-9]{8}|IE([0-9]{7}[A-Z]{1,2}|[0-9][A-Z][0-9]{5}[A-Z])|IT[0-9]{11}|LV[0-9]{11}|LT([0-9]{9}|[0-9]{12})|LU[0-9]{8}|MT[0-9]{8}|NL[0-9]{9}B[0-9]{2}|PL[0-9]{10}|PT[0-9]{9}|RO[0-9]{2,10}|SK[0-9]{10}|SI[0-9]{8}|ES[A-Z]([0-9]{8}|[0-9]{7}[A-Z])|SE[0-9]{12}|GB([0-9]{9}|[0-9]{12}|GD[0-4][0-9]{2}|HA[5-9][0-9]{2}))$/.test(this.inputTva) || !this.inputLogo || !this.inputCompanyCountry || !this.countries.includes(this.inputCompanyCountry) || this.inputCompanyCountry.length > 255)) {
         this.valid = false;
         this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none';
       }
@@ -2996,6 +3164,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     getCountry: function getCountry(country) {
       this.inputCountry = country;
+    },
+    getCountryCompany: function getCountryCompany(country) {
+      this.inputCompanyCountry = country;
     },
     checkErrors: function checkErrors(a) {
       switch (a) {
@@ -3462,7 +3633,21 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'country':
-          if (!this.inputCountry) {
+          if (!this.countries.includes(this.inputCountry)) {
+            switch (this.language) {
+              case 'fr':
+                this.errors.country = 'Pays non valide, veuillez choisir dans la liste.';
+                break;
+
+              case 'en':
+                this.errors.country = 'Pays non valide, veuillez choisir dans la liste.';
+                break;
+
+              case 'nl':
+                this.errors.country = 'Pays non valide, veuillez choisir dans la liste.';
+                break;
+            }
+          } else if (!this.inputCountry) {
             switch (this.language) {
               case 'fr':
                 this.errors.country = 'Pays nécessaire';
@@ -3497,7 +3682,21 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case 'companyCountry':
-          if (!this.inputCompanyCountry) {
+          if (!this.countries.includes(this.inputCompanyCountry)) {
+            switch (this.language) {
+              case 'fr':
+                this.errors.companyCountry = 'Pays non valide, veuillez choisir dans la liste.';
+                break;
+
+              case 'en':
+                this.errors.companyCountry = 'Pays non valide, veuillez choisir dans la liste.';
+                break;
+
+              case 'nl':
+                this.errors.companyCountry = 'Pays non valide, veuillez choisir dans la liste.';
+                break;
+            }
+          } else if (!this.inputCompanyCountry) {
             switch (this.language) {
               case 'fr':
                 this.errors.companyCountry = 'Pays nécessaire';
@@ -3553,6 +3752,29 @@ __webpack_require__.r(__webpack_exports__);
           }
 
           break;
+
+        case 'id_photo_back':
+          this.serverErrorsTab = '';
+
+          if (!this.inputIdPhotoBack) {
+            switch (this.language) {
+              case 'fr':
+                this.errors.id_photo_back = 'Copie de la carte d\'identité nécessaire';
+                break;
+
+              case 'en':
+                this.errors.id_photo_back = 'Copie de la carte d\'identité nécessaire';
+                break;
+
+              case 'nl':
+                this.errors.id_photo_back = 'Copie de la carte d\'identité nécessaire';
+                break;
+            }
+          } else {
+            this.errors.id_photo_back = '';
+          }
+
+          break;
       }
     },
     sendForm: function sendForm() {
@@ -3572,6 +3794,7 @@ __webpack_require__.r(__webpack_exports__);
       data.append('country', this.inputCountry);
       data.append('company_country', this.inputCompanyCountry);
       data.append('id_photo', this.inputIdPhoto);
+      data.append('id_photo_back', this.inputIdPhotoBack);
       var app = this;
       axios.post('/register', data).then(function (response) {
         window.location.href = '/login';
@@ -3587,12 +3810,11 @@ __webpack_require__.r(__webpack_exports__);
       app.language = response.data;
 
       if (app.language === 'fr') {
-        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...', app.lang.country = 'Pays', app.lang.companyCountry = 'Pays';
+        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...', app.lang.country = 'Pays', app.lang.companyCountry = 'Pays', app.language.idPhoto = 'Recto carte d\'identité', app.language.idPhotoBack = 'Verso carte d\'identité', app.language.chooseId = 'Choisissez un fichier', app.language.chooseIdBack = 'Choisissez un fichier';
       } else if (app.language === 'en') {
-        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...', app.lang.country = 'Pays', app.lang.companyCountry = 'Pays';
+        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...', app.lang.country = 'Pays', app.lang.companyCountry = 'Pays', app.language.idPhoto = 'Recto carte d\'identité', app.language.idPhotoBack = 'Verso carte d\'identité', app.language.chooseId = 'Choisissez un fichier', app.language.chooseIdBack = 'Choisissez un fichier';
       } else if (app.language === 'nl') {
-        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...';
-        app.lang.country = 'Pays', app.lang.companyCountry = 'Pays';
+        app.lang.personnalInfo = 'Informations personnelles', app.lang.company = 'Entreprise', app.lang.companyInfo = 'Informations de l\'entreprise', app.lang.molengeek = 'MolenGeek et vous', app.lang.fullName = 'Nom complet', app.lang.birthday = 'Date de naissance', app.lang.profession = 'Profession', app.lang.password = 'Mot de passe', app.lang.confirmPassword = 'Confirmer mot de passe', app.lang.email = 'Adresse email', app.lang.companyBoolean = 'Avez vous une entreprise ?', app.lang.choice = 'Veuillez faire un choix', app.lang.yes = 'Oui', app.lang.no = 'Non', app.lang.companyName = 'Nom de l\'entreprise', app.lang.tva = 'Numéro de TVA', app.lang.logo = 'Logo de l\'entreprise', app.lang.choose = 'Choisissez un fichier', app.lang.molengeekKnown = 'Comment avez-vous connu MolenGeek ?', app.lang.previous = 'Précédent', app.lang.next = 'Suivant', app.lang.validate = 'Valider', app.lang.alreadyRegister = 'Déjà inscrit ?', app.lang.answer = 'Réponse ...', app.lang.country = 'Pays', app.lang.companyCountry = 'Pays', app.language.idPhoto = 'Recto carte d\'identité', app.language.idPhotoBack = 'Verso carte d\'identité', app.language.chooseId = 'Choisissez un fichier', app.language.chooseIdBack = 'Choisissez un fichier';
       }
     })["catch"](function (error) {
       console.error(error);
@@ -3605,6 +3827,25 @@ __webpack_require__.r(__webpack_exports__);
     this.checkInput();
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".dropdown-menu[data-v-49ea5d4c]{\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  float: left;\n  min-width: 160px;\n  padding: 5px 0;\n  margin: 2px 0 0;\n  font-size: 14px;\n  height: 150px;\n  overflow-x: hidden;\n  overflow-y: scroll;\n  text-align: left;\n  list-style: none;\n  background-color: #fff;\n  -webkit-background-clip: padding-box;\n  background-clip: padding-box;\n  border: 1px solid #ccc;\n  border: 1px solid rgba(0,0,0,.15);\n  border-radius: 4px;\n  box-shadow: 0 6px 12px rgba(0,0,0,.175);\n}\n\n", ""]);
+
+// exports
+
 
 /***/ }),
 
@@ -21272,6 +21513,36 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutocompleteCountry.vue?vue&type=style&index=0&id=0c043173&scoped=true&lang=css&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AutocompleteCountry.vue?vue&type=style&index=0&id=0c043173&scoped=true&lang=css& ***!
@@ -21886,6 +22157,96 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=template&id=49ea5d4c&scoped=true&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=template&id=49ea5d4c&scoped=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticStyle: { position: "relative", width: "100%" } }, [
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.selection,
+          expression: "selection"
+        }
+      ],
+      staticClass: "p-1 px-2 appearance-none outline-none w-full text-gray-800",
+      attrs: { type: "text" },
+      domProps: { value: _vm.selection },
+      on: {
+        keydown: function($event) {
+          if (
+            !$event.type.indexOf("key") &&
+            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+          ) {
+            return null
+          }
+          return _vm.enter($event)
+        },
+        input: [
+          function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.selection = $event.target.value
+          },
+          _vm.change
+        ]
+      }
+    }),
+    _vm._v(" "),
+    _c(
+      "ul",
+      {
+        staticClass: "dropdown-menu",
+        staticStyle: { width: "100%" },
+        style: _vm.openSuggestion ? "display: block;" : "display: none;"
+      },
+      _vm._l(_vm.matches, function(suggestion, index) {
+        return _c(
+          "li",
+          {
+            key: index,
+            staticClass:
+              "my-1 px-2 py-2 hover:text-gray-600 hover:bg-teal-100 cursor-pointer",
+            on: {
+              click: function($event) {
+                return _vm.suggestionClick(index)
+              }
+            }
+          },
+          [
+            _c("p", [
+              _vm._v(
+                "\n                " + _vm._s(suggestion) + "\n            "
+              )
+            ])
+          ]
+        )
+      }),
+      0
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutocompleteCountry.vue?vue&type=template&id=0c043173&scoped=true&":
 /*!**********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AutocompleteCountry.vue?vue&type=template&id=0c043173&scoped=true& ***!
@@ -21948,15 +22309,17 @@ var render = function() {
           "li",
           {
             key: index,
-            staticClass: "my-1 px-2 py-2 hover:text-gray-600 hover:bg-teal-100",
+            staticClass:
+              "my-1 px-2 py-2 hover:text-gray-600 hover:bg-teal-100 cursor-pointer",
             on: {
               click: function($event) {
+                $event.preventDefault()
                 return _vm.suggestionClick(index)
               }
             }
           },
           [
-            _c("a", { attrs: { href: "#" } }, [
+            _c("p", [
               _vm._v(
                 "\n                " + _vm._s(suggestion) + "\n            "
               )
@@ -23255,7 +23618,12 @@ var render = function() {
                               [
                                 _c("autocomplete-country", {
                                   attrs: { suggestions: _vm.countries },
-                                  on: { getCountry: _vm.getCountry }
+                                  on: {
+                                    getCountry: _vm.getCountry,
+                                    checkErrors: function($event) {
+                                      return _vm.checkErrors("country")
+                                    }
+                                  }
                                 })
                               ],
                               1
@@ -23278,10 +23646,8 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "w-full mx-2 flex-1 svelte-1l8159u" },
-                    [
+                  _c("div", { staticClass: "flex flex-col md:flex-row" }, [
+                    _c("div", { staticClass: "mx-2 w-1/2 svelte-1l8159u" }, [
                       _c(
                         "div",
                         {
@@ -23290,9 +23656,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                            " +
+                            "\n                                " +
                               _vm._s(_vm.lang.idPhoto) +
-                              "\n                        "
+                              "\n                            "
                           )
                         ]
                       ),
@@ -23332,9 +23698,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                            " +
+                            "\n                                " +
                               _vm._s(_vm.lang.chooseId) +
-                              "\n                        "
+                              "\n                            "
                           )
                         ]
                       ),
@@ -23346,27 +23712,122 @@ var render = function() {
                               { staticClass: "text-sm text-gray-800 h-6" },
                               [
                                 _vm._v(
-                                  "\n                                " +
+                                  "\n                                    " +
                                     _vm._s(_vm.inputIdPhoto.name) +
-                                    "\n                            "
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "h-4" }, [
+                        _vm.errors.id_photo
+                          ? _c(
+                              "p",
+                              { staticClass: "text-red-400 text-sm ml-2" },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.errors.id_photo) +
+                                    "\n                                "
                                 )
                               ]
                             )
                           : _vm._e()
                       ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "h-4" }, [
-                    _vm.errors.id_photo
-                      ? _c("p", { staticClass: "text-red-400 text-sm ml-2" }, [
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "mx-2 w-1/2 svelte-1l8159u" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
+                        },
+                        [
                           _vm._v(
-                            "\n                            " +
-                              _vm._s(_vm.errors.id_photo) +
-                              "\n                        "
+                            "\n                                " +
+                              _vm._s(_vm.lang.idPhotoBack) +
+                              "\n                            "
                           )
-                        ])
-                      : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        ref: "inputIdPhotoBack",
+                        staticClass: "inputfile",
+                        staticStyle: {
+                          width: "0.1px",
+                          height: "0.1px",
+                          opacity: "0",
+                          overflow: "hidden",
+                          position: "absolute",
+                          "z-index": "-1"
+                        },
+                        attrs: {
+                          type: "file",
+                          name: "file",
+                          accept: "image/*"
+                        },
+                        on: { change: _vm.onFileChangeIdBack }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        {
+                          staticClass:
+                            "hover:bg-teal-400 bg-teal-600 rounded text-sm text-white px-4 py-2 mt-2 w-48 text-center",
+                          staticStyle: { outline: "none" },
+                          attrs: { for: "file" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.$refs.inputIdPhotoBack.click()
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.lang.chooseIdBack) +
+                              "\n                            "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "h-6 mt-2" }, [
+                        this.inputIdPhotoBack
+                          ? _c(
+                              "p",
+                              { staticClass: "text-sm text-gray-800 h-6" },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.inputIdPhotoBack.name) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "h-4" }, [
+                        _vm.errors.id_photo_back
+                          ? _c(
+                              "p",
+                              { staticClass: "text-red-400 text-sm ml-2" },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.errors.id_photo_back) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    ])
                   ])
                 ])
               : _vm._e(),
@@ -23656,41 +24117,28 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          {
-                            staticClass:
-                              "bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
-                          },
+                          { staticClass: "p-1 flex rounded svelte-1l8159u" },
                           [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.inputCompanyCountry,
-                                  expression: "inputCompanyCountry"
-                                }
-                              ],
-                              staticClass:
-                                "p-1 px-2 appearance-none outline-none w-full text-gray-800",
-                              attrs: {
-                                placeholder: "Belgium",
-                                type: "text",
-                                required: ""
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "bg-white my-1 p-1 flex border border-gray-200 rounded svelte-1l8159u",
+                                staticStyle: { width: "100%" }
                               },
-                              domProps: { value: _vm.inputCompanyCountry },
-                              on: {
-                                blur: function($event) {
-                                  return _vm.checkErrors("companyCountry")
-                                },
-                                keydown: _vm.checkInput,
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+                              [
+                                _c("autocomplete-country-company", {
+                                  attrs: { suggestions: _vm.countries },
+                                  on: {
+                                    getCountryCompany: _vm.getCountryCompany,
+                                    checkErrors: function($event) {
+                                      return _vm.checkErrors("companyCountry")
+                                    }
                                   }
-                                  _vm.inputCompanyCountry = $event.target.value
-                                }
-                              }
-                            })
+                                })
+                              ],
+                              1
+                            )
                           ]
                         ),
                         _vm._v(" "),
@@ -36230,6 +36678,93 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/AutoCompleteCountryCompany.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/AutoCompleteCountryCompany.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AutoCompleteCountryCompany_vue_vue_type_template_id_49ea5d4c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoCompleteCountryCompany.vue?vue&type=template&id=49ea5d4c&scoped=true& */ "./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=template&id=49ea5d4c&scoped=true&");
+/* harmony import */ var _AutoCompleteCountryCompany_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoCompleteCountryCompany.vue?vue&type=script&lang=js& */ "./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _AutoCompleteCountryCompany_vue_vue_type_style_index_0_id_49ea5d4c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css& */ "./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _AutoCompleteCountryCompany_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AutoCompleteCountryCompany_vue_vue_type_template_id_49ea5d4c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AutoCompleteCountryCompany_vue_vue_type_template_id_49ea5d4c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "49ea5d4c",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/AutoCompleteCountryCompany.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./AutoCompleteCountryCompany.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css&":
+/*!*************************************************************************************************************************!*\
+  !*** ./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_style_index_0_id_49ea5d4c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=style&index=0&id=49ea5d4c&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_style_index_0_id_49ea5d4c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_style_index_0_id_49ea5d4c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_style_index_0_id_49ea5d4c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_style_index_0_id_49ea5d4c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_style_index_0_id_49ea5d4c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=template&id=49ea5d4c&scoped=true&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=template&id=49ea5d4c&scoped=true& ***!
+  \***********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_template_id_49ea5d4c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./AutoCompleteCountryCompany.vue?vue&type=template&id=49ea5d4c&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AutoCompleteCountryCompany.vue?vue&type=template&id=49ea5d4c&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_template_id_49ea5d4c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AutoCompleteCountryCompany_vue_vue_type_template_id_49ea5d4c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
