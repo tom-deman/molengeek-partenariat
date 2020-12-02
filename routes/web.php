@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CountryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\UserController;
@@ -32,3 +33,5 @@ Route::post( '/register', [ UserController::class, 'create' ] ) -> name( 'regist
 Route::get( '/lang', [ LocalizationController::class, 'getLang' ] ) -> name( 'getLang' );
 
 Route::get( 'locale/{lang}', [ LocalizationController::class, 'setLang' ]) -> name( 'setlang' );
+
+Route::get( '/getCountries', [ CountryController::class, 'getCountries' ] ) -> name( 'getCountries' );

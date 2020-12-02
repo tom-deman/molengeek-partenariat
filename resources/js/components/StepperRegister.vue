@@ -449,17 +449,19 @@
                                 <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
                                     {{ lang.country }}
                                 </div>
-                                <div class="bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u">
-                                    <input
+                                <div class="p-1 flex rounded svelte-1l8159u">
+                                    <div style="width: 100%" class="bg-white my-1 p-1 flex border border-gray-200 rounded svelte-1l8159u">
+                                        <autocomplete-country :suggestions="countries" @getCountry="getCountry" />
+                                    </div>
+                                    <!-- <input
                                         @blur="checkErrors( 'country' )"
                                         @keydown="checkInput"
-                                        @keypress="getCountries"
                                         placeholder="Belgium"
                                         class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
                                         v-model="inputCountry"
                                         type="text"
                                         required
-                                    />
+                                    /> -->
                                 </div>
                                 <div class="h-4">
                                     <p
@@ -756,7 +758,13 @@
 </template>
 
 <script>
+    import autocompleteCountry from './AutocompleteCountry'
+
     export default {
+        components: {
+            autocompleteCountry
+        },
+
         data: () => ({
             step                : 0,
             stepOneClass        : 'text-gray-600',
@@ -784,6 +792,7 @@
             serverErrors        : false,
             serverErrorsTab     : '',
             language            : '',
+            countries           : [],
             errors              : {
                 firstName       : '',
                 lastName        : '',
@@ -981,14 +990,6 @@
                 }
             },
 
-            getCountries() {
-                axios
-                    .get( '/getCountries' )
-                    .then( function( response ) {
-                        
-                    } )
-            },
-
             checkInput() {
                 if( this.step === 0
                     && this.inputLastName
@@ -1081,6 +1082,10 @@
                     this.valid         = false
                     this.nextStepClass = 'bg-gray-300 text-gray-400 border-gray-400 pointer-events-none'
                 }
+            },
+
+            getCountry( country ) {
+                this.inputCountry = country
             },
 
             checkErrors( a ){
@@ -1531,7 +1536,7 @@
                                 break
                             }
                         }
-                        else if( this.inputCountry.length > 255 ) {
+                        else if( this.inputCompanyCountry.length > 255 ) {
                             switch( this.language ) {
                                 case 'fr':
                                     this.errors.companyCountry = 'Champ trop grand'
@@ -1695,10 +1700,16 @@
                 .catch( function( error ) {
                     console.error( error )
                 })
+
+            axios
+                .get( '/getCountries' )
+                .then( function( response ) {
+                    app.countries = response.data
+                } )
         },
 
         updated() {
             this.checkInput()
-        },
+        }
     }
 </script>
