@@ -15,7 +15,7 @@
             <li
                 v-for="( suggestion, index ) in matches"
                 :key="index"
-                @click.prevent="suggestionClick( index )"
+                @click="suggestionClick( index )"
                 class="my-1 px-2 py-2 hover:text-gray-600 hover:bg-teal-100 cursor-pointer"
             >
                 <p>
@@ -37,9 +37,9 @@
                 required: true
             },
 
-            inputValue:{
+            text:{
                 type: String
-            }
+            },
         },
 
         data: () => ({
@@ -54,7 +54,6 @@
                     this.selection = this.matches[ this.current ]
                 }
                 this.open = false
-                this.$emit( 'getCountry', this.selection )
                 this.$emit( 'checkErrors' )
             },
 
@@ -85,6 +84,10 @@
                     && this.matches.length !== 0
                     && this.open           === true
             }
+        },
+
+        mounted() {
+            this.selection = this.text
         }
 
     }

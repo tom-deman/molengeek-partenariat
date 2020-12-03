@@ -112,7 +112,7 @@
                                     @else
                                         <img
                                             class="h-8 w-8 rounded-full object-cover"
-                                            src="{{ 'storage/' . Auth::user()->profile_photo_path }}"
+                                            src="{{ '/storage/' . Auth::user()->profile_photo_path }}"
                                             alt="{{ Auth::user()->first_name }}"
                                         />
                                     @endif
@@ -229,7 +229,7 @@
                                     @else
                                         <img
                                             class="h-12 w-12 rounded-full object-cover"
-                                            src="{{ 'storage/' . Auth::user()->profile_photo_path }}"
+                                            src="{{ '/storage/' . Auth::user()->profile_photo_path }}"
                                             alt="{{ Auth::user()->first_name }}"
                                         />
                                     @endif

@@ -455,6 +455,7 @@
                                             :suggestions="countries"
                                             @getCountry="getCountry"
                                             @checkErrors="checkErrors( 'country' )"
+                                            :text="inputCountry"
                                         />
                                     </div>
                                 </div>
@@ -651,10 +652,11 @@
                                 </div>
                                 <div class="p-1 flex rounded svelte-1l8159u">
                                     <div style="width: 100%" class="bg-white my-1 p-1 flex border border-gray-200 rounded svelte-1l8159u">
-                                        <autocomplete-country-company
+                                        <autocomplete-country
                                             :suggestions="countries"
-                                            @getCountryCompany="getCountryCompany"
-                                            @checkErrors="checkErrors( 'companyCountry' )"
+                                            @getCountry="getCountryCompany"
+                                            @checkErrors="checkErrors( 'country' )"
+                                            :text="inputCompanyCountry"
                                         />
                                     </div>
                                 </div>
@@ -793,12 +795,10 @@
 
 <script>
     import autocompleteCountry from './AutocompleteCountry'
-    import autocompleteCountryCompany from './AutoCompleteCountryCompany'
 
     export default {
         components: {
-            autocompleteCountry,
-            autocompleteCountryCompany
+            autocompleteCountry
         },
 
         data: () => ({
@@ -1725,7 +1725,7 @@
                 axios
                     .post( '/register', data )
                     .then( function( response ) {
-                        window.location.href = '/login'
+                        window.location.href = '/dashboard'
                     })
                     .catch(function( error ) {
                         app.serverErrors    = true
@@ -1741,100 +1741,100 @@
                 .then( function( response ) {
                     app.language = response.data
                     if( app.language === 'fr' ) {
-                        app.lang.personnalInfo    = 'Informations personnelles',
-                        app.lang.company          = 'Entreprise',
-                        app.lang.companyInfo      = 'Informations de l\'entreprise',
-                        app.lang.molengeek        = 'MolenGeek et vous',
-                        app.lang.fullName         = 'Nom complet',
-                        app.lang.birthday         = 'Date de naissance',
-                        app.lang.profession       = 'Profession',
-                        app.lang.password         = 'Mot de passe',
-                        app.lang.confirmPassword  = 'Confirmer mot de passe',
-                        app.lang.email            = 'Adresse email',
-                        app.lang.companyBoolean   = 'Avez vous une entreprise ?',
-                        app.lang.choice           = 'Veuillez faire un choix',
-                        app.lang.yes              = 'Oui',
-                        app.lang.no               = 'Non',
-                        app.lang.companyName      = 'Nom de l\'entreprise',
-                        app.lang.tva              = 'Numéro de TVA',
-                        app.lang.logo             = 'Logo de l\'entreprise',
-                        app.lang.choose           = 'Choisissez un fichier',
-                        app.lang.molengeekKnown   = 'Comment avez-vous connu MolenGeek ?',
-                        app.lang.previous         = 'Précédent',
-                        app.lang.next             = 'Suivant',
-                        app.lang.validate         = 'Valider',
-                        app.lang.alreadyRegister  = 'Déjà inscrit ?',
-                        app.lang.answer           = 'Réponse ...',
-                        app.lang.country          = 'Pays',
-                        app.lang.companyCountry   = 'Pays',
-                        app.language.idPhoto      = 'Recto carte d\'identité',
-                        app.language.idPhotoBack  = 'Verso carte d\'identité',
-                        app.language.chooseId     = 'Choisissez un fichier',
-                        app.language.chooseIdBack = 'Choisissez un fichier'
+                        app.lang.personnalInfo   = 'Informations personnelles',
+                        app.lang.company         = 'Entreprise',
+                        app.lang.companyInfo     = 'Informations de l\'entreprise',
+                        app.lang.molengeek       = 'MolenGeek et vous',
+                        app.lang.fullName        = 'Nom complet',
+                        app.lang.birthday        = 'Date de naissance',
+                        app.lang.profession      = 'Profession',
+                        app.lang.password        = 'Mot de passe',
+                        app.lang.confirmPassword = 'Confirmer mot de passe',
+                        app.lang.email           = 'Adresse email',
+                        app.lang.companyBoolean  = 'Avez vous une entreprise ?',
+                        app.lang.choice          = 'Veuillez faire un choix',
+                        app.lang.yes             = 'Oui',
+                        app.lang.no              = 'Non',
+                        app.lang.companyName     = 'Nom de l\'entreprise',
+                        app.lang.tva             = 'Numéro de TVA',
+                        app.lang.logo            = 'Logo de l\'entreprise',
+                        app.lang.choose          = 'Choisissez un fichier',
+                        app.lang.molengeekKnown  = 'Comment avez-vous connu MolenGeek ?',
+                        app.lang.previous        = 'Précédent',
+                        app.lang.next            = 'Suivant',
+                        app.lang.validate        = 'Valider',
+                        app.lang.alreadyRegister = 'Déjà inscrit ?',
+                        app.lang.answer          = 'Réponse ...',
+                        app.lang.country         = 'Pays',
+                        app.lang.companyCountry  = 'Pays',
+                        app.lang.idPhoto         = 'Recto carte d\'identité',
+                        app.lang.idPhotoBack     = 'Verso carte d\'identité',
+                        app.lang.chooseId        = 'Choisissez un fichier',
+                        app.lang.chooseIdBack    = 'Choisissez un fichier'
                     }
                     else if( app.language === 'en' ){
-                        app.lang.personnalInfo    = 'Informations personnelles',
-                        app.lang.company          = 'Entreprise',
-                        app.lang.companyInfo      = 'Informations de l\'entreprise',
-                        app.lang.molengeek        = 'MolenGeek et vous',
-                        app.lang.fullName         = 'Nom complet',
-                        app.lang.birthday         = 'Date de naissance',
-                        app.lang.profession       = 'Profession',
-                        app.lang.password         = 'Mot de passe',
-                        app.lang.confirmPassword  = 'Confirmer mot de passe',
-                        app.lang.email            = 'Adresse email',
-                        app.lang.companyBoolean   = 'Avez vous une entreprise ?',
-                        app.lang.choice           = 'Veuillez faire un choix',
-                        app.lang.yes              = 'Oui',
-                        app.lang.no               = 'Non',
-                        app.lang.companyName      = 'Nom de l\'entreprise',
-                        app.lang.tva              = 'Numéro de TVA',
-                        app.lang.logo             = 'Logo de l\'entreprise',
-                        app.lang.choose           = 'Choisissez un fichier',
-                        app.lang.molengeekKnown   = 'Comment avez-vous connu MolenGeek ?',
-                        app.lang.previous         = 'Précédent',
-                        app.lang.next             = 'Suivant',
-                        app.lang.validate         = 'Valider',
-                        app.lang.alreadyRegister  = 'Déjà inscrit ?',
-                        app.lang.answer           = 'Réponse ...',
-                        app.lang.country          = 'Pays',
-                        app.lang.companyCountry   = 'Pays',
-                        app.language.idPhoto      = 'Recto carte d\'identité',
-                        app.language.idPhotoBack  = 'Verso carte d\'identité',
-                        app.language.chooseId     = 'Choisissez un fichier',
-                        app.language.chooseIdBack = 'Choisissez un fichier'
+                        app.lang.personnalInfo   = 'Informations personnelles',
+                        app.lang.company         = 'Entreprise',
+                        app.lang.companyInfo     = 'Informations de l\'entreprise',
+                        app.lang.molengeek       = 'MolenGeek et vous',
+                        app.lang.fullName        = 'Nom complet',
+                        app.lang.birthday        = 'Date de naissance',
+                        app.lang.profession      = 'Profession',
+                        app.lang.password        = 'Mot de passe',
+                        app.lang.confirmPassword = 'Confirmer mot de passe',
+                        app.lang.email           = 'Adresse email',
+                        app.lang.companyBoolean  = 'Avez vous une entreprise ?',
+                        app.lang.choice          = 'Veuillez faire un choix',
+                        app.lang.yes             = 'Oui',
+                        app.lang.no              = 'Non',
+                        app.lang.companyName     = 'Nom de l\'entreprise',
+                        app.lang.tva             = 'Numéro de TVA',
+                        app.lang.logo            = 'Logo de l\'entreprise',
+                        app.lang.choose          = 'Choisissez un fichier',
+                        app.lang.molengeekKnown  = 'Comment avez-vous connu MolenGeek ?',
+                        app.lang.previous        = 'Précédent',
+                        app.lang.next            = 'Suivant',
+                        app.lang.validate        = 'Valider',
+                        app.lang.alreadyRegister = 'Déjà inscrit ?',
+                        app.lang.answer          = 'Réponse ...',
+                        app.lang.country         = 'Pays',
+                        app.lang.companyCountry  = 'Pays',
+                        app.lang.idPhoto         = 'Recto carte d\'identité',
+                        app.lang.idPhotoBack     = 'Verso carte d\'identité',
+                        app.lang.chooseId        = 'Choisissez un fichier',
+                        app.lang.chooseIdBack    = 'Choisissez un fichier'
                     }
                     else if( app.language === 'nl' ) {
-                        app.lang.personnalInfo    = 'Informations personnelles',
-                        app.lang.company          = 'Entreprise',
-                        app.lang.companyInfo      = 'Informations de l\'entreprise',
-                        app.lang.molengeek        = 'MolenGeek et vous',
-                        app.lang.fullName         = 'Nom complet',
-                        app.lang.birthday         = 'Date de naissance',
-                        app.lang.profession       = 'Profession',
-                        app.lang.password         = 'Mot de passe',
-                        app.lang.confirmPassword  = 'Confirmer mot de passe',
-                        app.lang.email            = 'Adresse email',
-                        app.lang.companyBoolean   = 'Avez vous une entreprise ?',
-                        app.lang.choice           = 'Veuillez faire un choix',
-                        app.lang.yes              = 'Oui',
-                        app.lang.no               = 'Non',
-                        app.lang.companyName      = 'Nom de l\'entreprise',
-                        app.lang.tva              = 'Numéro de TVA',
-                        app.lang.logo             = 'Logo de l\'entreprise',
-                        app.lang.choose           = 'Choisissez un fichier',
-                        app.lang.molengeekKnown   = 'Comment avez-vous connu MolenGeek ?',
-                        app.lang.previous         = 'Précédent',
-                        app.lang.next             = 'Suivant',
-                        app.lang.validate         = 'Valider',
-                        app.lang.alreadyRegister  = 'Déjà inscrit ?',
-                        app.lang.answer           = 'Réponse ...',
-                        app.lang.country          = 'Pays',
-                        app.lang.companyCountry   = 'Pays',
-                        app.language.idPhoto      = 'Recto carte d\'identité',
-                        app.language.idPhotoBack  = 'Verso carte d\'identité',
-                        app.language.chooseId     = 'Choisissez un fichier',
-                        app.language.chooseIdBack = 'Choisissez un fichier'
+                        app.lang.personnalInfo   = 'Informations personnelles',
+                        app.lang.company         = 'Entreprise',
+                        app.lang.companyInfo     = 'Informations de l\'entreprise',
+                        app.lang.molengeek       = 'MolenGeek et vous',
+                        app.lang.fullName        = 'Nom complet',
+                        app.lang.birthday        = 'Date de naissance',
+                        app.lang.profession      = 'Profession',
+                        app.lang.password        = 'Mot de passe',
+                        app.lang.confirmPassword = 'Confirmer mot de passe',
+                        app.lang.email           = 'Adresse email',
+                        app.lang.companyBoolean  = 'Avez vous une entreprise ?',
+                        app.lang.choice          = 'Veuillez faire un choix',
+                        app.lang.yes             = 'Oui',
+                        app.lang.no              = 'Non',
+                        app.lang.companyName     = 'Nom de l\'entreprise',
+                        app.lang.tva             = 'Numéro de TVA',
+                        app.lang.logo            = 'Logo de l\'entreprise',
+                        app.lang.choose          = 'Choisissez un fichier',
+                        app.lang.molengeekKnown  = 'Comment avez-vous connu MolenGeek ?',
+                        app.lang.previous        = 'Précédent',
+                        app.lang.next            = 'Suivant',
+                        app.lang.validate        = 'Valider',
+                        app.lang.alreadyRegister = 'Déjà inscrit ?',
+                        app.lang.answer          = 'Réponse ...',
+                        app.lang.country         = 'Pays',
+                        app.lang.companyCountry  = 'Pays',
+                        app.lang.idPhoto         = 'Recto carte d\'identité',
+                        app.lang.idPhotoBack     = 'Verso carte d\'identité',
+                        app.lang.chooseId        = 'Choisissez un fichier',
+                        app.lang.chooseIdBack    = 'Choisissez un fichier'
                     }
                 })
                 .catch( function( error ) {

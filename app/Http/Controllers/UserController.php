@@ -78,8 +78,8 @@ class UserController extends Controller {
                 $company -> country = $input -> input( 'company_country' );
                 $company -> save();
             }
+            return response( "OK", 204 );
         });
-        return response( "OK", 204 );
     }
 
 

@@ -22,8 +22,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation {
             'birthday'   => [ 'required', 'string', 'max:255' ],
             'profession' => [ 'required', 'string', 'max:255' ],
             'photo'      => [ 'nullable', 'image', 'max:1024' ],
-            'email'      => [ 'required', 'email', 'max:255', Rule::unique( 'users' ) -> ignore( $user -> id ) ]
-            ]) -> validateWithBag ( 'updateProfileInformation' );
+            'email'      => [ 'required', 'email', 'max:255', Rule::unique( 'users' ) -> ignore( $user -> id ) ],
+            'country'    => [ 'required', 'string', 'max:255' ]
+            ]) -> validateWithBag( 'updateProfileInformation' );
 
         if( isset( $input[ 'photo' ] ) ) {
             $user -> updateProfilePhoto( $input[ 'photo' ] );
@@ -38,7 +39,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation {
                 'profession' => $input[ 'profession' ],
                 'first_name' => $input[ 'first_name' ],
                 'last_name'  => $input[ 'last_name'  ],
-                'email'      => $input[ 'email'      ]
+                'email'      => $input[ 'email'      ],
+                'country'    => $input[ 'country'    ]
             ] ) -> save();
         }
     }
@@ -56,6 +58,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation {
             'profession'        => $input[ 'profession'  ],
             'first_name'        => $input[ 'first_name'  ],
             'last_name'         => $input[ 'last_name'   ],
+            'country'           => $input[ 'country'     ],
             'email'             => $input[ 'email'       ],
             'email_verified_at' => null
         ] ) -> save();

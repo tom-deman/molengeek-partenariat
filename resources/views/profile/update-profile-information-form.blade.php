@@ -84,14 +84,26 @@
         <!-- Profession -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="profession" value="{{ __('Profession') }}" />
-            <x-jet-input id="profession" type="profession" class="mt-1 block w-full" wire:model.defer="state.profession" />
+            <x-jet-input id="profession" type="text" class="mt-1 block w-full" wire:model.defer="state.profession" />
             <x-jet-input-error for="profession" class="mt-2" />
         </div>
 
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="birthday" value="{{ __('Date de naissance') }}" />
-            <x-jet-input id="birthday" type="birthday" class="mt-1 block w-full" wire:model.defer="state.birthday" />
+            <x-jet-input id="birthday" type="text" class="mt-1 block w-full" wire:model.defer="state.birthday" />
             <x-jet-input-error for="birthday" class="mt-2" />
+        </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="country" value="{{ __('Pays') }}" />
+            {{-- Faire un dropdown ou un autocomplete en trouvant comment envoyer les datas 'countries -> name' de la db
+            pour avoir tous les pays dans cette blade gérée par Jetstream et pouvoir faire le foreach ... --}}
+            <x-jet-input id="country" type="text" class="mt-1 block w-full" wire:model.defer="state.country" />
+            {{-- <select class="mt-1 block w-full" wire:model.defer="state.country" name="" id="country">
+                <option value="France">France</option>
+                <option value="Belgium">Belgium</option>
+            </select> --}}
+            <x-jet-input-error for="country" class="mt-2" />
         </div>
     </x-slot>
 
