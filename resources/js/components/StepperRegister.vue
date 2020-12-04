@@ -325,15 +325,25 @@
                                 <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">
                                     {{ lang.birthday }}
                                 </div>
-                                <div class="bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u">
-                                    <input
-                                        @blur="checkErrors( 'birthday' )"
+                                <div class="my-2 p-1 flex bg-white border border-gray-200 rounded svelte-1l8159u">
+                                    <!-- <input
                                         @keydown="checkInput"
-                                        placeholder="01/01/2000"
-                                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                                        @blur="checkErrors( 'birthday' )"
                                         v-model="inputBirthday"
+                                        input-class="appearance-none outline-none p-1 w-full px-2"
+                                        placeholder="Select Date"
                                         required
-                                    />
+                                    /> -->
+                                    <datepicker
+                                        @input="formatDate"
+                                        placeholder="Select Date"
+                                        input-class="appearance-none outline-none p-1 w-full px-2"
+                                        v-model="inputBirthday"
+                                        :format="format"
+                                        :disabled-dates="disabledDates"
+                                        required
+                                    >
+                                    </datepicker>
                                 </div>
                                 <div class="h-4">
                                     <p
@@ -456,7 +466,8 @@
                                             @getCountry="getCountry"
                                             @checkErrors="checkErrors( 'country' )"
                                             :text="inputCountry"
-                                        />
+                                        >
+                                        </autocomplete-country>
                                     </div>
                                 </div>
                                 <div class="h-4">
@@ -795,10 +806,12 @@
 
 <script>
     import autocompleteCountry from './AutocompleteCountry'
+    import Datepicker from 'vuejs-datepicker';
 
     export default {
         components: {
-            autocompleteCountry
+            autocompleteCountry,
+            Datepicker
         },
 
         data: () => ({
@@ -830,6 +843,11 @@
             serverErrorsTab     : '',
             language            : '',
             countries           : [],
+            format              : 'dd/MM/yyyy',
+            disabledDates       : {
+                to: new Date( 1900, 0, 5 ),
+                from: new Date( 2019, 0, 1 ),
+            },
             errors              : {
                 firstName       : '',
                 lastName        : '',
@@ -889,7 +907,7 @@
                     && this.inputLastName.length < 255
                     && this.inputFirstName
                     && this.inputFirstName.length < 255
-                    && ( /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) )
+                    && this.inputBirthday
                     && this.inputProfession
                     && this.inputProfession.length < 255
                     && ( /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test( this.inputEmail ) )
@@ -1068,7 +1086,7 @@
                     && this.inputLastName.length < 255
                     && this.inputFirstName
                     && this.inputFirstName.length < 255
-                    && ( /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) )
+                    && this.inputBirthday
                     && this.inputProfession
                     && this.inputProfession.length < 255
                     && /^.{8,255}$/.test( this.inputPassword )
@@ -1091,7 +1109,7 @@
                     || this.inputLastName.length > 255
                     || !this.inputFirstName
                     || this.inputFirstName.length > 255
-                    || ( !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) )
+                    || !this.inputBirthday
                     || !this.inputProfession
                     || this.inputProfession.length > 255
                     || !/^.{8,255}$/.test( this.inputPassword )
@@ -1168,6 +1186,62 @@
 
             getCountryCompany( country ) {
                 this.inputCompanyCountry = country
+            },
+
+            // formatDate() {
+            //     let date, day, month, year
+            //     date = this.inputBirthday.toString()
+
+            //     day = date.slice( 8, 10 )
+            //     month = date.slice( 4, 7 )
+            //     year = date.slice( 11, 15 )
+
+            //     switch( month ) {
+            //         case 'Jan':
+            //             month = '01'
+            //         break
+            //         case 'Feb':
+            //             month = '02'
+            //         break
+            //         case 'Mar':
+            //             month = '03'
+            //         break
+            //         case 'Apr':
+            //             month = '04'
+            //         break
+            //         case 'May':
+            //             month = '05'
+            //         break
+            //         case 'Jun':
+            //             month = '06'
+            //         break
+            //         case 'Jul':
+            //             month = '07'
+            //         break
+            //         case 'Aug':
+            //             month = '08'
+            //         break
+            //         case 'Sep':
+            //             month = '09'
+            //         break
+            //         case 'Oct':
+            //             month = '10'
+            //         break
+            //         case 'Nov':
+            //             month = '11'
+            //         break
+            //         case 'Dec':
+            //             month = '12'
+            //         break
+            //     }
+
+            //     this.inputBirthday = `${ day }/${ month }/${ year }`
+            //     console.log( this.inputBirthday )
+            // },
+
+            formatDate() {
+                this.checkErrors( 'birthday' )
+                this.checkInput()
             },
 
             checkErrors( a ){
@@ -1251,19 +1325,19 @@
                                 break
                             }
                         }
-                        else if( ( !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) ) ) {
-                            switch( this.language ) {
-                                case 'fr':
-                                    this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa'
-                                break
-                                case 'en':
-                                    this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa'
-                                break
-                                case 'nl':
-                                    this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa'
-                                break
-                            }
-                        }
+                        // else if( ( !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test( this.inputBirthday ) ) ) {
+                        //     switch( this.language ) {
+                        //         case 'fr':
+                        //             this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa'
+                        //         break
+                        //         case 'en':
+                        //             this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa'
+                        //         break
+                        //         case 'nl':
+                        //             this.errors.birthday = 'Veuillez entrer une date valide au format jj/mm/aaaa'
+                        //         break
+                        //     }
+                        // }
                         else {
                             this.errors.birthday = ''
                         }
@@ -1853,3 +1927,9 @@
         }
     }
 </script>
+
+<style>
+    .vdp-datepicker, .vdp-datepicker .div {
+        width: 100%
+    }
+</style>
